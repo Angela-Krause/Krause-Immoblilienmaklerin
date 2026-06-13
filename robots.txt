@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /index-v2.html
+Disallow: /index-v3.html
+Disallow: /index-v4.html
+Disallow: /index-v5.html
+Disallow: /expose.html
+
+Sitemap: https://www.krauseimmo.com/sitemap.xml

@@ -1,0 +1,392 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Impressum – Krause Immobilien UG, Angela Krause, Bamberg.">
+  <meta name="robots" content="noindex, follow">
+  <title>Impressum | Krause Immobilien – Bamberg & Region</title>  <link rel="stylesheet" href="style.css">
+  <style>
+    body { cursor: auto; }
+    .cursor-ring, .cursor-dot { display: none; }
+
+    /* ── Graue Texte auf hellen Hintergründen – 40% dunkler ── */
+    #imp-hero, #imp-content { --muted: rgba(30,58,138,0.46); }
+
+    /* ── PAGE HERO ── */
+    #imp-hero {
+      background: var(--bg2);
+      padding: 9rem 0 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .imp-hero-inner {
+      max-width: 800px;
+    }
+    .imp-hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--bright);
+      background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.18);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .imp-hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--bright); }
+    #imp-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 600; line-height: 1.1;
+      color: var(--text); margin-bottom: 1rem;
+    }
+    #imp-hero p {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.8;
+    }
+
+    /* ── CONTENT LAYOUT ── */
+    #imp-content {
+      padding: 6rem 0 8rem;
+      background: var(--bg);
+    }
+    .imp-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .imp-sidebar {
+      position: sticky;
+      top: 6rem;
+    }
+    .imp-nav-title {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .imp-nav-list { list-style: none; }
+    .imp-nav-list li { margin-bottom: 0.4rem; }
+    .imp-nav-list a {
+      font-size: 0.82rem; color: var(--muted);
+      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .imp-nav-list a:hover { color: var(--bright); }
+    .imp-nav-list a::before {
+      content: '';
+      width: 16px; height: 1px;
+      background: currentColor; flex-shrink: 0;
+      transition: width 0.2s;
+    }
+    .imp-nav-list a:hover::before { width: 24px; }
+
+    /* ── SECTIONS ── */
+    .imp-section {
+      margin-bottom: 4rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .imp-section:last-child {
+      border-bottom: none; margin-bottom: 0; padding-bottom: 0;
+    }
+    .imp-section-id {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--bright);
+      margin-bottom: 0.8rem;
+    }
+    .imp-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem; font-weight: 600;
+      color: var(--text); margin-bottom: 1.5rem; line-height: 1.2;
+    }
+    .imp-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1rem;
+    }
+    .imp-block-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .imp-block-val {
+      font-size: 0.9rem; color: var(--text); line-height: 1.7;
+    }
+    .imp-block-val a {
+      color: var(--bright); text-decoration: none;
+    }
+    .imp-block-val a:hover { text-decoration: underline; }
+    .imp-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .imp-prose {
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+    }
+    .imp-prose p { margin-bottom: 1rem; }
+    .imp-prose p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 900px) {
+      .imp-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .imp-sidebar { position: static; }
+      .imp-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+    <ul class="nav-links">
+      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
+      <li><a href="verkauf.html" class="nl">Verkauf</a></li>
+      <li><a href="immobilien.html" class="nl">Immobilien</a></li>
+      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
+      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
+      <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
+    </ul>
+    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="ueber-mich.html">Über mich</a>
+    <a href="verkauf.html">Verkauf</a>
+    <a href="immobilien.html">Immobilien</a>
+    <a href="nachlass-hell.html">Nachlass und Erbe</a>
+    <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+    <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+    <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section id="imp-hero">
+  <div class="container">
+    <div class="imp-hero-inner">
+      <div class="imp-hero-tag"><span></span>Rechtliche Angaben</div>
+      <h1>Impressum</h1>
+      <p>Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz) und § 55 RStV.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section id="imp-content">
+  <div class="container">
+    <div class="imp-grid">
+
+      <!-- SIDEBAR NAVIGATION -->
+      <aside class="imp-sidebar">
+        <p class="imp-nav-title">Inhalt</p>
+        <ul class="imp-nav-list">
+          <li><a href="#anbieter">Angaben zum Anbieter</a></li>
+          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#register">Register & Erlaubnis</a></li>
+          <li><a href="#berufsrecht">Berufsrecht</a></li>
+          <li><a href="#versicherung">Versicherung</a></li>
+          <li><a href="#haftung-inhalt">Haftung für Inhalte</a></li>
+          <li><a href="#haftung-links">Haftung für Links</a></li>
+          <li><a href="#urheberrecht">Urheberrecht</a></li>
+        </ul>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main>
+
+        <!-- ANBIETER -->
+        <div class="imp-section" id="anbieter">
+          <p class="imp-section-id">01</p>
+          <h2>Angaben zum Anbieter</h2>
+          <div class="imp-row">
+            <div class="imp-block">
+              <p class="imp-block-label">Unternehmen</p>
+              <p class="imp-block-val">KRAUSE Immobilien UG<br>(haftungsbeschränkt)</p>
+            </div>
+            <div class="imp-block">
+              <p class="imp-block-label">Geschäftsführerin</p>
+              <p class="imp-block-val">Angela Krause</p>
+            </div>
+          </div>
+          <div class="imp-block">
+            <p class="imp-block-label">Anschrift</p>
+            <p class="imp-block-val">Peter-Graf-Str. 7<br>96135 Stegaurach</p>
+          </div>
+        </div>
+
+        <!-- KONTAKT -->
+        <div class="imp-section" id="kontakt">
+          <p class="imp-section-id">02</p>
+          <h2>Kontakt</h2>
+          <div class="imp-row">
+            <div class="imp-block">
+              <p class="imp-block-label">Telefon</p>
+              <p class="imp-block-val"><a href="tel:+4916080061130">+49 (0)160 / 800 6113</a></p>
+            </div>
+            <div class="imp-block">
+              <p class="imp-block-label">E-Mail</p>
+              <p class="imp-block-val"><a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
+            </div>
+          </div>
+          <div class="imp-block">
+            <p class="imp-block-label">Website</p>
+            <p class="imp-block-val"><a href="https://www.krauseimmo.de" target="_blank" rel="noopener">www.krauseimmo.de</a></p>
+          </div>
+        </div>
+
+        <!-- REGISTER & ERLAUBNIS -->
+        <div class="imp-section" id="register">
+          <p class="imp-section-id">03</p>
+          <h2>Register &amp; Erlaubnis</h2>
+          <div class="imp-row">
+            <div class="imp-block">
+              <p class="imp-block-label">Registergericht</p>
+              <p class="imp-block-val">Amtsgericht Bamberg<br>HRB 10340</p>
+            </div>
+            <div class="imp-block">
+              <p class="imp-block-label">Umsatzsteuer-ID</p>
+              <p class="imp-block-val">DE 348 360 871</p>
+            </div>
+          </div>
+          <div class="imp-block">
+            <p class="imp-block-label">Gewerbeerlaubnis</p>
+            <p class="imp-block-val">Die Erlaubnis nach § 34c der Gewerbeordnung wurde erteilt durch das Ordnungsamt des Landkreises Bamberg.</p>
+          </div>
+        </div>
+
+        <!-- BERUFSRECHT -->
+        <div class="imp-section" id="berufsrecht">
+          <p class="imp-section-id">04</p>
+          <h2>Berufsrechtliche Angaben</h2>
+          <div class="imp-block">
+            <p class="imp-block-label">Zuständige Aufsichtsbehörde</p>
+            <p class="imp-block-val">
+              IHK für München und Oberbayern<br>
+              Max-Joseph-Straße 2<br>
+              80333 München
+            </p>
+          </div>
+          <div class="imp-block">
+            <p class="imp-block-label">Berufsbezeichnung</p>
+            <p class="imp-block-val">Immobilienmaklerin &amp; Zertifizierte Sachverständige (verliehen in der Bundesrepublik Deutschland)</p>
+          </div>
+        </div>
+
+        <!-- VERSICHERUNG -->
+        <div class="imp-section" id="versicherung">
+          <p class="imp-section-id">05</p>
+          <h2>Berufshaftpflichtversicherung</h2>
+          <div class="imp-block">
+            <p class="imp-block-label">Versicherungsträger</p>
+            <p class="imp-block-val">Nürnberger Versicherung, Nürnberg</p>
+          </div>
+        </div>
+
+        <!-- HAFTUNG INHALTE -->
+        <div class="imp-section" id="haftung-inhalt">
+          <p class="imp-section-id">06</p>
+          <h2>Haftung für Inhalte</h2>
+          <div class="imp-prose">
+            <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 DDG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 DDG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+            <p>Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
+            <p>KRAUSE Immobilien UG übernimmt keinerlei Gewähr für die Aktualität, Korrektheit, Vollständigkeit oder Qualität der bereitgestellten Informationen.</p>
+          </div>
+        </div>
+
+        <!-- HAFTUNG LINKS -->
+        <div class="imp-section" id="haftung-links">
+          <p class="imp-section-id">07</p>
+          <h2>Haftung für Links</h2>
+          <div class="imp-prose">
+            <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+            <p>Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+          </div>
+        </div>
+
+        <!-- URHEBERRECHT -->
+        <div class="imp-section" id="urheberrecht">
+          <p class="imp-section-id">08</p>
+          <h2>Urheberrecht</h2>
+          <div class="imp-prose">
+            <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Das Urheber- und Kennzeichenrecht für von KRAUSE Immobilien selbst erstellte Objekte steht ihr ausschließlich selbst zu.</p>
+            <p>Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.</p>
+            <p>Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 1998.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navigation</h4>
+        <a href="ueber-mich.html">Über mich</a>
+        <a href="verkauf.html">Verkauf</a>
+        <a href="immobilien.html">Immobilien</a>
+        <a href="nachlass-hell.html">Nachlass &amp; Erbe</a>
+        <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+        <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Leistungen</h4>
+        <a href="verkauf.html">Immobilienverkauf</a>
+        <a href="index-hell.html#services">Immobilienbewertung</a>
+        <a href="nachlass-hell.html">Nachlass &amp; Erbfall</a>
+        <a href="ratgeber-hell.html">Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Rechtliches</h4>
+        <a href="impressum.html" style="color:var(--bright)">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="#">AGB</a>
+        <a href="#" id="cookie-settings">Cookie-Einstellungen</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2024 Krause Immobilien · Angela Krause · <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="subpage.js"></script>
+
+<!-- COOKIE BANNER (Kopie aus anderen Seiten) -->
+<div id="cb-overlay"></div>
+<div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+  <div class="cb-inner">
+    <div class="cb-top">
+      <div class="cb-text">
+        <p class="cb-title">Ihre Privatsphäre</p>
+        <p class="cb-sub">Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten. Einige Cookies sind technisch notwendig, während andere uns helfen, unsere Website zu verbessern.</p>
+      </div>
+    </div>
+    <div class="cb-actions">
+      <button id="cb-decline" class="cb-btn cb-decline-btn">Nur notwendige</button>
+      <button id="cb-accept" class="cb-btn cb-accept-btn">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

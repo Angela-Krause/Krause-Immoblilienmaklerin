@@ -1,0 +1,691 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <meta name="description" content="Immobilien-Ratgeber von Angela Krause – Expertenartikel rund um Verkauf, Bewertung, Nachlass und mehr. Kostenlos und verständlich erklärt.">
+  <link rel="canonical" href="https://www.krauseimmo.com/ratgeber.html">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://www.krauseimmo.com/ratgeber.html">
+  <meta property="og:title"       content="Immobilien-Ratgeber | Krause Immobilien – Bamberg & Region">
+  <meta property="og:description" content="Immobilien-Ratgeber von Angela Krause – Expertenartikel rund um Verkauf, Bewertung, Nachlass und mehr. Kostenlos und verständlich erklärt.">
+  <meta property="og:image"       content="https://www.krauseimmo.com/Bildergalerie/Design%20ohne%20Titel%20%283%29.png">
+  <meta property="og:locale"      content="de_DE">
+  <meta property="og:site_name"   content="Krause Immobilien">
+  <meta name="twitter:card"       content="summary_large_image">
+  <title>Immobilien-Ratgeber | Krause Immobilien – Bamberg & Region</title>  <link rel="stylesheet" href="style.css">
+  <!-- Google Consent Mode v2 Default -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied',
+      'analytics_storage':'denied','functionality_storage':'denied',
+      'personalization_storage':'denied','security_storage':'denied','wait_for_update':1000
+    });
+    function loadGTM() {}
+  </script>
+  <style>
+        /* ════ HELL-VARIANTE (Beige-Stil) ════ */
+    :root { --muted: rgba(30,58,138,0.55); }
+    #nav           { background: rgba(247,244,238,0.95) !important; backdrop-filter: blur(16px) !important; border-bottom: 1px solid rgba(29,78,216,0.10) !important; }
+    #nav .nl       { color: rgba(26,32,53,0.65) !important; }
+    #nav .nl:hover { color: var(--bright) !important; }
+    #nav .logo-wordmark { color: var(--text) !important; }
+    #nav .nav-phone     { color: rgba(26,32,53,0.65) !important; }
+    /* Hintergrundbild weg, neutraler Beige-Gradient wie "Über mich" */
+    #hero {
+      background:
+        radial-gradient(ellipse at 78% 28%, rgba(212,175,107,0.35) 0%, transparent 44%),
+        radial-gradient(ellipse at 92% 72%, rgba(29,78,216,0.14) 0%, transparent 38%),
+        radial-gradient(ellipse at 60% 55%, rgba(77,170,219,0.09) 0%, transparent 32%),
+        radial-gradient(ellipse at 15% 60%, rgba(29,78,216,0.06) 0%, transparent 35%),
+        linear-gradient(135deg, #ffffff 0%, #f7f4ee 45%, #f0ebe0 100%) !important;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -45deg, transparent 0px, transparent 38px,
+        rgba(29,78,216,0.03) 38px, rgba(29,78,216,0.03) 39px
+      );
+    }
+    #hero .hero-bg-img  { display: none !important; }
+    #hero .hero-overlay { display: none !important; }
+    #hero .hl           { color: #1a2035 !important; }
+    #hero .hl.italic    { color: var(--bright) !important; }
+    #hero .hero-sub     { color: rgba(26,32,53,0.68) !important; }
+    #hero .hero-badge   { background: rgba(29,78,216,0.08) !important; color: var(--bright) !important; border-color: rgba(29,78,216,0.20) !important; }
+    #hero .badge-dot    { background: var(--bright) !important; }
+    #hero .hero-sub strong { color: #1a2035 !important; }
+    /* ── FILTER BAR ── */
+    .rg-filter {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+    .rg-filter-btn {
+      padding: 0.5rem 1.3rem;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .rg-filter-btn:hover,
+    .rg-filter-btn.active {
+      background: var(--bright);
+      border-color: var(--bright);
+      color: var(--bg);
+    }
+
+    /* ── RATGEBER GRID ── */
+    .rg-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .rg-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .rg-card:hover {
+      border-color: var(--bright);
+      transform: translateY(-6px);
+    }
+    .rg-card-img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: var(--bg2);
+    }
+    .rg-card-body {
+      padding: 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .rg-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bright);
+      margin-bottom: 0.75rem;
+    }
+    .rg-card-body h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 0.8rem;
+      color: var(--text);
+    }
+    .rg-card-body p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.8;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+    .rg-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .rg-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .rg-meta i { color: var(--bright); font-size: 0.65rem; }
+    .rg-read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bright);
+      text-decoration: none;
+      transition: gap 0.25s;
+    }
+    .rg-read-btn:hover { gap: 0.8rem; }
+    .rg-read-btn i { font-size: 0.7rem; }
+
+
+    /* ── CTA STRIP ── */
+    #rg-cta { background: var(--bg2); }
+    .rg-cta-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+      padding: 4rem;
+      background: linear-gradient(135deg, rgba(29,78,216,0.1), rgba(5,8,15,0));
+      border: 1px solid rgba(29,78,216,0.25);
+      border-radius: var(--radius);
+    }
+    .rg-cta-inner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+    .rg-cta-inner h2 em { font-style: italic; color: var(--bright); }
+    .rg-cta-inner p { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+    .rg-cta-btns { display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+
+    /* ── BOTTIMMO BUTTON ── */
+    button.rg-read-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .rg-grid { grid-template-columns: 1fr 1fr; }
+      .rg-cta-inner { grid-template-columns: 1fr; }
+      .rg-cta-btns { flex-direction: row; }
+    }
+    @media (max-width: 768px) {
+      .rg-grid { grid-template-columns: 1fr; }
+      .rg-card.featured { grid-column: span 1; }
+      .rg-cta-inner { padding: 2rem 1.5rem; }
+      .rg-cta-btns { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+    <ul class="nav-links">
+      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
+      <li><a href="verkauf.html" class="nl">Verkauf</a></li>
+      <li><a href="immobilien.html" class="nl">Immobilien</a></li>
+      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
+      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
+      <li><a href="ratgeber-hell.html" class="nl" style="color:var(--bright)">Immobilien-Ratgeber</a></li>
+    </ul>
+    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="ueber-mich.html">Über mich</a>
+    <a href="verkauf.html">Verkauf</a>
+    <a href="immobilien.html">Immobilien</a>
+    <a href="nachlass-hell.html">Nachlass und Erbe</a>
+    <a href="scheidung-hell.html">Scheidung</a>
+    <a href="ratgeber-hell.html" style="color:var(--bright)">Immobilien-Ratgeber</a>
+    <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <img class="hero-bg-img" src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1920&q=85" alt="" aria-hidden="true" style="display:none">
+  <div class="hero-overlay" style="display:none"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge rf">
+      <span class="badge-dot"></span>Kostenlos · Verständlich · Aktuell
+    </div>
+    <h1 class="hero-h1">
+      <div class="hl" data-index="0">Ihr Immobilien-</div>
+      <div class="hl italic" data-index="1">Wissen auf</div>
+      <div class="hl" data-index="2">einen Blick.</div>
+    </h1>
+    <p class="hero-sub rf">
+      Expertenwissen von Angela Krause – verständlich aufbereitet<br>
+      für <strong>Verkäufer, Erben und Immobilieninteressierte</strong> in der Region.
+    </p>
+    <div class="hero-ctas rf">
+      <a href="#ratgeber" class="btn-pri mag-btn"><span>Zu den Ratgebern</span><i class="fas fa-arrow-right"></i></a>
+      <a href="index-hell.html#contact" class="btn-sec mag-btn"><span>Persönlich beraten lassen</span></a>
+    </div>
+  </div>
+
+  <!-- Google Reviews Strip -->
+  <div class="hero-reviews">
+    <div class="hero-reviews-track">
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Frau Krause ist eine hervorragende Maklerin, die wir mit gutem Gewissen weiterempfehlen."</p>
+        <span>Familie Klinner</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Sehr freundliche und kompetente Betreuung. Frau Krause meldete sich stets schnell und unkompliziert zurück."</p>
+        <span>Eva Sattlemann</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Frau Krause ist sehr hilfsbereit, unkompliziert, kompetent und sympathisch. Jederzeit ein sicheres Gefühl."</p>
+        <span>B. Schillmann</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Professionell und kompetent sowie schnell und zuverlässig von der Anfrage bis zur Kaufabwicklung."</p>
+        <span>Thomas W.</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Wir sind mit Ihren Leistungen sehr zufrieden. Sie sind professionell und haben uns sehr gut beraten."</p>
+        <span>Maria S.</span>
+      </div>
+      <!-- Duplikate für nahtlosen Loop -->
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Frau Krause ist eine hervorragende Maklerin, die wir mit gutem Gewissen weiterempfehlen."</p>
+        <span>Familie Klinner</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Sehr freundliche und kompetente Betreuung. Frau Krause meldete sich stets schnell und unkompliziert zurück."</p>
+        <span>Eva Sattlemann</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Frau Krause ist sehr hilfsbereit, unkompliziert, kompetent und sympathisch. Jederzeit ein sicheres Gefühl."</p>
+        <span>B. Schillmann</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Professionell und kompetent sowie schnell und zuverlässig von der Anfrage bis zur Kaufabwicklung."</p>
+        <span>Thomas W.</span>
+      </div>
+      <div class="hr-card">
+        <div class="hr-top"><div class="hr-g">G</div><div class="hr-stars">★★★★★</div></div>
+        <p>„Wir sind mit Ihren Leistungen sehr zufrieden. Sie sind professionell und haben uns sehr gut beraten."</p>
+        <span>Maria S.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-float rf">
+    <div class="hf-stat"><div class="hf-n">25</div><div class="hf-l">Jahre im Immobilienbereich</div></div>
+    <div class="hf-div"></div>
+    <div class="hf-stat"><div class="hf-n">500+</div><div class="hf-l">Bewertete Objekte</div></div>
+  </div>
+</section>
+
+<!-- RATGEBER -->
+<section id="ratgeber" style="background: var(--bg);">
+  <div class="container">
+
+    <div class="sec-head">
+      <span class="sec-tag rf">Expertenwissen</span>
+      <h2 class="sec-title ss">Ratgeber &amp; <br><em>Wissenswertes</em></h2>
+      <p class="sec-desc rf">Alles, was Sie als Verkäufer, Käufer oder Erbe wissen müssen – kostenlos und direkt aus der Praxis.</p>
+    </div>
+
+    <!-- FILTER -->
+    <div class="rg-filter rf">
+      <button class="rg-filter-btn active" data-filter="all">Alle Themen</button>
+      <button class="rg-filter-btn" data-filter="verkauf">Verkauf</button>
+      <button class="rg-filter-btn" data-filter="kauf">Kauf & Finanzierung</button>
+      <button class="rg-filter-btn" data-filter="nachlass">Nachlass & Erbe</button>
+      <button class="rg-filter-btn" data-filter="recht">Recht & Mehr</button>
+    </div>
+
+    <!-- KARTEN -->
+    <div class="rg-grid">
+
+      <!-- Featured: Privater Immobilienverkauf -->
+      <div class="rg-card rf" data-category="verkauf">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-privater-immobilienverkauf.jpeg" alt="Privater Immobilienverkauf">
+        <div class="rg-card-body">
+          <span class="rg-tag">Verkauf</span>
+          <h3>Privater Immobilienverkauf – Chancen und Risiken</h3>
+          <p>Selbst verkaufen oder Makler beauftragen? Wir zeigen, worauf es bei einem privaten Verkauf ankommt, welche Fallstricke es gibt und wann professionelle Unterstützung wirklich lohnt.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 8 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="privater-immobilienverkauf" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Richtiger Immobilienpreis -->
+      <div class="rg-card rf" data-category="verkauf">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-richtiger-immobilienpreis.jpeg" alt="Der richtige Immobilienpreis">
+        <div class="rg-card-body">
+          <span class="rg-tag">Verkauf</span>
+          <h3>Der richtige Immobilienpreis</h3>
+          <p>Zu hoch und Interessenten bleiben aus – zu niedrig und Sie verschenken Geld. Wie Sie den optimalen Angebotspreis ermitteln und typische Bewertungsfehler vermeiden.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 6 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="richtiger-immobilienpreis" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Immobilienkauf -->
+      <div class="rg-card rf" data-category="kauf">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-immobilienkauf.jpeg" alt="Immobilienkauf">
+        <div class="rg-card-body">
+          <span class="rg-tag">Kauf & Finanzierung</span>
+          <h3>Immobilienkauf – Schritt für Schritt</h3>
+          <p>Von der Besichtigung bis zur Schlüsselübergabe: Der komplette Ablauf eines Immobilienkaufs, erklärt für Erstkäufer und Erfahrene – mit allen wichtigen Checklisten.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 7 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="immobilienkauf" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Immobilienfinanzierung -->
+      <div class="rg-card rf" data-category="kauf">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-immobilienfinanzierung.jpeg" alt="Immobilienfinanzierung">
+        <div class="rg-card-body">
+          <span class="rg-tag">Kauf & Finanzierung</span>
+          <h3>Immobilienfinanzierung richtig planen</h3>
+          <p>Eigenkapital, Zinsen, Tilgungsrate – was Sie vor der Unterschrift unbedingt wissen sollten. Mit Überblick zu KfW-Förderungen und typischen Finanzierungsfehlern.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 6 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="immobilienfinanzierung" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Immobilie geerbt -->
+      <div class="rg-card rf" data-category="nachlass">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-immobilie-geerbt.jpeg" alt="Immobilie geerbt">
+        <div class="rg-card-body">
+          <span class="rg-tag">Nachlass & Erbe</span>
+          <h3>Immobilie geerbt – Was nun?</h3>
+          <p>Behalten, vermieten oder verkaufen? Steuerliche Fristen, die Rolle des Nachlassgerichts und wie ein Sachverständigengutachten Erbengemeinschaften absichert.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 6 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="immobilie-geerbt" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Erbschaft & Schenkung -->
+      <div class="rg-card rf" data-category="nachlass">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-es.jpeg" alt="Erbschaft und Schenkung">
+        <div class="rg-card-body">
+          <span class="rg-tag">Nachlass & Erbe</span>
+          <h3>Erbschaft & Schenkung bei Immobilien</h3>
+          <p>Was ist steuerlich günstiger – vererben oder zu Lebzeiten schenken? Freibeträge, Haltefristen und die Rolle des Verkehrswertgutachtens einfach erklärt.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 5 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="immobilie-geerbt" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leibrente -->
+      <div class="rg-card rf" data-category="nachlass">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-leibrente.jpeg" alt="Leibrente">
+        <div class="rg-card-body">
+          <span class="rg-tag">Nachlass & Erbe</span>
+          <h3>Leibrente – Immobilie verkaufen & wohnen bleiben</h3>
+          <p>Wer seine Immobilie verkaufen, aber darin wohnen bleiben möchte, kann Leibrente als Alternative prüfen. Wie das Modell funktioniert und für wen es sich eignet.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 5 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="life-annuity">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wohnen im Alter -->
+      <div class="rg-card rf" data-category="nachlass">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-wohnen-im-alter.jpeg" alt="Wohnen im Alter">
+        <div class="rg-card-body">
+          <span class="rg-tag">Nachlass & Erbe</span>
+          <h3>Wohnen im Alter – Welche Optionen gibt es?</h3>
+          <p>Barrierefreiheit, Umzug, Verkauf oder Vermietung: Welche Lösung für Senioren sinnvoll ist und wie Sie frühzeitig die richtigen Weichen stellen.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 5 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="wohnen-im-alter" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Immobilie in der Scheidung -->
+      <div class="rg-card rf" data-category="recht">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-immobilie-in-der-scheidung.jpeg" alt="Immobilie in der Scheidung">
+        <div class="rg-card-body">
+          <span class="rg-tag">Recht & Mehr</span>
+          <h3>Immobilie in der Scheidung</h3>
+          <p>Was passiert mit dem gemeinsamen Haus bei einer Trennung? Verkauf, Übertragung oder Teilungsversteigerung – die Optionen und deren Folgen im Überblick.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 6 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="immobilie-in-der-scheidung" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sanierung -->
+      <div class="rg-card rf" data-category="recht">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-sanierung-einer-immobilie.jpeg" alt="Sanierung einer Immobilie">
+        <div class="rg-card-body">
+          <span class="rg-tag">Recht & Mehr</span>
+          <h3>Sanierung einer Immobilie – Was ist sinnvoll?</h3>
+          <p>Vor dem Verkauf renovieren oder as-is verkaufen? Welche Maßnahmen den Verkaufspreis wirklich steigern und wann Sanierungskosten den Erlös auffressen.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 5 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="sanierung-einer-immobilie" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Energetische Sanierung -->
+      <div class="rg-card rf" data-category="recht">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-energetische-sanierung.jpeg" alt="Energetische Sanierung">
+        <div class="rg-card-body">
+          <span class="rg-tag">Recht & Mehr</span>
+          <h3>Energetische Sanierung – Was lohnt sich?</h3>
+          <p>Dämmung, Heizung, Fenster: Welche energetischen Maßnahmen den Wert Ihrer Immobilie steigern, welche Förderungen es gibt und was Sie vor dem Verkauf wissen sollten.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 5 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="energetische-sanierung" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fakten & Begriffe -->
+      <div class="rg-card rf" data-category="recht">
+        <img class="rg-card-img" src="Bildergalerie/BOTTIMMO-GWsocialbild-Ratgeber-immobilien-fakten-und-begriffe.jpeg" alt="Immobilien Fakten und Begriffe">
+        <div class="rg-card-body">
+          <span class="rg-tag">Recht & Mehr</span>
+          <h3>Immobilien: Fakten & Begriffe erklärt</h3>
+          <p>Grundbuch, Baulast, Wohnflächenverordnung, Bodenrichtwert – die wichtigsten Fachbegriffe rund um Immobilien verständlich erklärt für Käufer und Verkäufer.</p>
+          <div class="rg-card-footer">
+            <span class="rg-meta"><i class="fas fa-clock"></i> 4 Min. Lesezeit</span>
+            <button class="rg-read-btn js-btm-open" data-widget="download" data-slug="immobilien-fakten-und-begriffe" data-type="GUIDE">Zum Ratgeber <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT CTA -->
+<section id="rg-cta">
+  <div class="container">
+    <div class="rg-cta-inner">
+      <div>
+        <span class="sec-tag rf" style="display:inline-block;margin-bottom:1rem;">Persönliche Beratung</span>
+        <h2>Noch Fragen? Ich berate<br><em>Sie gerne persönlich.</em></h2>
+        <p>Kein Ratgeber ersetzt das persönliche Gespräch. Sprechen Sie mich direkt an – telefonisch, per E-Mail oder vor Ort in Bamberg.</p>
+        <div class="cs-contacts" style="margin-top:1.2rem;">
+          <a href="tel:01608006113" style="display:inline-flex;align-items:center;gap:0.6rem;font-size:0.88rem;color:var(--bright);font-weight:600;text-decoration:none;"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+          <a href="mailto:info@krauseimmo.com" style="display:inline-flex;align-items:center;gap:0.6rem;font-size:0.88rem;color:var(--muted);text-decoration:none;margin-top:0.4rem;"><i class="fas fa-envelope"></i> info@krauseimmo.com</a>
+        </div>
+      </div>
+      <div class="rg-cta-btns">
+        <a href="index-hell.html#contact" class="btn-pri mag-btn"><span>Jetzt Kontakt aufnehmen</span><i class="fas fa-arrow-right"></i></a>
+        <a href="ueber-mich.html" class="btn-sec mag-btn"><span>Über Angela Krause</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 1998.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navigation</h4>
+        <a href="ueber-mich.html">Über mich</a>
+        <a href="verkauf.html">Verkauf</a>
+        <a href="immobilien.html">Immobilien</a>
+        <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+        <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+        <a href="index-hell.html#contact">Kontakt</a>
+      </div>
+      <div class="foot-col">
+        <h4>Ratgeber</h4>
+        <a href="#">Immobilie verkaufen</a>
+        <a href="#">Immobilienbewertung</a>
+        <a href="#">Nachlass & Erbfall</a>
+        <a href="#">Steuer & Recht</a>
+      </div>
+      <div class="foot-col">
+        <h4>Rechtliches</h4>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+        <a href="#" id="cookie-settings">Cookie-Einstellungen</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2024 Krause Immobilien · Angela Krause · <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- Bottimmo – kein btm-widget im DOM = kein Teaser-Overlay beim Laden -->
+<script src="https://components.bottimmo.com/components/6926bbda3281069eaaca1c9d/btm-widget/de-DE" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="subpage.js"></script>
+<script>
+  /* ── BOTTIMMO MODAL ── */
+  (function() {
+    // Overlay + Modal erstellen
+    const overlay = document.createElement('div');
+    overlay.id = 'btm-overlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9998;align-items:center;justify-content:center;';
+
+    const modal = document.createElement('div');
+    modal.style.cssText = 'background:#fff;border-radius:12px;padding:2rem;max-width:480px;width:90%;position:relative;z-index:9999;';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.style.cssText = 'position:absolute;top:0.75rem;right:1rem;background:none;border:none;font-size:1.8rem;cursor:pointer;color:#666;line-height:1;';
+    closeBtn.addEventListener('click', () => { overlay.style.display = 'none'; modal.innerHTML = ''; modal.appendChild(closeBtn); });
+
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) { overlay.style.display = 'none'; modal.innerHTML = ''; modal.appendChild(closeBtn); } });
+
+    modal.appendChild(closeBtn);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    document.querySelectorAll('.js-btm-open').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Widget in Modal einfügen
+        const w = document.createElement('btm-widget');
+        w.setAttribute('widget', btn.dataset.widget || 'download');
+        if (btn.dataset.slug) w.setAttribute('slug', btn.dataset.slug);
+        if (btn.dataset.type) w.setAttribute('type', btn.dataset.type);
+        modal.appendChild(w);
+        overlay.style.display = 'flex';
+      });
+    });
+  })();
+
+  /* ── FILTER ── */
+  document.querySelectorAll('.rg-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.rg-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.rg-card').forEach(card => {
+        const match = filter === 'all' || card.dataset.category === filter;
+        card.style.display = match ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+<!-- COOKIE BANNER -->
+<div id="cb-overlay"></div>
+<div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+  <div class="cb-inner">
+    <div class="cb-top">
+      <div class="cb-text">
+        <p class="cb-title">Ihre Privatsphäre</p>
+        <p>Diese Website verwendet Cookies. Technisch notwendige Cookies sind immer aktiv. Google Tag Manager und Marketing-Cookies können Sie einzeln aktivieren – standardmäßig sind beide deaktiviert. Mehr Infos in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+      </div>
+    </div>
+    <div class="cb-toggles">
+      <div class="cb-toggle-row">
+        <label class="cb-switch"><input type="checkbox" checked disabled><span class="cb-slider"></span></label>
+        <div class="cb-toggle-label"><strong>Technisch notwendig</strong><span>Grundfunktionen der Website – immer aktiv</span></div>
+      </div>
+      <div class="cb-toggle-row">
+        <label class="cb-switch"><input type="checkbox" id="cb-gtm"><span class="cb-slider"></span></label>
+        <div class="cb-toggle-label"><strong>Google Tag Manager</strong><span>Verwaltung von Website-Tags – standardmäßig deaktiviert</span></div>
+      </div>
+      <div class="cb-toggle-row">
+        <label class="cb-switch"><input type="checkbox" id="cb-marketing"><span class="cb-slider"></span></label>
+        <div class="cb-toggle-label"><strong>Marketing &amp; Werbung</strong><span>Google Ads Conversion Tracking &amp; personalisierte Werbung</span></div>
+      </div>
+    </div>
+    <div class="cb-buttons">
+      <button class="cb-btn cb-btn-accept" id="cb-accept-all">Alle akzeptieren</button>
+      <button class="cb-btn cb-btn-save"   id="cb-save">Auswahl speichern</button>
+      <button class="cb-btn cb-btn-reject" id="cb-reject-all">Alle ablehnen</button>
+    </div>
+  </div>
+</div>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

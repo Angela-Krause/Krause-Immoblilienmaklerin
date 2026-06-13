@@ -1,0 +1,636 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exposé | Krause Immobilien</title>  <link rel="stylesheet" href="style.css">
+  <!-- Google Consent Mode v2 Default -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','personalization_storage':'denied','security_storage':'denied','wait_for_update':1000});
+    function loadGTM(){}
+  </script>
+  <style>
+    /* ── EXPOSE HERO ── */
+    #exp-hero {
+      position: relative;
+      width: 100%;
+      height: 70vh;
+      min-height: 480px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    #exp-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .exp-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,15,35,0.92) 0%, rgba(10,15,35,0.30) 60%, transparent 100%);
+    }
+    .exp-hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 3rem 2rem;
+      max-width: calc(var(--max) + 4rem);
+      margin: 0 auto;
+    }
+    .exp-hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--bright);
+      border: 1px solid rgba(29,78,216,0.4);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      background: rgba(10,15,35,0.70); backdrop-filter: blur(8px);
+      margin-bottom: 1rem;
+    }
+    .exp-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 600; line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .exp-hero-addr {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.9rem; color: var(--muted);
+    }
+    .exp-hero-addr i { color: var(--bright); }
+    .exp-status-badge {
+      display: inline-block;
+      padding: 0.4rem 1rem; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 0.8rem;
+    }
+    .exp-status-badge.sv { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.4); }
+    .exp-status-badge.sr { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid rgba(245,158,11,0.4); }
+    .exp-status-badge.sk { background: rgba(239,68,68,0.2);  color: #ef4444; border: 1px solid rgba(239,68,68,0.4); }
+
+    /* ── DETAILS SECTION ── */
+    #exp-details { background: var(--bg2); }
+    .exp-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* Key Facts */
+    .exp-facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .exp-fact {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+      display: flex; flex-direction: column; gap: 0.3rem;
+    }
+    .ef-icon { color: var(--bright); font-size: 1rem; margin-bottom: 0.2rem; }
+    .ef-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--text); line-height: 1;
+    }
+    .ef-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* Description */
+    .exp-desc-block { margin-bottom: 2.5rem; }
+    .exp-desc-block h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;
+    }
+    .exp-desc-block p {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.9;
+    }
+
+    /* Features */
+    .exp-features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .exp-feature-item {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-size: 0.85rem; color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 1rem;
+    }
+    .exp-feature-item i { color: var(--bright); font-size: 0.75rem; flex-shrink: 0; }
+
+    /* Contact Sidebar */
+    .exp-sidebar {
+      position: sticky;
+      top: 7rem;
+    }
+    .exp-contact-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .exp-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 700;
+      color: var(--bright); margin-bottom: 0.4rem; line-height: 1;
+    }
+    .exp-price-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .exp-agent {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem;
+      background: rgba(29,78,216,0.06);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem;
+    }
+    .exp-agent-avatar {
+      width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+    }
+    .exp-agent-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .exp-agent-info { flex: 1; }
+    .exp-agent-name { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .exp-agent-role { font-size: 0.75rem; color: var(--muted); }
+    .exp-contact-links { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+    .exp-contact-links a {
+      display: flex; align-items: center; gap: 0.7rem;
+      font-size: 0.85rem; text-decoration: none; transition: color 0.2s;
+    }
+    .exp-contact-links a:first-child { color: var(--bright); font-weight: 600; }
+    .exp-contact-links a:last-child { color: var(--muted); }
+    .exp-contact-links a:hover { color: var(--text); }
+    .exp-contact-links i { font-size: 0.8rem; color: var(--bright); }
+
+    /* Energy */
+    .exp-energy-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+    .exp-energy-box h4 {
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;
+    }
+    .exp-energy-bar {
+      height: 22px; border-radius: 100px; overflow: hidden;
+      background: linear-gradient(90deg,
+        #22c55e 0%, #86efac 14%, #fde68a 28%, #fbbf24 42%,
+        #fb923c 57%, #f87171 71%, #ef4444 85%, #dc2626 100%);
+      position: relative; margin-bottom: 0.8rem;
+    }
+    .exp-energy-marker {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 4px; height: 30px; background: var(--text);
+      border-radius: 2px;
+    }
+    .exp-energy-row { display: flex; justify-content: space-between; align-items: center; }
+    .exp-energy-class {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: var(--bright);
+    }
+    .exp-energy-val { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── GALLERY ── */
+    #exp-gallery { background: var(--bg); }
+    .exp-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .exp-gallery-grid img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; border-radius: var(--radius);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: block;
+    }
+    .exp-gallery-grid img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .exp-gallery-grid img:first-child {
+      grid-column: span 2;
+      aspect-ratio: 16/9;
+    }
+
+    /* Lightbox */
+    #exp-lightbox {
+      position: fixed; inset: 0; z-index: 99990;
+      background: rgba(10,15,35,0.95); backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center;
+    }
+    #exp-lightbox.open { display: flex; }
+    #exp-lightbox img {
+      max-width: 90vw; max-height: 88vh;
+      object-fit: contain; border-radius: var(--radius);
+    }
+    .lb-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .lb-close:hover { background: var(--bright); color: var(--bg); }
+    .lb-prev, .lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .lb-prev { left: 1.5rem; }
+    .lb-next { right: 1.5rem; }
+    .lb-prev:hover, .lb-next:hover { background: var(--bright); color: var(--bg); }
+
+    /* ── NOT FOUND ── */
+    #exp-not-found { display: none; text-align: center; padding: 10rem 2rem; }
+    #exp-not-found i { font-size: 4rem; color: var(--border); margin-bottom: 1.5rem; display: block; }
+    #exp-not-found h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; margin-bottom: 1rem; }
+    #exp-not-found p { color: var(--muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .exp-details-grid { grid-template-columns: 1fr; }
+      .exp-sidebar { position: static; }
+      .exp-facts { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .exp-gallery-grid { grid-template-columns: 1fr 1fr; }
+      .exp-gallery-grid img:first-child { grid-column: span 2; }
+      .exp-facts { grid-template-columns: 1fr 1fr; }
+      .exp-features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+    <ul class="nav-links">
+      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
+      <li><a href="verkauf.html" class="nl">Verkauf</a></li>
+      <li><a href="index-hell.html#properties" class="nl" style="color:var(--bright)">Immobilien</a></li>
+      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
+      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
+      <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
+    </ul>
+    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="ueber-mich.html">Über mich</a>
+    <a href="verkauf.html">Verkauf</a>
+    <a href="index-hell.html#properties" style="color:var(--bright)">Immobilien</a>
+    <a href="nachlass-hell.html">Nachlass und Erbe</a>
+    <a href="scheidung-hell.html">Scheidung</a>
+    <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+    <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="exp-hero">
+  <img id="exp-hero-img" src="" alt="">
+  <div class="exp-hero-overlay"></div>
+  <div class="exp-hero-content">
+    <div id="exp-status-badge" class="exp-status-badge"></div>
+    <div class="exp-hero-tag">
+      <i class="fas fa-home"></i>
+      <span id="exp-objnr">Obj.-Nr. –</span>
+    </div>
+    <h1 class="exp-hero-title" id="exp-title">–</h1>
+    <div class="exp-hero-addr"><i class="fas fa-map-marker-alt"></i><span id="exp-addr">–</span></div>
+  </div>
+</div>
+
+<!-- NOT FOUND -->
+<div id="exp-not-found">
+  <i class="fas fa-home"></i>
+  <h2>Objekt nicht gefunden</h2>
+  <p>Dieses Objekt existiert nicht oder wurde entfernt.</p>
+  <a href="index-hell.html#properties" class="btn-pri mag-btn" style="margin-top:2rem;display:inline-flex;"><span>Alle Objekte ansehen</span><i class="fas fa-arrow-right"></i></a>
+</div>
+
+<!-- DETAILS -->
+<section id="exp-details">
+  <div class="container">
+    <div class="exp-details-grid">
+
+      <!-- Linke Spalte: Infos -->
+      <div>
+        <!-- Key Facts -->
+        <div class="exp-facts" id="exp-facts"></div>
+
+        <!-- Beschreibung -->
+        <div class="exp-desc-block">
+          <h3>Objektbeschreibung</h3>
+          <p id="exp-desc-long">–</p>
+        </div>
+
+        <!-- Ausstattung -->
+        <div class="exp-desc-block">
+          <h3>Ausstattung & Merkmale</h3>
+          <div class="exp-features-grid" id="exp-features"></div>
+        </div>
+      </div>
+
+      <!-- Rechte Spalte: Sidebar -->
+      <div class="exp-sidebar">
+        <div class="exp-contact-box">
+          <div class="exp-price" id="exp-price">–</div>
+          <div class="exp-price-label">Kaufpreis inkl. MwSt.</div>
+
+          <div class="exp-agent">
+            <div class="exp-agent-avatar">
+              <img src="Bildergalerie/Design%20ohne%20Titel%20%283%29.png" alt="Angela Krause">
+            </div>
+            <div class="exp-agent-info">
+              <div class="exp-agent-name">Angela Krause</div>
+              <div class="exp-agent-role">Ihre Ansprechpartnerin</div>
+            </div>
+          </div>
+
+          <div class="exp-contact-links">
+            <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+            <a href="mailto:info@krauseimmo.com"><i class="fas fa-envelope"></i> info@krauseimmo.com</a>
+          </div>
+
+          <a href="index-hell.html#contact" class="btn-pri mag-btn" style="width:100%;justify-content:center;">
+            <span>Jetzt anfragen</span><i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <!-- Energieausweis -->
+        <div class="exp-energy-box" id="exp-energy-box">
+          <h4>Energieausweis</h4>
+          <div class="exp-energy-bar">
+            <div class="exp-energy-marker" id="exp-energy-marker"></div>
+          </div>
+          <div class="exp-energy-row">
+            <div>
+              <div style="font-size:0.72rem;color:var(--muted);margin-bottom:0.2rem;">Energieeffizienzklasse</div>
+              <div class="exp-energy-class" id="exp-energy-class">–</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:0.72rem;color:var(--muted);margin-bottom:0.2rem;">Kennwert</div>
+              <div class="exp-energy-val" id="exp-energy-val">–</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="exp-gallery">
+  <div class="container">
+    <span class="sec-tag rf">Bildergalerie</span>
+    <h2 class="sec-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:600;margin-top:0.5rem;">Alle <em style="font-style:italic;color:var(--bright)">Fotos</em></h2>
+    <div class="exp-gallery-grid" id="exp-gallery-grid"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div id="exp-lightbox">
+  <button class="lb-close" id="lb-close"><i class="fas fa-times"></i></button>
+  <button class="lb-prev" id="lb-prev"><i class="fas fa-chevron-left"></i></button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" id="lb-next"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 1998.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navigation</h4>
+        <a href="ueber-mich.html">Über mich</a>
+        <a href="verkauf.html">Verkauf</a>
+        <a href="index-hell.html#properties">Immobilien</a>
+        <a href="nachlass-hell.html">Nachlass & Erbe</a>
+        <a href="scheidung-hell.html">Scheidung</a>
+    <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+        <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Kontakt</h4>
+        <a href="tel:01608006113">0160 / 800 6113</a>
+        <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>
+      </div>
+      <div class="foot-col">
+        <h4>Rechtliches</h4>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+        <a href="#" id="cookie-settings">Cookie-Einstellungen</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2024 Krause Immobilien · Angela Krause · <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="subpage.js"></script>
+<script>
+/* ── PROPERTY DATA FALLBACK ── */
+const exposeDefaults = [
+  {id:1,title:"Gepflegtes Einfamilienhaus",address:"Bamberg, Gereuth",price:"485.000",size:"148",rooms:5,year:1982,bathrooms:2,plot:"620",status:"Verfügbar",badge:"Neu",description_long:"Dieses gepflegte Einfamilienhaus überzeugt durch seine ruhige, grüne Lage im Bamberger Stadtteil Gereuth. Das 1982 erbaute und gut erhaltene Haus bietet auf 148 m² Wohnfläche viel Platz für die ganze Familie. Das großzügige Grundstück von 620 m² lädt zum Erholen und Spielen ein.",features:["Angebaute Garage","Großer Garten (620 m²)","Ausgebauter Keller","Sonnige Terrasse","Ruhige Wohnlage","Herrlicher Ausblick","2 Vollbäder"],energyClass:"E",energyValue:"178",image:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80",images:["https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80","https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=900&q=80","https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80","https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=900&q=80","https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=900&q=80","https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"]},
+  {id:2,title:"Moderne Eigentumswohnung",address:"Forchheim, Zentrum",price:"265.000",size:"82",rooms:3,year:2008,bathrooms:1,plot:"",status:"Verfügbar",badge:"",description_long:"Diese lichtdurchflutete Eigentumswohnung im Herzen von Forchheim bietet modernen Wohnkomfort auf 82 m². Das 2008 errichtete Gebäude ist in gepflegtem Zustand und verfügt über eine hochwertige Ausstattung. Der großzügige Balkon mit Südausrichtung lädt zum Entspannen ein.",features:["Balkon Südausrichtung","Tiefgaragenstellplatz","Aufzug","Fußbodenheizung","Einbauküche","Zentrale Lage","Baujahr 2008"],energyClass:"B",energyValue:"52",image:"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",images:["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80","https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=900&q=80","https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=900&q=80","https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=80","https://images.unsplash.com/photo-1484154218962-a197022b5858?w=900&q=80"]},
+  {id:3,title:"Doppelhaushälfte mit Garten",address:"Herzogenaurach",price:"375.000",size:"125",rooms:4,year:1995,bathrooms:2,plot:"380",status:"Reserviert",badge:"",description_long:"Diese gepflegte Doppelhaushälfte in Herzogenaurach bietet Familien auf 125 m² Wohnfläche viel Raum zum Leben. Das 1995 erbaute Haus überzeugt durch seinen gut geschnittenen Grundriss, einen großzügigen Garten von 380 m² sowie eine Garage.",features:["Garage","Großer Garten (380 m²)","Keller","Terrasse","Familienfreundliche Lage","2 Vollbäder","Nahe Schulen & KiTa"],energyClass:"D",energyValue:"128",image:"https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80",images:["https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=900&q=80","https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=900&q=80","https://images.unsplash.com/photo-1600210492493-0946911123ea?w=900&q=80","https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=900&q=80","https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=900&q=80"]}
+];
+
+/* ── ENERGY CLASS → BAR POSITION ── */
+const energyPos = { A: 4, 'A+': 2, B: 16, C: 29, D: 43, E: 57, F: 71, G: 85, H: 95 };
+
+/* ── LOAD PROPERTY ── */
+function loadProperty() {
+  const id = parseInt(new URLSearchParams(window.location.search).get('id'));
+  let props = exposeDefaults;
+  try {
+    const stored = localStorage.getItem('krause_properties');
+    if (stored) props = JSON.parse(stored);
+  } catch(e) {}
+
+  const p = props.find(p => p.id === id);
+
+  if (!p) {
+    document.getElementById('exp-hero').style.display = 'none';
+    document.getElementById('exp-details').style.display = 'none';
+    document.getElementById('exp-gallery').style.display = 'none';
+    document.getElementById('exp-not-found').style.display = 'block';
+    document.title = 'Objekt nicht gefunden | Krause Immobilien';
+    return;
+  }
+
+  /* Titel */
+  document.title = p.title + ' | Krause Immobilien';
+
+  /* Hero */
+  document.getElementById('exp-hero-img').src = p.image || '';
+  document.getElementById('exp-hero-img').alt = p.title;
+  document.getElementById('exp-title').textContent = p.title;
+  document.getElementById('exp-addr').textContent = p.address;
+  document.getElementById('exp-objnr').textContent = 'Obj.-Nr. ' + String(p.id).padStart(3, '0');
+
+  const badge = document.getElementById('exp-status-badge');
+  badge.textContent = p.badge || p.status;
+  badge.className = 'exp-status-badge ' + (p.status === 'Verfügbar' ? 'sv' : p.status === 'Reserviert' ? 'sr' : 'sk');
+
+  /* Price */
+  document.getElementById('exp-price').textContent = '€ ' + p.price;
+
+  /* Facts */
+  const factsData = [
+    { icon: 'fa-tag',              val: '€ ' + p.price,          label: 'Kaufpreis' },
+    { icon: 'fa-ruler-combined',   val: p.size ? p.size + ' m²' : '–', label: 'Wohnfläche' },
+    { icon: 'fa-door-open',        val: p.rooms ? p.rooms + ' Zi.' : '–', label: 'Zimmer' },
+    { icon: 'fa-calendar',         val: p.year  ? 'Bj. ' + p.year : '–', label: 'Baujahr' },
+    { icon: 'fa-bath',             val: p.bathrooms ? p.bathrooms + ' Bad' : '–', label: 'Badezimmer' },
+    { icon: 'fa-expand-arrows-alt', val: p.plot ? p.plot + ' m²' : '–', label: 'Grundstück' },
+  ].filter(f => f.val !== '–');
+
+  document.getElementById('exp-facts').innerHTML = factsData.map(f => `
+    <div class="exp-fact">
+      <i class="fas ${f.icon} ef-icon"></i>
+      <div class="ef-val">${f.val}</div>
+      <div class="ef-label">${f.label}</div>
+    </div>`).join('');
+
+  /* Description */
+  document.getElementById('exp-desc-long').textContent =
+    p.description_long || p.description || '';
+
+  /* Features */
+  const features = p.features || [];
+  document.getElementById('exp-features').innerHTML = features.map(f =>
+    `<div class="exp-feature-item"><i class="fas fa-check"></i>${f}</div>`
+  ).join('');
+
+  /* Energy */
+  if (p.energyClass) {
+    document.getElementById('exp-energy-class').textContent = p.energyClass;
+    document.getElementById('exp-energy-val').textContent = (p.energyValue || '–') + ' kWh/m²a';
+    const pos = energyPos[p.energyClass] || 50;
+    document.getElementById('exp-energy-marker').style.left = pos + '%';
+  } else {
+    document.getElementById('exp-energy-box').style.display = 'none';
+  }
+
+  /* Gallery */
+  const imgs = p.images && p.images.length ? p.images : [p.image];
+  const grid = document.getElementById('exp-gallery-grid');
+  grid.innerHTML = imgs.map((src, i) =>
+    `<img src="${src}" alt="${p.title} – Bild ${i+1}" loading="lazy" data-index="${i}">`
+  ).join('');
+
+  /* Lightbox */
+  let lbIdx = 0;
+  const lightbox = document.getElementById('exp-lightbox');
+  const lbImg    = document.getElementById('lb-img');
+
+  function openLb(i) {
+    lbIdx = i;
+    lbImg.src = imgs[lbIdx];
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  grid.querySelectorAll('img').forEach(img => {
+    img.addEventListener('click', () => openLb(+img.dataset.index));
+  });
+  document.getElementById('lb-close').addEventListener('click', closeLb);
+  document.getElementById('lb-prev').addEventListener('click', () => {
+    lbIdx = (lbIdx - 1 + imgs.length) % imgs.length;
+    lbImg.src = imgs[lbIdx];
+  });
+  document.getElementById('lb-next').addEventListener('click', () => {
+    lbIdx = (lbIdx + 1) % imgs.length;
+    lbImg.src = imgs[lbIdx];
+  });
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLb(); });
+  document.addEventListener('keydown', e => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb();
+    if (e.key === 'ArrowLeft')  { lbIdx = (lbIdx - 1 + imgs.length) % imgs.length; lbImg.src = imgs[lbIdx]; }
+    if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % imgs.length; lbImg.src = imgs[lbIdx]; }
+  });
+}
+
+loadProperty();
+</script>
+
+<!-- COOKIE BANNER -->
+<div id="cb-overlay"></div>
+<div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+  <div class="cb-inner">
+    <div class="cb-top">
+      <div class="cb-text">
+        <p class="cb-title">Ihre Privatsphäre</p>
+        <p>Diese Website verwendet Cookies. Technisch notwendige Cookies sind immer aktiv. Mehr Infos in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+      </div>
+    </div>
+    <div class="cb-toggles">
+      <div class="cb-toggle-row">
+        <label class="cb-switch"><input type="checkbox" checked disabled><span class="cb-slider"></span></label>
+        <div class="cb-toggle-label"><strong>Technisch notwendig</strong><span>Grundfunktionen der Website – immer aktiv</span></div>
+      </div>
+      <div class="cb-toggle-row">
+        <label class="cb-switch"><input type="checkbox" id="cb-gtm"><span class="cb-slider"></span></label>
+        <div class="cb-toggle-label"><strong>Google Tag Manager</strong><span>Verwaltung von Website-Tags</span></div>
+      </div>
+      <div class="cb-toggle-row">
+        <label class="cb-switch"><input type="checkbox" id="cb-marketing"><span class="cb-slider"></span></label>
+        <div class="cb-toggle-label"><strong>Marketing &amp; Werbung</strong><span>Google Ads Conversion Tracking</span></div>
+      </div>
+    </div>
+    <div class="cb-buttons">
+      <button class="cb-btn cb-btn-accept" id="cb-accept-all">Alle akzeptieren</button>
+      <button class="cb-btn cb-btn-save"   id="cb-save">Auswahl speichern</button>
+      <button class="cb-btn cb-btn-reject" id="cb-reject-all">Alle ablehnen</button>
+    </div>
+  </div>
+</div>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

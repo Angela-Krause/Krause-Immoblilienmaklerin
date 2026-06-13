@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aktuelle Immobilienangebote von Krause Immobilien – Angela Krause, Ihre Maklerin in Bamberg, Forchheim, Herzogenaurach und Erlangen-Höchstadt.">
+  <link rel="canonical" href="https://www.krauseimmo.com/immobilien.html">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://www.krauseimmo.com/immobilien.html">
+  <meta property="og:title"       content="Aktuelle Immobilien | Krause Immobilien – Bamberg & Region">
+  <meta property="og:description" content="Aktuelle Immobilienangebote von Krause Immobilien – Häuser, Wohnungen und Grundstücke in Bamberg, Forchheim, Herzogenaurach und Erlangen-Höchstadt.">
+  <meta property="og:image"       content="https://www.krauseimmo.com/Bildergalerie/Design%20ohne%20Titel%20%283%29.png">
+  <meta property="og:locale"      content="de_DE">
+  <meta property="og:site_name"   content="Krause Immobilien">
+  <meta name="twitter:card"       content="summary_large_image">
+  <title>Aktuelle Immobilien | Krause Immobilien – Bamberg & Region</title>  <link rel="stylesheet" href="style.css">
+  <style>
+    body { cursor: auto; }
+    .cursor-ring, .cursor-dot { display: none; }
+
+    /* ── NAV LESBARKEIT ── */
+    #nav .nl { color: rgba(26,32,53,0.70) !important; }
+    #nav .nl:hover { color: var(--bright) !important; }
+    #nav .logo-wordmark { color: var(--text) !important; }
+    #nav .nav-phone { color: rgba(26,32,53,0.65) !important; }
+
+    /* ── Graue Texte auf hellen Hintergründen dunkler ── */
+    #immo-hero, #immo-props, #footer { --muted: rgba(30,58,138,0.46); }
+
+    /* ── PAGE HERO ── */
+    #immo-hero {
+      background:
+        radial-gradient(ellipse at 78% 30%, rgba(212,175,107,0.20) 0%, transparent 42%),
+        radial-gradient(ellipse at 90% 75%, rgba(29,78,216,0.09) 0%, transparent 35%),
+        linear-gradient(135deg, #ffffff 0%, #f7f4ee 50%, #f0ebe0 100%);
+      padding: 9rem 0 5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Diagonales Linienmuster */
+    #immo-hero::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent 0px, transparent 38px,
+        rgba(29,78,216,0.025) 38px, rgba(29,78,216,0.025) 39px
+      );
+    }
+    /* Dekorativer Ring */
+    #immo-hero::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px; border-radius: 50%;
+      border: 1px solid rgba(29,78,216,0.10);
+      right: 5%; top: 50%; transform: translateY(-50%);
+      pointer-events: none;
+    }
+    .immo-hero-inner {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 4rem;
+    }
+    .immo-hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--bright);
+      background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.18);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .immo-hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--bright); }
+    #immo-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 600; line-height: 1.1;
+      color: var(--text); margin-bottom: 1rem;
+    }
+    #immo-hero h1 em { font-style: italic; color: var(--bright); }
+    #immo-hero p {
+      font-size: 0.92rem; color: var(--muted); line-height: 1.85; max-width: 540px;
+    }
+    .immo-hero-stats {
+      display: flex; flex-direction: column; gap: 1.2rem; flex-shrink: 0;
+    }
+    .ihs-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.2rem 1.8rem;
+      text-align: center; min-width: 130px;
+    }
+    .ihs-n {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: var(--bright); line-height: 1;
+    }
+    .ihs-l {
+      display: block;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-top: 0.3rem;
+    }
+
+    /* ── PROPS SECTION ── */
+    #immo-props {
+      background: var(--bg2);
+      padding: 5rem 0 8rem;
+    }
+
+    /* Filter & Suchprofil-Banner */
+    .prop-filters { margin-bottom: 2rem; }
+
+    /* ── EMPTY STATE & DEMO NOTICE (gleich wie index) ── */
+    #propGrid:empty ~ .prop-currently-empty { display: flex !important; }
+    .prop-currently-empty {
+      display: none;
+      flex-direction: column; align-items: center; text-align: center;
+      padding: 4rem 2rem; margin-top: 2rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .pce-icon {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--glow); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; color: var(--bright); margin-bottom: 1.5rem;
+    }
+    .prop-currently-empty h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 600; margin-bottom: 0.8rem;
+    }
+    .prop-currently-empty p {
+      font-size: 0.9rem; color: var(--muted);
+      max-width: 440px; line-height: 1.8; margin-bottom: 1.6rem;
+    }
+
+    /* ── SUCHPROFIL CTA ── */
+    .immo-cta-strip {
+      background: linear-gradient(135deg, var(--bright), #1e3a8a);
+      border-radius: var(--radius);
+      padding: 3rem 3.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      margin-top: 5rem;
+    }
+    .immo-cta-strip h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 600;
+      color: #fff; margin-bottom: 0.5rem;
+    }
+    .immo-cta-strip p {
+      font-size: 0.88rem; color: rgba(255,255,255,0.78); line-height: 1.7;
+    }
+    .immo-cta-strip .btn-white {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: #fff; color: var(--bright);
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em;
+      padding: 0.85rem 2rem; border-radius: 100px;
+      text-decoration: none; white-space: nowrap;
+      transition: opacity 0.2s;
+    }
+    .immo-cta-strip .btn-white:hover { opacity: 0.9; }
+
+    @media (max-width: 900px) {
+      .immo-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .immo-hero-stats { flex-direction: row; flex-wrap: wrap; }
+      .ihs-item { flex: 1; min-width: 100px; }
+      .immo-cta-strip { grid-template-columns: 1fr; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .immo-cta-strip { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+    <ul class="nav-links">
+      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
+      <li><a href="verkauf.html" class="nl">Verkauf</a></li>
+      <li><a href="immobilien.html" class="nl" style="color:var(--bright)">Immobilien</a></li>
+      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
+      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
+      <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
+    </ul>
+    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="ueber-mich.html">Über mich</a>
+    <a href="verkauf.html">Verkauf</a>
+    <a href="immobilien.html" style="color:var(--bright)">Immobilien</a>
+    <a href="nachlass-hell.html">Nachlass und Erbe</a>
+    <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+    <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+    <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index-hell.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section id="immo-hero">
+  <div class="container">
+    <div class="immo-hero-inner">
+      <div>
+        <div class="immo-hero-tag"><span></span>Verkaufsobjekte</div>
+        <h1>Aktuelle <em>Immobilien</em><br>in der Region</h1>
+        <p>Entdecken Sie Häuser, Wohnungen und Grundstücke in Bamberg, Forchheim, Herzogenaurach und Erlangen-Höchstadt – persönlich betreut von Angela Krause.</p>
+      </div>
+      <div class="immo-hero-stats">
+        <div class="ihs-item">
+          <span class="ihs-n" data-count="4" data-suffix="">4</span>
+          <span class="ihs-l">Regionen</span>
+        </div>
+        <div class="ihs-item">
+          <span class="ihs-n" data-count="250" data-suffix="+">250+</span>
+          <span class="ihs-l">Objekte vermittelt</span>
+        </div>
+        <div class="ihs-item">
+          <span class="ihs-n" data-count="26" data-suffix=" J.">26 J.</span>
+          <span class="ihs-l">Erfahrung</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROPERTIES -->
+<section id="immo-props">
+  <div class="container">
+
+    <!-- Filter -->
+    <div class="prop-filters rf">
+      <button class="pf active" data-filter="all">Alle</button>
+      <button class="pf" data-filter="Verfügbar">Verfügbar</button>
+      <button class="pf" data-filter="Reserviert">Reserviert</button>
+      <button class="pf" data-filter="Verkauft">Verkauft</button>
+    </div>
+
+    <!-- Suchprofil-Banner -->
+    <div class="sp-banner rf">
+      <div class="sp-left">
+        <i class="fas fa-search-location"></i>
+        <div>
+          <strong>Ihr Wunschobjekt noch nicht dabei?</strong>
+          <p>Legen Sie kostenlos ein Suchprofil an – wir informieren Sie als Erstes über passende Angebote.</p>
+        </div>
+      </div>
+      <button class="btn-sec mag-btn" id="spToggle"><span>Suchprofil anlegen</span></button>
+    </div>
+
+    <!-- Suchprofil-Formular -->
+    <div class="sp-form" id="spForm">
+      <div class="sp-form-grid">
+        <div class="fg"><label>Ihr Name</label><input type="text" id="spName" placeholder="Max Mustermann"></div>
+        <div class="fg"><label>E-Mail *</label><input type="email" id="spEmail" placeholder="ihre@email.de"></div>
+        <div class="fg"><label>Telefon</label><input type="tel" id="spPhone" placeholder="+49 ..."></div>
+        <div class="fg"><label>Objektart</label>
+          <select id="spType">
+            <option value="">Beliebig</option>
+            <option>Einfamilienhaus</option>
+            <option>Doppelhaushälfte</option>
+            <option>Eigentumswohnung</option>
+            <option>Mehrfamilienhaus</option>
+            <option>Grundstück</option>
+          </select>
+        </div>
+        <div class="fg"><label>Region</label>
+          <select id="spRegion">
+            <option value="">Alle Regionen</option>
+            <option>Bamberg</option>
+            <option>Forchheim</option>
+            <option>Herzogenaurach</option>
+            <option>Erlangen-Höchstadt</option>
+          </select>
+        </div>
+        <div class="fg"><label>Max. Kaufpreis (€)</label><input type="text" id="spPrice" placeholder="z.B. 500.000"></div>
+        <div class="fg"><label>Min. Zimmer</label><input type="number" id="spRooms" placeholder="z.B. 3" min="1"></div>
+        <div class="fg"><label>Min. Fläche (m²)</label><input type="text" id="spSize" placeholder="z.B. 100"></div>
+      </div>
+      <div class="fg sp-notes"><label>Besondere Wünsche</label><textarea id="spNotes" rows="2" placeholder="z.B. Garage, Garten, barrierefrei..."></textarea></div>
+      <button class="btn-pri mag-btn" id="spSubmit"><span>Suchprofil absenden</span><i class="fas fa-arrow-right"></i></button>
+      <p class="form-note" style="margin-top:0.8rem;">Ihre Daten werden zur Bearbeitung Ihres Suchprofils verwendet (Art. 6 Abs. 1 lit. a DSGVO). Weitere Infos in unserer <a href="datenschutz.html" style="color:var(--bright)">Datenschutzerklärung</a>.</p>
+      <div class="sp-success" id="spSuccess"><i class="fas fa-check-circle"></i> Ihr Suchprofil wurde registriert. Wir melden uns bei passenden Objekten!</div>
+    </div>
+
+    <!-- Demo-Hinweis (wird via JS gesteuert) -->
+    <div id="propDemoNotice" class="prop-demo-notice">
+      <div class="pdn-icon"><i class="fas fa-search-location"></i></div>
+      <div class="pdn-text">
+        <strong>Aktuell keine Verkaufsobjekte online</strong>
+        <span>Die folgenden Objekte dienen zur Veranschaulichung. Legen Sie jetzt ein kostenloses Suchprofil an – wir benachrichtigen Sie als Erstes, sobald ein passendes Objekt verfügbar ist.</span>
+      </div>
+      <button class="pdn-cta mag-btn" onclick="document.getElementById('spToggle').click(); setTimeout(()=>document.getElementById('spForm').scrollIntoView({behavior:'smooth',block:'nearest'}),80)">
+        <span>Suchprofil anlegen</span><i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- Objekte-Grid -->
+    <div class="prop-grid" id="propGrid"></div>
+
+    <!-- Leer-Zustand (CSS-gesteuert via :empty) -->
+    <div class="prop-currently-empty">
+      <div class="pce-icon"><i class="fas fa-search-location"></i></div>
+      <h3>Aktuell keine Objekte online</h3>
+      <p>Neue Immobilien kommen regelmäßig dazu. Legen Sie jetzt ein kostenloses Suchprofil an – wir informieren Sie als Erstes.</p>
+      <button class="btn-sec mag-btn" onclick="document.getElementById('spToggle').click();this.closest('.prop-currently-empty').scrollIntoView({behavior:'smooth'})"><span>Kostenloses Suchprofil anlegen</span></button>
+    </div>
+
+    <!-- Filter-Leer-Zustand -->
+    <div class="prop-empty" id="propEmpty" style="display:none;">
+      <i class="fas fa-search"></i>
+      <p>Keine Objekte in dieser Kategorie gefunden.</p>
+    </div>
+
+    <!-- CTA-Streifen unten -->
+    <div class="immo-cta-strip">
+      <div>
+        <h3>Sie möchten Ihre Immobilie verkaufen?</h3>
+        <p>Angela Krause bewertet Ihre Immobilie diskret – mit über 25 Jahren Erfahrung in der Region.</p>
+      </div>
+      <a href="verkauf.html#vk-bewertung" class="btn-white mag-btn"><span>Jetzt Bewertung anfragen</span><i class="fas fa-arrow-right"></i></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index-hell.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 1998.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navigation</h4>
+        <a href="ueber-mich.html">Über mich</a>
+        <a href="verkauf.html">Verkauf</a>
+        <a href="immobilien.html">Immobilien</a>
+        <a href="nachlass-hell.html">Nachlass &amp; Erbe</a>
+        <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+        <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Leistungen</h4>
+        <a href="verkauf.html">Immobilienverkauf</a>
+        <a href="index-hell.html#services">Immobilienbewertung</a>
+        <a href="nachlass-hell.html">Nachlass &amp; Erbfall</a>
+        <a href="ratgeber-hell.html">Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Rechtliches</h4>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+        <a href="#" id="cookie-settings">Cookie-Einstellungen</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2024 Krause Immobilien · Angela Krause · <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ADMIN PANEL (gleich wie index.html) -->
+<div class="adm-overlay" id="admOverlay">
+  <div class="adm-panel">
+    <div class="adm-head">
+      <h2><i class="fas fa-cog"></i> Objekte verwalten</h2>
+      <button id="admClose"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="adm-body">
+      <div class="adm-form">
+        <h3 id="admFormTitle">Neues Objekt hinzufügen</h3>
+        <input type="hidden" id="editId">
+        <div class="adm-grid">
+          <div class="fg"><label>Titel *</label><input type="text" id="pTitle" placeholder="z.B. Einfamilienhaus in Bamberg"></div>
+          <div class="fg"><label>Adresse / Lage *</label><input type="text" id="pAddr" placeholder="z.B. Bamberg, Gartenstadt"></div>
+          <div class="fg"><label>Kaufpreis (€) *</label><input type="text" id="pPrice" placeholder="z.B. 485.000"></div>
+          <div class="fg"><label>Wohnfläche (m²)</label><input type="text" id="pSize" placeholder="z.B. 148"></div>
+          <div class="fg"><label>Zimmer</label><input type="number" id="pRooms" placeholder="z.B. 5" min="1"></div>
+          <div class="fg"><label>Baujahr</label><input type="number" id="pYear" placeholder="z.B. 1978"></div>
+          <div class="fg"><label>Status</label>
+            <select id="pStatus">
+              <option value="Verfügbar">Verfügbar</option>
+              <option value="Reserviert">Reserviert</option>
+              <option value="Verkauft">Verkauft</option>
+            </select>
+          </div>
+          <div class="fg"><label>Bild-URL</label><input type="url" id="pImg" placeholder="https://..."></div>
+        </div>
+        <div class="fg"><label>Beschreibung</label><textarea id="pDesc" rows="3" placeholder="Kurze Beschreibung..."></textarea></div>
+        <div class="adm-actions">
+          <button class="adm-save mag-btn" id="admSave"><i class="fas fa-save"></i> Speichern</button>
+          <button class="adm-cancel" id="admCancel" style="display:none;">Abbrechen</button>
+        </div>
+      </div>
+      <div class="adm-list">
+        <h3>Vorhandene Objekte <span id="propCount"></span></h3>
+        <div id="admList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="subpage.js"></script>
+<script src="main.js?v=2"></script>
+
+<!-- COOKIE BANNER -->
+<div id="cb-overlay"></div>
+<div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+  <div class="cb-inner">
+    <div class="cb-top">
+      <div class="cb-text">
+        <p class="cb-title">Ihre Privatsphäre</p>
+        <p class="cb-sub">Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten.</p>
+      </div>
+    </div>
+    <div class="cb-actions">
+      <button id="cb-decline" class="cb-btn cb-decline-btn">Nur notwendige</button>
+      <button id="cb-accept" class="cb-btn cb-accept-btn">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
