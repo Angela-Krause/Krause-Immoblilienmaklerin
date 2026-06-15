@@ -1360,15 +1360,21 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
 // Telefon- & E-Mail-Klick Tracking für GTM
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
-    el.addEventListener('click', function() {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = el.getAttribute('href');
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'phone_click', click_url: el.getAttribute('href') });
+      window.dataLayer.push({ event: 'phone_click', click_url: href });
+      setTimeout(function() { window.location.href = href; }, 150);
     });
   });
   document.querySelectorAll('a[href^="mailto:"]').forEach(function(el) {
-    el.addEventListener('click', function() {
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      var href = el.getAttribute('href');
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'email_click', click_url: el.getAttribute('href') });
+      window.dataLayer.push({ event: 'email_click', click_url: href });
+      setTimeout(function() { window.location.href = href; }, 150);
     });
   });
 });
