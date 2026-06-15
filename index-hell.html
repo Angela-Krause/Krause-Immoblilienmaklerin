@@ -1380,16 +1380,13 @@ document.addEventListener('DOMContentLoaded', function() {
       submitBtn.disabled = true;
       submitBtn.querySelector('span').textContent = 'Wird gesendet…';
     }
-    var iframe = document.createElement('iframe');
-    iframe.name = 'nforms_cf_' + Date.now();
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-    form.target = iframe.name;
-    iframe.addEventListener('load', function() {
-      document.body.removeChild(iframe);
+    fetch('https://api.nforms.eu/f/nf_9mozyto0zaraj8nko3m3doqyiz1wleai', {
+      method: 'POST',
+      mode:   'no-cors',
+      body:   new FormData(form)
+    }).finally(function() {
       window.location.href = 'danke.html';
     });
-    form.submit();
   });
 });
 </script>
