@@ -902,12 +902,10 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
       hf.querySelector('[name="telefon"]').value       = d.tel;
 
       fetch('https://api.nforms.eu/f/nf_ijoe3khuisnookmw6cv6komwtq17jsqe', {
-        method:  'POST',
-        headers: { 'Accept': 'application/json' },
-        body:    new FormData(hf)
-      })
-      .then(() => { setTimeout(() => { window.location.href = 'danke.html'; }, 1500); })
-      .catch(err => { console.error('nForms Bewertung error:', err); setTimeout(() => { window.location.href = 'danke.html'; }, 1500); });
+        method: 'POST',
+        mode:   'no-cors',
+        body:   new FormData(hf)
+      }).finally(() => { setTimeout(() => { window.location.href = 'danke.html'; }, 1500); });
     }
 
     cur='6'; goTo('6');

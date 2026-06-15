@@ -725,8 +725,8 @@ function initSuchprofil() {
       fd.append('quelle',       'index.html');
 
       fetch('https://api.nforms.eu/f/nf_z810ws5qsp2qiv28vutc8tpxk4gr9n5r', {
-        method: 'POST', headers: { 'Accept': 'application/json' }, body: fd
-      }).catch(err => console.error('nForms Suchprofil error:', err));
+        method: 'POST', mode: 'no-cors', body: fd
+      });
 
       if (success) {
         success.classList.add('show');
