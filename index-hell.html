@@ -1357,6 +1357,34 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
 <script src="https://api.nforms.eu/shield.js" defer></script>
 <script src="main.js?v=7"></script>
 <script>
+// Suchprofil override – korrekte Danke-Seite
+document.addEventListener('DOMContentLoaded', function() {
+  var spSubmit = document.getElementById('spSubmit');
+  if (spSubmit) {
+    var newBtn = spSubmit.cloneNode(true);
+    spSubmit.parentNode.replaceChild(newBtn, spSubmit);
+    newBtn.addEventListener('click', function() {
+      var email = document.getElementById('spEmail');
+      if (!email || !email.value.trim()) { if (email) email.focus(); return; }
+      var fd = new FormData();
+      fd.append('name',          document.getElementById('spName')?.value   || '');
+      fd.append('email',         email.value);
+      fd.append('telefon',       document.getElementById('spPhone')?.value  || '');
+      fd.append('objektart',     document.getElementById('spType')?.value   || '');
+      fd.append('region',        document.getElementById('spRegion')?.value || '');
+      fd.append('max_kaufpreis', document.getElementById('spPrice')?.value  || '');
+      fd.append('min_zimmer',    document.getElementById('spRooms')?.value  || '');
+      fd.append('min_flaeche',   document.getElementById('spSize')?.value   || '');
+      fd.append('wuensche',      document.getElementById('spNotes')?.value  || '');
+      fd.append('quelle',        'index.html');
+      fetch('https://api.nforms.eu/f/nf_z810ws5qsp2qiv28vutc8tpxk4gr9n5r', {
+        method: 'POST', mode: 'no-cors', body: fd
+      });
+      setTimeout(function() { window.location.href = 'danke-suchprofil.html'; }, 800);
+    });
+  }
+});
+
 // Contact form override – ersetzt fetch durch iframe-Submission
 document.addEventListener('DOMContentLoaded', function() {
   var form = document.getElementById('contactForm');
