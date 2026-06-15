@@ -733,7 +733,7 @@ function initSuchprofil() {
         gsap.from(success, { opacity: 0, y: 10, duration: 0.5, ease: 'power3.out' });
       }
       submit.style.display = 'none';
-      setTimeout(() => { window.location.href = 'danke.html'; }, 800);
+      setTimeout(() => { window.location.href = 'danke-suchprofil.html'; }, 800);
     });
   }
 }
