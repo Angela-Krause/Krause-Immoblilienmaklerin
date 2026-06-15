@@ -1358,6 +1358,41 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="https://api.nforms.eu/shield.js" defer></script>
 <script src="main.js?v=6"></script>
+<script>
+// Contact form override – ersetzt fetch durch iframe-Submission
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('contactForm');
+  if (!form) return;
+  var submitBtn = document.getElementById('contactSubmitBtn');
+  var errorMsg  = document.getElementById('contactError');
+
+  // Alle alten Event-Listener entfernen durch Klonen
+  var newForm = form.cloneNode(true);
+  form.parentNode.replaceChild(newForm, form);
+  form = newForm;
+  submitBtn = document.getElementById('contactSubmitBtn');
+  errorMsg  = document.getElementById('contactError');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (errorMsg) errorMsg.style.display = 'none';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.querySelector('span').textContent = 'Wird gesendet…';
+    }
+    var iframe = document.createElement('iframe');
+    iframe.name = 'nforms_cf_' + Date.now();
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    form.target = iframe.name;
+    iframe.addEventListener('load', function() {
+      document.body.removeChild(iframe);
+      window.location.href = 'danke.html';
+    });
+    form.submit();
+  });
+});
+</script>
 
 <!-- COOKIE BANNER -->
 <div id="cb-overlay"></div>
