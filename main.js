@@ -652,12 +652,13 @@ function initContactForm() {
 
     try {
       const res = await fetch(NFORMS_URL, {
-        method:  'POST',
-        headers: { 'Accept': 'application/json' },
-        body:    new FormData(form)
+        method:   'POST',
+        headers:  { 'Accept': 'application/json' },
+        body:     new FormData(form),
+        redirect: 'manual'
       });
 
-      if (res.ok) {
+      if (res.ok || res.type === 'opaqueredirect') {
         // Erfolgreich – zur Danke-Seite weiterleiten
         gsap.to(form, { opacity: 0, y: -20, duration: 0.4, onComplete: () => {
           window.location.href = 'danke.html';
