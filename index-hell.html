@@ -1357,6 +1357,22 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
 <script src="https://api.nforms.eu/shield.js" defer></script>
 <script src="main.js?v=7"></script>
 <script>
+// Telefon- & E-Mail-Klick Tracking für GTM
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('a[href^="tel:"]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'phone_click', click_url: el.getAttribute('href') });
+    });
+  });
+  document.querySelectorAll('a[href^="mailto:"]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'email_click', click_url: el.getAttribute('href') });
+    });
+  });
+});
+
 // Suchprofil override – korrekte Danke-Seite
 document.addEventListener('DOMContentLoaded', function() {
   var spSubmit = document.getElementById('spSubmit');
