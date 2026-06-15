@@ -638,48 +638,29 @@ function initContactForm() {
   const errorMsg  = document.getElementById('contactError');
   if (!form) return;
 
-  const NFORMS_URL = 'https://api.nforms.eu/f/nf_9mozyto0zaraj8nko3m3doqyiz1wleai';
-
-  form.addEventListener('submit', async e => {
+  form.addEventListener('submit', e => {
     e.preventDefault();
     if (errorMsg) errorMsg.style.display = 'none';
 
-    // Button-Feedback während des Sendens
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.querySelector('span').textContent = 'Wird gesendet…';
     }
 
-    try {
-      const res = await fetch(NFORMS_URL, {
-        method:   'POST',
-        headers:  { 'Accept': 'application/json' },
-        body:     new FormData(form),
-        redirect: 'manual'
-      });
+    // Hidden iframe – vermeidet fetch-Redirect-Probleme mit nForms
+    const iframe = document.createElement('iframe');
+    iframe.name = 'nforms_cf_' + Date.now();
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
 
-      if (res.ok || res.type === 'opaqueredirect') {
-        // Erfolgreich – zur Danke-Seite weiterleiten
-        gsap.to(form, { opacity: 0, y: -20, duration: 0.4, onComplete: () => {
-          window.location.href = 'danke.html';
-        }});
-      } else {
-        throw new Error('Server returned ' + res.status);
-      }
-    } catch (err) {
-      // nForms leitet nach Empfang weiter (ERR_UNSAFE_REDIRECT) –
-      // Daten kommen trotzdem an, daher zur Danke-Seite weiterleiten.
-      if (err instanceof TypeError) {
-        window.location.href = 'danke.html';
-      } else {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.querySelector('span').textContent = 'Nachricht senden';
-        }
-        if (errorMsg) errorMsg.style.display = 'block';
-      }
-      console.error('nForms submission error:', err);
-    }
+    form.target = iframe.name;
+
+    iframe.addEventListener('load', () => {
+      document.body.removeChild(iframe);
+      window.location.href = 'danke.html';
+    });
+
+    form.submit();
   });
 }
 
