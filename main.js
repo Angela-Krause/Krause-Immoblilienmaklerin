@@ -667,12 +667,17 @@ function initContactForm() {
         throw new Error('Server returned ' + res.status);
       }
     } catch (err) {
-      // Fehlerfall – Button wieder freigeben, Fehlermeldung anzeigen
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.querySelector('span').textContent = 'Nachricht senden';
+      // nForms leitet nach Empfang weiter (ERR_UNSAFE_REDIRECT) –
+      // Daten kommen trotzdem an, daher zur Danke-Seite weiterleiten.
+      if (err instanceof TypeError) {
+        window.location.href = 'danke.html';
+      } else {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.querySelector('span').textContent = 'Nachricht senden';
+        }
+        if (errorMsg) errorMsg.style.display = 'block';
       }
-      if (errorMsg) errorMsg.style.display = 'block';
       console.error('nForms submission error:', err);
     }
   });
