@@ -2,7 +2,7 @@ name: Immobilien von onOffice synchronisieren
 
 on:
   schedule:
-    - cron: '0 4 * * *'  # täglich um 4 Uhr morgens (nach onOffice Export um 3 Uhr)
+    - cron: '0 5 * * *'  # täglich um 6 Uhr morgens (MEZ = UTC+1)
   workflow_dispatch:       # auch manuell auslösbar
 
 permissions:
