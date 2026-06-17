@@ -490,6 +490,9 @@ const exposeDefaults = [
 /* ── ENERGY CLASS → BAR POSITION ── */
 const energyPos = { A: 4, 'A+': 2, B: 16, C: 29, D: 43, E: 57, F: 71, G: 85, H: 95 };
 
+/* ── REDIRECT: Exposés werden nur auf Anfrage per onOffice verschickt ── */
+window.location.replace('index.html#contact');
+
 /* ── LOAD PROPERTY ── */
 async function loadProperty() {
   const idParam = new URLSearchParams(window.location.search).get('id');

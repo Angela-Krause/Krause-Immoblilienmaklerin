@@ -490,8 +490,7 @@ async function renderProperties(filter) {
         </div>
         ${p.description ? `<div class="prop-desc">${p.description}</div>` : ''}
         <div class="prop-cta-row">
-          <a href="expose.html?id=${p.objnr || p.id}" class="prop-expose mag-btn"><span>Zum Exposé</span><i class="fas fa-file-alt"></i></a>
-          <a href="#contact" class="prop-cta mag-btn"><span>Anfragen</span><i class="fas fa-arrow-right"></i></a>
+          <a href="index.html#contact?objekt=${encodeURIComponent(p.objnr || p.title)}" class="prop-expose mag-btn"><span>Exposé anfordern</span><i class="fas fa-file-alt"></i></a>
         </div>
       </div>`;
     grid.appendChild(card);
