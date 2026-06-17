@@ -1,0 +1,125 @@
+backend:
+  name: github
+  repo: Angela-Krause/Krause-Immoblilienmaklerin
+  branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+media_folder: uploads/objekte
+public_folder: /uploads/objekte
+
+locale: de
+
+collections:
+  - name: immobilien
+    label: Immobilien
+    label_singular: Objekt
+    files:
+      - name: alle_objekte
+        label: Alle Objekte verwalten
+        file: data/properties.json
+        fields:
+          - name: items
+            label: Objekte
+            label_singular: Objekt
+            widget: list
+            summary: "{{fields.objnr}} – {{fields.title}} – {{fields.address}} – € {{fields.price}}"
+            fields:
+              - label: "Objekt-Nr. (z.B. KI-186)"
+                name: objnr
+                widget: string
+              - label: Titel
+                name: title
+                widget: string
+                hint: "z.B. Einfamilienhaus Bamberg Gereuth"
+              - label: Adresse / Lage
+                name: address
+                widget: string
+                hint: "z.B. Bamberg, Gartenstadt"
+              - label: "Kaufpreis (nur Zahl mit Punkt, z.B. 485.000)"
+                name: price
+                widget: string
+              - label: "Wohnfläche (m²)"
+                name: size
+                widget: string
+                required: false
+                hint: "z.B. 148"
+              - label: Zimmer
+                name: rooms
+                widget: number
+                required: false
+                value_type: int
+              - label: Baujahr
+                name: year
+                widget: number
+                required: false
+                value_type: int
+              - label: "Grundstück (m²)"
+                name: plot
+                widget: string
+                required: false
+              - label: Badezimmer
+                name: bathrooms
+                widget: number
+                required: false
+                value_type: int
+              - label: Status
+                name: status
+                widget: select
+                options:
+                  - { label: Verfügbar, value: Verfügbar }
+                  - { label: Reserviert, value: Reserviert }
+                  - { label: Verkauft, value: Verkauft }
+              - label: "Badge (z.B. Neu, Preisreduzierung – leer lassen wenn kein Badge)"
+                name: badge
+                widget: string
+                required: false
+              - label: Kurzbeschreibung
+                name: description
+                widget: text
+                required: false
+                hint: "Wird auf der Immobilienübersichtsseite angezeigt"
+              - label: "Langbeschreibung (für das Exposé)"
+                name: description_long
+                widget: text
+                required: false
+              - label: Ausstattungsmerkmale
+                name: features
+                widget: list
+                required: false
+                hint: "Eines pro Zeile, z.B. Garage, Garten, Keller"
+                field:
+                  label: Merkmal
+                  name: feature
+                  widget: string
+              - label: Energieklasse
+                name: energyClass
+                widget: select
+                required: false
+                options: ["A+", "A", "B", "C", "D", "E", "F", "G", "H"]
+              - label: "Energieverbrauch (kWh/m²a)"
+                name: energyValue
+                widget: string
+                required: false
+              - label: "Secret Sale (nur per direktem Link zugänglich – nicht öffentlich)"
+                name: secret_sale
+                widget: boolean
+                default: false
+                required: false
+              - label: "Slug für Secret Sale (z.B. ki-190-sonneberg – nur Kleinbuchstaben und Bindestriche)"
+                name: slug
+                widget: string
+                required: false
+                hint: "Wird Teil der geheimen URL: www.krauseimmo.com/secret.html?slug=HIER"
+              - label: Hauptbild
+                name: image
+                widget: image
+                required: false
+              - label: Weitere Bilder (Galerie)
+                name: images
+                widget: list
+                required: false
+                field:
+                  label: Bild
+                  name: img
+                  widget: image

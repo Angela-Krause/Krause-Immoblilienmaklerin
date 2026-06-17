@@ -96,32 +96,30 @@ const defaultProperties = [
 /* ──────────────────────────────────────────────────────────
    STORAGE HELPERS
 ────────────────────────────────────────────────────────── */
-function loadProperties() {
+let _propsCache = null;
+
+async function loadPropertiesAsync() {
+  if (_propsCache !== null) return _propsCache;
   try {
-    const stored = localStorage.getItem('krause_properties');
-    if (stored) {
-      const props = JSON.parse(stored);
-      // Migrate: add isExample flag from defaultProperties if missing
-      let changed = false;
-      props.forEach(p => {
-        const def = defaultProperties.find(d => d.id === p.id);
-        if (def && def.isExample && !p.isExample) {
-          p.isExample = true;
-          changed = true;
-        }
-      });
-      if (changed) saveProperties(props);
-      return props;
-    }
-  } catch (e) {}
-  saveProperties(defaultProperties);
-  return defaultProperties;
+    const resp = await fetch('/data/properties.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    const items = Array.isArray(data) ? data : (data.items || []);
+    _propsCache = items.length > 0 ? items : defaultProperties;
+  } catch (e) {
+    _propsCache = defaultProperties;
+  }
+  return _propsCache;
+}
+
+function loadProperties() {
+  return _propsCache || defaultProperties;
 }
 function saveProperties(props) {
-  try { localStorage.setItem('krause_properties', JSON.stringify(props)); } catch (e) {}
+  _propsCache = props;
 }
 function getNextId(props) {
-  return props.length ? Math.max(...props.map(p => p.id)) + 1 : 1;
+  return props.length ? Math.max(...props.map(p => p.id || 0)) + 1 : 1;
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -438,9 +436,11 @@ function initMagnet() {
 ────────────────────────────────────────────────────────── */
 let currentFilter = 'all';
 
-function renderProperties(filter) {
+async function renderProperties(filter) {
   currentFilter = filter;
-  const props  = loadProperties();
+  const allProps = await loadPropertiesAsync();
+  // hide secret_sale objects from the public listing
+  const props  = allProps.filter(p => !p.secret_sale);
   const grid   = document.getElementById('propGrid');
   const empty  = document.getElementById('propEmpty');
   if (!grid) return;
@@ -475,7 +475,7 @@ function renderProperties(filter) {
         ${badge}
         ${soldOverlay}
         ${wmHtml}
-        <div class="prop-id">Obj.-Nr. ${String(p.id).padStart(3, '0')}</div>
+        <div class="prop-id">Obj.-Nr. ${p.objnr || String(p.id).padStart(3, '0')}</div>
       </div>
       <div class="prop-body">
         <div class="prop-price">€ ${p.price}</div>
@@ -490,7 +490,7 @@ function renderProperties(filter) {
         </div>
         ${p.description ? `<div class="prop-desc">${p.description}</div>` : ''}
         <div class="prop-cta-row">
-          <a href="expose.html?id=${p.id}" class="prop-expose mag-btn"><span>Zum Exposé</span><i class="fas fa-file-alt"></i></a>
+          <a href="expose.html?id=${p.objnr || p.id}" class="prop-expose mag-btn"><span>Zum Exposé</span><i class="fas fa-file-alt"></i></a>
           <a href="#contact" class="prop-cta mag-btn"><span>Anfragen</span><i class="fas fa-arrow-right"></i></a>
         </div>
       </div>`;
@@ -752,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnims();
     initMagnet();
     initPropertyFilters();
-    renderProperties('all');
+    loadPropertiesAsync().then(() => renderProperties('all'));
     initAdmin();
     initContactForm();
     initRotator();

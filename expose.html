@@ -491,15 +491,23 @@ const exposeDefaults = [
 const energyPos = { A: 4, 'A+': 2, B: 16, C: 29, D: 43, E: 57, F: 71, G: 85, H: 95 };
 
 /* ── LOAD PROPERTY ── */
-function loadProperty() {
-  const id = parseInt(new URLSearchParams(window.location.search).get('id'));
+async function loadProperty() {
+  const idParam = new URLSearchParams(window.location.search).get('id');
   let props = exposeDefaults;
   try {
-    const stored = localStorage.getItem('krause_properties');
-    if (stored) props = JSON.parse(stored);
+    const resp = await fetch('/data/properties.json');
+    if (resp.ok) {
+      const data = await resp.json();
+      const items = Array.isArray(data) ? data : (data.items || []);
+      if (items.length > 0) props = items;
+    }
   } catch(e) {}
 
-  const p = props.find(p => p.id === id);
+  // Match by objnr (e.g. "KI-186") or numeric id
+  const p = props.find(p =>
+    String(p.objnr) === String(idParam) ||
+    String(p.id) === String(idParam)
+  );
 
   if (!p) {
     document.getElementById('exp-hero').style.display = 'none';
