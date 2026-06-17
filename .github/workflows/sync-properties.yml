@@ -5,6 +5,9 @@ on:
     - cron: '0 4 * * *'  # täglich um 4 Uhr morgens (nach onOffice Export um 3 Uhr)
   workflow_dispatch:       # auch manuell auslösbar
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
