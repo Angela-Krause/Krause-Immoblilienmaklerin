@@ -1,0 +1,48 @@
+name: Immobilien von onOffice synchronisieren
+
+on:
+  schedule:
+    - cron: '0 4 * * *'  # täglich um 4 Uhr morgens (nach onOffice Export um 3 Uhr)
+  workflow_dispatch:       # auch manuell auslösbar
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: lftp installieren
+        run: sudo apt-get install -y lftp
+
+      - name: CSV vom FTP herunterladen
+        run: |
+          lftp -u "${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }}" \
+               -e "set ftp:ssl-allow no; cd htdocs; ls; mget *.zip -O /tmp/; bye" \
+               ${{ secrets.FTP_HOST }}
+          ls -la /tmp/*.zip
+
+      - name: ZIP entpacken
+        run: |
+          cd /tmp
+          for f in *.zip; do unzip -o "$f"; done
+          ls -la
+
+      - name: CSV parsen und properties.json aktualisieren
+        run: |
+          CSV_FILE=$(find /tmp -name "*.csv" | head -1)
+          echo "CSV gefunden: $CSV_FILE"
+          node scripts/parse-csv.js "$CSV_FILE"
+
+      - name: Änderungen committen
+        run: |
+          git config user.name "onOffice Sync"
+          git config user.email "sync@krauseimmo.com"
+          git add data/properties.json
+          git diff --staged --quiet || git commit -m "Immobilien automatisch aktualisiert ($(date '+%d.%m.%Y'))"
+          git push
