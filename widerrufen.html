@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vertrag widerrufen – Krause Immobilien UG, Angela Krause, Bamberg.">
+  <meta name="robots" content="noindex, follow">
+  <title>Vertrag widerrufen | Krause Immobilien – Bamberg & Region</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { cursor: auto; }
+    .cursor-ring, .cursor-dot { display: none; }
+
+    #wr-hero, #wr-content { --muted: rgba(30,58,138,0.46); }
+
+    #wr-hero {
+      background: var(--bg2);
+      padding: 9rem 0 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .wr-hero-inner { max-width: 800px; }
+    .wr-hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--bright);
+      background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.18);
+      border-radius: 100px; padding: 0.4rem 1rem; margin-bottom: 1.5rem;
+    }
+    .wr-hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--bright); }
+    #wr-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 600; line-height: 1.1;
+      color: var(--text); margin-bottom: 1rem;
+    }
+    #wr-hero p { font-size: 0.9rem; color: var(--muted); line-height: 1.8; }
+
+    #wr-content {
+      padding: 6rem 0 8rem;
+      background: var(--bg);
+    }
+    .wr-inner { max-width: 760px; }
+
+    .wr-info-box {
+      background: rgba(29,78,216,0.05);
+      border: 1px solid rgba(29,78,216,0.16);
+      border-left: 3px solid var(--bright);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.6rem;
+      margin-bottom: 2rem;
+      font-size: 0.85rem; color: var(--muted); line-height: 1.75;
+    }
+    .wr-info-box strong { color: var(--text); }
+
+    .wr-section-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--bright); margin-bottom: 0.8rem;
+    }
+    .wr-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem; font-weight: 600;
+      color: var(--text); margin-bottom: 1.5rem;
+    }
+    .wr-prose {
+      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+    .wr-prose p { margin-bottom: 1rem; }
+
+    /* Formular */
+    .wr-form { margin-top: 2.5rem; }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--bright);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-hint {
+      font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6;
+    }
+    .form-hint a { color: var(--bright); }
+    .wr-submit {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--bright); color: #fff;
+      border: none; border-radius: var(--radius);
+      padding: 0.9rem 2rem;
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .wr-submit:hover { opacity: 0.88; }
+
+    .wr-success {
+      display: none;
+      background: rgba(16,185,129,0.08);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      font-size: 0.9rem; color: var(--text); line-height: 1.7;
+    }
+    .wr-success strong { display: block; margin-bottom: 0.4rem; font-size: 1rem; }
+
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NDGHX59P');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDGHX59P"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <div class="nav-wrap">
+    <a href="index.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+    <ul class="nav-links">
+      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
+      <li class="has-drop"><a href="verkauf.html" class="nl">Verkauf<svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="nav-drop"><a href="verkauf.html">Immobilienverkauf</a><a href="hausverkauf.html">Hausverkauf</a><a href="wohnungsverkauf.html">Wohnungsverkauf</a></div></li>
+      <li><a href="immobilien.html" class="nl">Immobilien</a></li>
+      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
+      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
+      <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
+    </ul>
+    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="ueber-mich.html">Über mich</a>
+    <a href="verkauf.html">Verkauf</a>
+    <a href="immobilien.html">Immobilien</a>
+    <a href="nachlass-hell.html">Nachlass und Erbe</a>
+    <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+    <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+    <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+    <a href="index.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section id="wr-hero">
+  <div class="container">
+    <div class="wr-hero-inner">
+      <div class="wr-hero-tag"><span></span>Verbraucherrechte</div>
+      <h1>Vertrag widerrufen</h1>
+      <p>Sie möchten einen mit uns online geschlossenen Vertrag widerrufen? Nutzen Sie das untenstehende Formular – wir bestätigen Ihnen den Eingang umgehend per E-Mail.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<section id="wr-content">
+  <div class="container">
+    <div class="wr-inner">
+
+      <div class="wr-info-box">
+        <strong>Ihr gesetzliches Widerrufsrecht (§ 312g BGB):</strong> Sie haben das Recht, binnen 14 Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt 14 Tage ab dem Tag des Vertragsschlusses. Um Ihr Widerrufsrecht auszuüben, müssen Sie uns mittels einer eindeutigen Erklärung (z. B. per E-Mail oder über dieses Formular) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren.
+      </div>
+
+      <div class="wr-section">
+        <p class="wr-section-label">Widerrufsformular</p>
+        <h2>Widerrufserklärung</h2>
+        <div class="wr-prose">
+          <p>Füllen Sie das Formular aus und klicken Sie auf „Widerruf absenden". Sie erhalten eine automatische Bestätigung an Ihre E-Mail-Adresse.</p>
+        </div>
+
+        <form class="wr-form" id="widerrufForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="wr-vorname">Vorname *</label>
+              <input type="text" id="wr-vorname" name="vorname" required placeholder="Ihr Vorname">
+            </div>
+            <div class="form-group">
+              <label for="wr-nachname">Nachname *</label>
+              <input type="text" id="wr-nachname" name="nachname" required placeholder="Ihr Nachname">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="wr-email">E-Mail-Adresse *</label>
+              <input type="email" id="wr-email" name="email" required placeholder="ihre@email.de">
+            </div>
+            <div class="form-group">
+              <label for="wr-telefon">Telefonnummer</label>
+              <input type="tel" id="wr-telefon" name="telefon" placeholder="Optional">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full">
+              <label for="wr-vertrag">Betreffender Vertrag / Objekt *</label>
+              <input type="text" id="wr-vertrag" name="vertrag" required placeholder="z. B. Maklervertrag vom TT.MM.JJJJ, Objekt...">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full">
+              <label for="wr-datum">Datum des Vertragsabschlusses *</label>
+              <input type="date" id="wr-datum" name="datum" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group full">
+              <label for="wr-anmerkung">Anmerkungen (optional)</label>
+              <textarea id="wr-anmerkung" name="anmerkung" placeholder="Weitere Hinweise zu Ihrem Widerruf..."></textarea>
+            </div>
+          </div>
+
+          <p class="form-hint">
+            Mit dem Absenden dieses Formulars erklären Sie Ihren Widerruf gemäß § 312g BGB. Ihre Daten werden ausschließlich zur Bearbeitung des Widerrufs verwendet. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.
+          </p>
+
+          <button type="submit" class="wr-submit">
+            <i class="fas fa-paper-plane"></i> Widerruf absenden
+          </button>
+        </form>
+
+        <div class="wr-success" id="wrSuccess">
+          <strong>Widerruf erfolgreich eingegangen.</strong>
+          Wir haben Ihren Widerruf erhalten und werden Ihnen eine Bestätigung an die angegebene E-Mail-Adresse senden. Bitte prüfen Sie auch Ihren Spam-Ordner.
+        </div>
+      </div>
+
+      <div class="wr-section" style="margin-top:4rem; padding-top:3rem; border-top:1px solid var(--border);">
+        <p class="wr-section-label">Alternativ</p>
+        <h2>Widerruf per E-Mail oder Post</h2>
+        <div class="wr-prose">
+          <p>Sie können Ihren Widerruf auch schriftlich an folgende Adresse richten:</p>
+        </div>
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem 2rem; font-size:0.9rem; color:var(--text); line-height:1.8;">
+          KRAUSE Immobilien UG (haftungsbeschränkt)<br>
+          Angela Krause<br>
+          Peter-Graf-Str. 7<br>
+          96135 Stegaurach<br><br>
+          E-Mail: <a href="mailto:info@krauseimmo.com" style="color:var(--bright)">info@krauseimmo.com</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
+        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 1998.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Navigation</h4>
+        <a href="ueber-mich.html">Über mich</a>
+        <a href="verkauf.html">Verkauf</a>
+        <a href="immobilien.html">Immobilien</a>
+        <a href="nachlass-hell.html">Nachlass &amp; Erbe</a>
+        <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
+        <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Leistungen</h4>
+        <a href="verkauf.html">Immobilienverkauf</a>
+        <a href="index.html#services">Immobilienbewertung</a>
+        <a href="nachlass-hell.html">Nachlass &amp; Erbfall</a>
+        <a href="ratgeber-hell.html">Ratgeber</a>
+      </div>
+      <div class="foot-col">
+        <h4>Rechtliches</h4>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+        <a href="agb.html">AGB</a>
+        <a href="widerrufen.html" style="color:var(--bright)">Vertrag widerrufen</a>
+        <a href="#" id="cookie-settings">Cookie-Einstellungen</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2024 Krause Immobilien · Angela Krause · <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="subpage.js"></script>
+
+<script>
+document.getElementById('widerrufForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form = this;
+  const data = new FormData(form);
+
+  // Pflichtfelder prüfen
+  const required = ['vorname', 'nachname', 'email', 'vertrag', 'datum'];
+  let valid = true;
+  required.forEach(function(name) {
+    const el = form.querySelector('[name="' + name + '"]');
+    if (!el.value.trim()) { el.style.borderColor = '#ef4444'; valid = false; }
+    else { el.style.borderColor = ''; }
+  });
+  if (!valid) return;
+
+  // Formular per nForms / mailto als Fallback absenden
+  const vorname   = data.get('vorname');
+  const nachname  = data.get('nachname');
+  const email     = data.get('email');
+  const telefon   = data.get('telefon');
+  const vertrag   = data.get('vertrag');
+  const datum     = data.get('datum');
+  const anmerkung = data.get('anmerkung');
+
+  const body = encodeURIComponent(
+    'WIDERRUFSERKLÄRUNG\n\n' +
+    'Name: ' + vorname + ' ' + nachname + '\n' +
+    'E-Mail: ' + email + '\n' +
+    (telefon ? 'Telefon: ' + telefon + '\n' : '') +
+    'Vertragsgegenstand: ' + vertrag + '\n' +
+    'Vertragsabschluss: ' + datum + '\n' +
+    (anmerkung ? '\nAnmerkungen:\n' + anmerkung + '\n' : '') +
+    '\nIch widerrufe hiermit den oben genannten Vertrag.\n\n' +
+    'Datum der Widerrufserklärung: ' + new Date().toLocaleDateString('de-DE')
+  );
+
+  window.location.href = 'mailto:info@krauseimmo.com?subject=' +
+    encodeURIComponent('Widerruf – ' + vorname + ' ' + nachname) +
+    '&body=' + body;
+
+  form.style.display = 'none';
+  document.getElementById('wrSuccess').style.display = 'block';
+});
+</script>
+
+<!-- COOKIE BANNER -->
+<div id="cb-overlay"></div>
+<div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+  <div class="cb-inner">
+    <div class="cb-top">
+      <div class="cb-text">
+        <p class="cb-title">Ihre Privatsphäre</p>
+        <p class="cb-sub">Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten. Einige Cookies sind technisch notwendig, während andere uns helfen, unsere Website zu verbessern.</p>
+      </div>
+    </div>
+    <div class="cb-actions">
+      <button id="cb-decline" class="cb-btn cb-decline-btn">Nur notwendige</button>
+      <button id="cb-accept" class="cb-btn cb-accept-btn">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
