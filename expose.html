@@ -581,14 +581,24 @@ async function loadProperty() {
     </div>`).join('');
 
   /* Description */
-  document.getElementById('exp-desc-long').textContent =
-    p.description_long || p.description || '';
+  const descText = p.description_long || p.description || '';
+  const descBlock = document.getElementById('exp-desc-long').closest('.exp-desc-block');
+  if (!descText) {
+    descBlock.style.display = 'none';
+  } else {
+    document.getElementById('exp-desc-long').textContent = descText;
+  }
 
   /* Features */
   const features = p.features || [];
-  document.getElementById('exp-features').innerHTML = features.map(f =>
-    `<div class="exp-feature-item"><i class="fas fa-check"></i>${f}</div>`
-  ).join('');
+  const featuresBlock = document.getElementById('exp-features').closest('.exp-desc-block');
+  if (features.length === 0) {
+    featuresBlock.style.display = 'none';
+  } else {
+    document.getElementById('exp-features').innerHTML = features.map(f =>
+      `<div class="exp-feature-item"><i class="fas fa-check"></i>${f}</div>`
+    ).join('');
+  }
 
   /* Energy */
   if (p.energyClass) {
