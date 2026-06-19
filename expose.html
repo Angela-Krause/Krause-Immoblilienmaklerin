@@ -512,13 +512,23 @@ async function loadProperty() {
   const idParam = new URLSearchParams(window.location.search).get('id');
   let props = exposeDefaults;
   try {
-    const resp = await fetch('/data/properties.json');
+    const resp = await fetch('/.netlify/functions/get-properties');
     if (resp.ok) {
       const data = await resp.json();
       const items = Array.isArray(data) ? data : (data.items || []);
       if (items.length > 0) props = items;
     }
   } catch(e) {}
+  if (props === exposeDefaults) {
+    try {
+      const resp = await fetch('/data/properties.json');
+      if (resp.ok) {
+        const data = await resp.json();
+        const items = Array.isArray(data) ? data : (data.items || []);
+        if (items.length > 0) props = items;
+      }
+    } catch(e) {}
+  }
 
   // Match by objnr (e.g. "KI-186") or numeric id
   const p = props.find(p =>

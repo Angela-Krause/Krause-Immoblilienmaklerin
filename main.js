@@ -100,15 +100,24 @@ let _propsCache = null;
 
 async function loadPropertiesAsync() {
   if (_propsCache !== null) return _propsCache;
+  // Erst onOffice API versuchen, dann statische JSON als Fallback
+  try {
+    const resp = await fetch('/.netlify/functions/get-properties');
+    if (resp.ok) {
+      const data = await resp.json();
+      const items = Array.isArray(data) ? data : (data.items || []);
+      if (items.length > 0) { _propsCache = items; return _propsCache; }
+    }
+  } catch (e) {}
   try {
     const resp = await fetch('/data/properties.json');
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-    const items = Array.isArray(data) ? data : (data.items || []);
-    _propsCache = items.length > 0 ? items : defaultProperties;
-  } catch (e) {
-    _propsCache = defaultProperties;
-  }
+    if (resp.ok) {
+      const data = await resp.json();
+      const items = Array.isArray(data) ? data : (data.items || []);
+      if (items.length > 0) { _propsCache = items; return _propsCache; }
+    }
+  } catch (e) {}
+  _propsCache = defaultProperties;
   return _propsCache;
 }
 
