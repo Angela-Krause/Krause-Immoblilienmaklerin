@@ -108,6 +108,16 @@ exports.handler = async (event) => {
     const allRecords = result?.response?.results?.[0]?.data?.records || [];
     const records = allRecords.filter(r => r.elements?.status2 === 'aktive_vermarktung');
 
+    // Fotos für gefilterte Objekte laden
+    const photoPromises = records.map(r => {
+      return apiRequest(token, secret,
+        'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
+        'estatepictures',
+        { estateids: [r.id], categories: ['Titelbild', 'Foto', 'Aussenansichten'], size: '640x480' }
+      ).catch(() => null);
+    });
+    const photoResults = await Promise.all(photoPromises);
+
     const items = records.map((r, i) => {
       const d = r.elements || {};
       const street = [d.strasse, d.hausnummer].filter(Boolean).join(' ');
@@ -119,24 +129,30 @@ exports.handler = async (event) => {
       if (d.status === '2' || d.status === 'Reserviert') status = 'Reserviert';
       if (d.status === '3' || d.status === 'Verkauft') status = 'Verkauft';
 
+      // Fotos extrahieren
+      const photoData = photoResults[i]?.response?.results?.[0]?.data?.records || [];
+      const photos = photoData.map(p => p.elements?.url).filter(Boolean);
+      const titleInLower = (d.objekttitel || '').toLowerCase();
+      const isSecret = titleInLower.includes('diskret') || titleInLower.includes('secret');
+
       return {
         id: r.id || i + 1,
         objnr: d.objektnr_extern || '',
         title: d.objekttitel || (d.objektart + ' ' + d.ort),
         address,
         price: formatPrice(d.kaufpreis),
-        size: size ? Math.round(Number(size)).toString() : '',
-        rooms,
-        bathrooms: d.anzahl_badezimmer ? Math.round(Number(d.anzahl_badezimmer)) : null,
-        plot: d.grundstuecksflaeche ? Math.round(Number(d.grundstuecksflaeche)).toString() : '',
+        size: size && Number(size) > 0 ? Math.round(Number(size)).toString() : '',
+        rooms: rooms && rooms > 0 ? rooms : null,
+        bathrooms: d.anzahl_badezimmer && Number(d.anzahl_badezimmer) > 0 ? Math.round(Number(d.anzahl_badezimmer)) : null,
+        plot: d.grundstuecksflaeche && Number(d.grundstuecksflaeche) > 0 ? Math.round(Number(d.grundstuecksflaeche)).toString() : '',
         year: d.baujahr && d.baujahr !== '0' ? parseInt(d.baujahr) : null,
         status,
         description: d.objektbeschreibung || '',
-        energyClass: d.energieeffizienzklasse || null,
-        energyValue: d.endenergieverbrauch && d.endenergieverbrauch !== '0' ? String(d.endenergieverbrauch) : null,
-        secret_sale: false,
-        image: null,
-        images: []
+        energyClass: null,
+        energyValue: null,
+        secret_sale: isSecret,
+        image: photos[0] || null,
+        images: photos
       };
     }).filter(p => p.objnr);
 
