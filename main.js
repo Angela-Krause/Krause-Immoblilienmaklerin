@@ -165,7 +165,7 @@ function runPreloader(onDone) {
 /* ──────────────────────────────────────────────────────────
    LENIS SMOOTH SCROLL
 ────────────────────────────────────────────────────────── */
-let lenis;
+var lenis;
 function initLenis() {
   lenis = new Lenis({
     duration: 1.3,
