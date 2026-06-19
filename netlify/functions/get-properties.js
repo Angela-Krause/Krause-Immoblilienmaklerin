@@ -100,6 +100,19 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers, body: JSON.stringify({ raw: fieldsResult?.response?.results?.[0] }, null, 2) };
     }
 
+    // Debug: Fotos testen
+    if (event.queryStringParameters && event.queryStringParameters.debug === 'photos') {
+      const testId = records[0]?.id;
+      if (testId) {
+        const photoTest = await apiRequest(token, secret,
+          'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
+          'estatepictures',
+          { estateids: [testId], categories: ['Titelbild', 'Foto', 'Aussenansichten'], size: '640x480' }
+        );
+        return { statusCode: 200, headers, body: JSON.stringify({ estateId: testId, photoResponse: photoTest }, null, 2) };
+      }
+    }
+
     // Debug: rohe Antwort loggen
     if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
       return { statusCode: 200, headers, body: JSON.stringify({ apiResponse: result }, null, 2) };
