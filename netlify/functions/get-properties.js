@@ -84,8 +84,7 @@ exports.handler = async (event) => {
           'strasse', 'hausnummer', 'plz', 'ort',
           'kaufpreis', 'wohnflaeche', 'nutzflaeche', 'anzahl_zimmer',
           'anzahl_badezimmer', 'grundstuecksflaeche', 'baujahr',
-          'objektbeschreibung', 'energieeffizienzklasse', 'endenergieverbrauch',
-          'status', 'veroeffentlichen'
+          'objektbeschreibung', 'status', 'veroeffentlichen'
         ],
         listlimit: 100
       }
