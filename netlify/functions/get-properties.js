@@ -98,12 +98,7 @@ exports.handler = async (event) => {
         'fields',
         { labels: true, language: 'DEU', modules: ['estate'] }
       );
-      const allFields = fieldsResult?.response?.results?.[0]?.data?.records || [];
-      const publishFields = allFields.filter(r => {
-        const label = (r.elements?.label || '').toLowerCase();
-        return label.includes('homepage') || label.includes('internet') || label.includes('vermarkt') || label.includes('webseite') || label.includes('veröffentlich') || label.includes('portal');
-      });
-      return { statusCode: 200, headers, body: JSON.stringify({ publishFields }, null, 2) };
+      return { statusCode: 200, headers, body: JSON.stringify({ raw: fieldsResult?.response?.results?.[0] }, null, 2) };
     }
 
     // Debug: rohe Antwort loggen
