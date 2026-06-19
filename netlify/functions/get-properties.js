@@ -84,8 +84,7 @@ exports.handler = async (event) => {
           'strasse', 'hausnummer', 'plz', 'ort',
           'kaufpreis', 'wohnflaeche', 'nutzflaeche', 'anzahl_zimmer',
           'anzahl_badezimmer', 'grundstuecksflaeche', 'baujahr',
-          'objektbeschreibung', 'status',
-          'status'
+          'objektbeschreibung', 'status', 'status2'
         ],
         listlimit: 100
       }
