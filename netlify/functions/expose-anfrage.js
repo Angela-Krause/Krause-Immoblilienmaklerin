@@ -77,6 +77,21 @@ exports.handler = async (event) => {
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'API not configured' }) };
   }
 
+  // Debug: Vorlagen abfragen
+  if (event.queryStringParameters && event.queryStringParameters.debug === 'templates') {
+    const templates = await apiRequest(token, secret,
+      'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
+      'templates',
+      { type: 'pdf' }
+    );
+    const emailTemplates = await apiRequest(token, secret,
+      'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
+      'templates',
+      { type: 'email' }
+    );
+    return { statusCode: 200, headers, body: JSON.stringify({ pdf: templates, email: emailTemplates }, null, 2) };
+  }
+
   let body;
   try {
     body = JSON.parse(event.body);
