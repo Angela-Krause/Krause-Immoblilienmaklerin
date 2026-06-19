@@ -161,8 +161,7 @@ exports.handler = async (event) => {
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Ihre Anfrage wurde erfolgreich übermittelt. Sie erhalten in Kürze eine Bestätigung per E-Mail.',
-        mailDebug: mailResult || 'no estate linked'
+        message: 'Ihre Anfrage wurde erfolgreich übermittelt. Wir melden uns in Kürze bei Ihnen.'
       })
     };
 
