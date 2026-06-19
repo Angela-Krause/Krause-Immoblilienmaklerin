@@ -144,7 +144,10 @@ exports.handler = async (event) => {
 
       // Fotos extrahieren
       const photoData = photoResults[i]?.response?.results?.[0]?.data?.records || [];
-      const photos = photoData.map(p => p.elements?.url).filter(Boolean);
+      const photos = photoData.flatMap(p => {
+        const els = Array.isArray(p.elements) ? p.elements : [p.elements];
+        return els.map(e => e?.url).filter(Boolean);
+      });
       const titleInLower = (d.objekttitel || '').toLowerCase();
       const isSecret = titleInLower.includes('diskret') || titleInLower.includes('secret');
 
