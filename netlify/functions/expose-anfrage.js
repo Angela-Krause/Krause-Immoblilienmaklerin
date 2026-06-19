@@ -117,6 +117,7 @@ exports.handler = async (event) => {
     });
 
     const contactSuccess = contactResult?.response?.results?.[0]?.data?.records?.[0]?.id;
+    let mailResult = null;
 
     // 2. Wenn Objekt-Nr. vorhanden: Anfrage mit Objekt verknüpfen
     if (objnr && contactSuccess) {
@@ -140,7 +141,6 @@ exports.handler = async (event) => {
         });
 
         // 3. Exposé per E-Mail senden
-        let mailResult;
         try {
           mailResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:do', 'sendmail', {
             emailidentity: 'info@krauseimmo.com',
