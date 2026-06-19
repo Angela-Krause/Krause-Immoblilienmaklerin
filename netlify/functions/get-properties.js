@@ -143,7 +143,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ items })
+      body: JSON.stringify({ total: allRecords.length, filtered: records.length, items })
     };
 
   } catch (error) {
