@@ -146,9 +146,9 @@ exports.handler = async (event) => {
     if (estateId) {
       try {
         mailResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:do', 'sendmail', {
-          emailidentity: 'info@krauseimmo.com',
+          emailidentity: 'anfragen@immokrause.eu',
           subject: 'Ihr angefordertes Exposé – KRAUSE Immobilien',
-          body: `Sehr geehrte/r ${vorname} ${nachname},\n\nvielen Dank für Ihr Interesse! Anbei erhalten Sie das gewünschte Exposé.\n\nBei Fragen stehe ich Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen\nAngela Krause\nKRAUSE Immobilien UG`,
+          body: 'Sehr geehrte/r ' + vorname + ' ' + nachname + ',\n\nvielen Dank für Ihr Interesse! Anbei erhalten Sie das gewünschte Exposé.\n\nBei Fragen stehe ich Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen\nAngela Krause\nKRAUSE Immobilien UG',
           pdfexposeidentifiers: ['urn:onoffice-de-ns:smart:2.5:pdf:expose:lang:Exposé Alba'],
           estateids: [estateId],
           receiver: [email]
