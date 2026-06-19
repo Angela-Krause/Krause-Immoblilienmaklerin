@@ -4,7 +4,7 @@ const https = require('https');
 const API_URL = 'https://api.onoffice.de/api/stable/api.php';
 
 function createHmac(token, secret, timestamp, resourceType, actionId) {
-  const fields = [token, timestamp, resourceType, actionId];
+  const fields = [timestamp, token, resourceType, actionId];
   return crypto.createHmac('sha256', secret).update(fields.join('')).digest('hex');
 }
 
