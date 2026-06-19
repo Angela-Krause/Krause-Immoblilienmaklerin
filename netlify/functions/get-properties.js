@@ -84,9 +84,13 @@ exports.handler = async (event) => {
           'strasse', 'hausnummer', 'plz', 'ort',
           'kaufpreis', 'wohnflaeche', 'nutzflaeche', 'anzahl_zimmer',
           'anzahl_badezimmer', 'grundstuecksflaeche', 'baujahr',
-          'objektbeschreibung', 'status'
+          'objektbeschreibung', 'status',
+          'homepage_veroeffentlichen', 'vermarktungsstatus'
         ],
-        listlimit: 100
+        listlimit: 100,
+        filter: {
+          homepage_veroeffentlichen: [{ op: '=', val: '1' }]
+        }
       }
     );
 
