@@ -119,38 +119,41 @@ exports.handler = async (event) => {
     const contactSuccess = contactResult?.response?.results?.[0]?.data?.records?.[0]?.id;
     let mailResult = null;
 
-    // 2. Wenn Objekt-Nr. vorhanden: Anfrage mit Objekt verknüpfen
-    if (objnr && contactSuccess) {
-      // Immobilie suchen
+    // 2. Immobilie suchen
+    let estateId = null;
+    if (objnr) {
       const estateResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:read', 'estate', {
         data: ['Id', 'objektnr_extern'],
         listlimit: 100
       });
-
       const allEstates = estateResult?.response?.results?.[0]?.data?.records || [];
       const match = allEstates.find(r => r.elements?.objektnr_extern === objnr);
-      const estateId = match?.id;
+      estateId = match?.id;
+    }
 
-      if (estateId) {
-        // Verknüpfung herstellen (Interessent → Immobilie)
+    // 3. Kontakt mit Immobilie verknüpfen
+    if (estateId && contactSuccess) {
+      try {
         await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:create', 'relation', {
           relationtype: 'urn:onoffice-de-ns:smart:2.5:relationTypes:estate:address:interested',
           parentid: estateId,
           childid: contactSuccess
         });
+      } catch (relErr) {}
+    }
 
-        // 3. Exposé per E-Mail senden
-        try {
-          mailResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:do', 'sendmail', {
-            emailidentity: 'info@krauseimmo.com',
-            subject: 'Ihr angefordertes Exposé – KRAUSE Immobilien',
-            body: `Sehr geehrte/r ${vorname} ${nachname},\n\nvielen Dank für Ihr Interesse! Anbei erhalten Sie das gewünschte Exposé.\n\nBei Fragen stehe ich Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen\nAngela Krause\nKRAUSE Immobilien UG`,
-            pdfexposeidentifiers: ['urn:onoffice-de-ns:smart:2.5:pdf:expose:lang:Exposé Alba'],
-            estateids: [estateId],
-            receiver: [email]
-          });
-        } catch (mailErr) { mailResult = { error: mailErr.message }; }
-      }
+    // 4. Exposé per E-Mail senden (auch ohne erfolgreiche Kontakt-Anlage)
+    if (estateId) {
+      try {
+        mailResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:do', 'sendmail', {
+          emailidentity: 'info@krauseimmo.com',
+          subject: 'Ihr angefordertes Exposé – KRAUSE Immobilien',
+          body: `Sehr geehrte/r ${vorname} ${nachname},\n\nvielen Dank für Ihr Interesse! Anbei erhalten Sie das gewünschte Exposé.\n\nBei Fragen stehe ich Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen\nAngela Krause\nKRAUSE Immobilien UG`,
+          pdfexposeidentifiers: ['urn:onoffice-de-ns:smart:2.5:pdf:expose:lang:Exposé Alba'],
+          estateids: [estateId],
+          receiver: [email]
+        });
+      } catch (mailErr) { mailResult = { error: mailErr.message }; }
     }
 
     return {
