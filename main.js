@@ -448,8 +448,7 @@ let currentFilter = 'all';
 async function renderProperties(filter) {
   currentFilter = filter;
   const allProps = await loadPropertiesAsync();
-  // hide secret_sale objects from the public listing
-  const props  = allProps.filter(p => !p.secret_sale);
+  const props  = allProps;
   const grid   = document.getElementById('propGrid');
   const empty  = document.getElementById('propEmpty');
   if (!grid) return;
@@ -474,6 +473,7 @@ async function renderProperties(filter) {
     const badge = p.badge ? `<div class="prop-status ${statusClass}">${p.badge}</div>` : `<div class="prop-status ${statusClass}">${p.status}</div>`;
     const img = p.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80';
     const wmHtml = p.isExample ? `<div class="prop-wm">Beispielimmobilie</div>` : '';
+    const secretBadge = p.secret_sale ? `<div class="prop-secret-badge">SECRET SALE</div>` : '';
 
     const card = document.createElement('div');
     card.className = p.isExample ? 'prop-card is-example' : 'prop-card';
@@ -484,6 +484,7 @@ async function renderProperties(filter) {
         ${badge}
         ${soldOverlay}
         ${wmHtml}
+        ${secretBadge}
         <div class="prop-id">Obj.-Nr. ${p.objnr || String(p.id).padStart(3, '0')}</div>
       </div>
       <div class="prop-body">
