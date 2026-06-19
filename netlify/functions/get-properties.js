@@ -85,28 +85,30 @@ exports.handler = async (event) => {
           'kaufpreis', 'wohnflaeche', 'nutzflaeche', 'anzahl_zimmer',
           'anzahl_badezimmer', 'grundstuecksflaeche', 'baujahr',
           'objektbeschreibung', 'status',
-          'homepage_veroeffentlichen', 'vermarktungsstatus'
+          'status'
         ],
-        listlimit: 100,
-        filter: {
-          homepage_veroeffentlichen: [{ op: '=', val: '1' }]
-        }
+        listlimit: 100
       }
     );
 
+    // Debug: Felder-Liste abfragen
+    if (event.queryStringParameters && event.queryStringParameters.debug === 'fields') {
+      const fieldsResult = await apiRequest(token, secret,
+        'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
+        'fields',
+        { labels: true, language: 'DEU', modules: ['estate'] }
+      );
+      const allFields = fieldsResult?.response?.results?.[0]?.data?.records || [];
+      const publishFields = allFields.filter(r => {
+        const label = (r.elements?.label || '').toLowerCase();
+        return label.includes('homepage') || label.includes('internet') || label.includes('vermarkt') || label.includes('webseite') || label.includes('veröffentlich') || label.includes('portal');
+      });
+      return { statusCode: 200, headers, body: JSON.stringify({ publishFields }, null, 2) };
+    }
+
     // Debug: rohe Antwort loggen
     if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
-      const timestamp = Math.floor(Date.now() / 1000).toString();
-      const actionId = 'urn:onoffice-de-ns:smart:2.5:smartml:action:read';
-      const resourceType = 'estate';
-      const hmacInput = timestamp + token + resourceType + actionId;
-      return { statusCode: 200, headers, body: JSON.stringify({
-        tokenLength: token.length,
-        secretLength: secret.length,
-        tokenFirst4: token.substring(0, 4),
-        hmacInputExample: hmacInput.substring(0, 60) + '...',
-        apiResponse: result
-      }, null, 2) };
+      return { statusCode: 200, headers, body: JSON.stringify({ apiResponse: result }, null, 2) };
     }
 
     const records = result?.response?.results?.[0]?.data?.records || [];
