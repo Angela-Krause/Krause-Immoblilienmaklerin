@@ -5,7 +5,7 @@ const API_URL = 'https://api.onoffice.de/api/stable/api.php';
 
 function createHmac(token, secret, timestamp, resourceType, actionId) {
   const fields = [timestamp, token, resourceType, actionId];
-  return crypto.createHmac('sha256', secret).update(fields.join('')).digest('hex');
+  return crypto.createHmac('sha256', secret).update(fields.join('')).digest('base64');
 }
 
 function apiRequest(token, secret, actionId, resourceType, parameters) {
@@ -93,7 +93,17 @@ exports.handler = async (event) => {
 
     // Debug: rohe Antwort loggen
     if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
-      return { statusCode: 200, headers, body: JSON.stringify(result, null, 2) };
+      const timestamp = Math.floor(Date.now() / 1000).toString();
+      const actionId = 'urn:onoffice-de-ns:smart:2.5:smartml:action:read';
+      const resourceType = 'estate';
+      const hmacInput = timestamp + token + resourceType + actionId;
+      return { statusCode: 200, headers, body: JSON.stringify({
+        tokenLength: token.length,
+        secretLength: secret.length,
+        tokenFirst4: token.substring(0, 4),
+        hmacInputExample: hmacInput.substring(0, 60) + '...',
+        apiResponse: result
+      }, null, 2) };
     }
 
     const records = result?.response?.results?.[0]?.data?.records || [];
