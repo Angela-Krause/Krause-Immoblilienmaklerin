@@ -86,10 +86,7 @@ exports.handler = async (event) => {
           'anzahl_badezimmer', 'grundstuecksflaeche', 'baujahr',
           'objektbeschreibung', 'status', 'status2'
         ],
-        listlimit: 100,
-        filter: {
-          status2: [{ op: '=', val: 'aktive_vermarktung' }]
-        }
+        listlimit: 100
       }
     );
 
@@ -108,7 +105,8 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers, body: JSON.stringify({ apiResponse: result }, null, 2) };
     }
 
-    const records = result?.response?.results?.[0]?.data?.records || [];
+    const allRecords = result?.response?.results?.[0]?.data?.records || [];
+    const records = allRecords.filter(r => r.elements?.status2 === 'aktive_vermarktung');
 
     const items = records.map((r, i) => {
       const d = r.elements || {};
