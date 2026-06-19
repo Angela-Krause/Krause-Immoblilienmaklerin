@@ -168,7 +168,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden. Bitte versuchen Sie es später erneut.' })
+      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.', details: error.message })
     };
   }
 };
