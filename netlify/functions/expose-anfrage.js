@@ -123,14 +123,13 @@ exports.handler = async (event) => {
     if (objnr && contactSuccess) {
       // Immobilie suchen
       const estateResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:read', 'estate', {
-        filter: {
-          objektnr_extern: [{ op: '=', val: objnr }]
-        },
-        data: ['Id'],
-        listlimit: 1
+        data: ['Id', 'objektnr_extern'],
+        listlimit: 100
       });
 
-      const estateId = estateResult?.response?.results?.[0]?.data?.records?.[0]?.id;
+      const allEstates = estateResult?.response?.results?.[0]?.data?.records || [];
+      const match = allEstates.find(r => r.elements?.objektnr_extern === objnr);
+      const estateId = match?.id;
 
       if (estateId) {
         // Verknüpfung herstellen (Interessent → Immobilie)
