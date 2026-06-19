@@ -66,16 +66,8 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: '' };
   }
 
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
-  }
-
   const token = process.env.ONOFFICE_API_TOKEN;
   const secret = process.env.ONOFFICE_API_SECRET;
-
-  if (!token || !secret) {
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'API not configured' }) };
-  }
 
   // Debug: Vorlagen abfragen
   if (event.queryStringParameters && event.queryStringParameters.debug === 'templates') {
@@ -90,6 +82,14 @@ exports.handler = async (event) => {
       { type: 'email' }
     );
     return { statusCode: 200, headers, body: JSON.stringify({ pdf: templates, email: emailTemplates }, null, 2) };
+  }
+
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+  }
+
+  if (!token || !secret) {
+    return { statusCode: 500, headers, body: JSON.stringify({ error: 'API not configured' }) };
   }
 
   let body;
