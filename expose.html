@@ -509,7 +509,8 @@ const energyPos = { A: 4, 'A+': 2, B: 16, C: 29, D: 43, E: 57, F: 71, G: 85, H: 
 
 /* ── LOAD PROPERTY ── */
 async function loadProperty() {
-  const idParam = new URLSearchParams(window.location.search).get('id');
+  const params = new URLSearchParams(window.location.search);
+  const idParam = params.get('objnr') || params.get('id');
   let props = exposeDefaults;
   try {
     const resp = await fetch('/.netlify/functions/get-properties');
@@ -654,7 +655,8 @@ document.getElementById('exposeForm').addEventListener('submit', async function(
   successEl.style.display = 'none';
   errorEl.style.display = 'none';
 
-  const objnr = new URLSearchParams(window.location.search).get('id') || '';
+  const _p = new URLSearchParams(window.location.search);
+  const objnr = _p.get('objnr') || _p.get('id') || '';
   const data = {
     vorname: form.vorname.value.trim(),
     nachname: form.nachname.value.trim(),
