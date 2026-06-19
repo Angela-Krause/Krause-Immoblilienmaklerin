@@ -100,6 +100,14 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers, body: JSON.stringify({ raw: fieldsResult?.response?.results?.[0] }, null, 2) };
     }
 
+    // Debug: rohe Antwort loggen
+    if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
+      return { statusCode: 200, headers, body: JSON.stringify({ apiResponse: result }, null, 2) };
+    }
+
+    const allRecords = result?.response?.results?.[0]?.data?.records || [];
+    const records = allRecords.filter(r => r.elements?.status2 === 'aktive_vermarktung');
+
     // Debug: Fotos testen
     if (event.queryStringParameters && event.queryStringParameters.debug === 'photos') {
       const testId = records[0]?.id;
@@ -112,14 +120,6 @@ exports.handler = async (event) => {
         return { statusCode: 200, headers, body: JSON.stringify({ estateId: testId, photoResponse: photoTest }, null, 2) };
       }
     }
-
-    // Debug: rohe Antwort loggen
-    if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
-      return { statusCode: 200, headers, body: JSON.stringify({ apiResponse: result }, null, 2) };
-    }
-
-    const allRecords = result?.response?.results?.[0]?.data?.records || [];
-    const records = allRecords.filter(r => r.elements?.status2 === 'aktive_vermarktung');
 
     // Fotos für gefilterte Objekte laden
     const photoPromises = records.map(r => {
