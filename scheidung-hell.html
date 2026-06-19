@@ -37,50 +37,70 @@
     #nav .nl:hover { color: var(--bright) !important; }
     #nav .logo-wordmark { color: var(--text) !important; }
     #nav .nav-phone     { color: rgba(26,32,53,0.65) !important; }
-    /* Hintergrundfoto wie nachlass-hell */
+    /* Hero als Split-Layout: Text links, Bild rechts */
     #hero {
-      background-image: url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=85') !important;
-      background-size: cover !important;
-      background-position: center 30% !important;
+      background:
+        radial-gradient(ellipse at 78% 30%, rgba(212,175,107,0.20) 0%, transparent 42%),
+        radial-gradient(ellipse at 90% 75%, rgba(29,78,216,0.09) 0%, transparent 35%),
+        linear-gradient(135deg, #ffffff 0%, #f7f4ee 50%, #f0ebe0 100%) !important;
+      height: auto !important;
+      min-height: auto !important;
+      padding: 10rem 0 14rem !important;
+      overflow: hidden !important;
     }
     #hero::before {
-      content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      content: '' !important;
+      position: absolute !important; inset: 0 !important; pointer-events: none !important;
       background-image: repeating-linear-gradient(
         -45deg, transparent 0px, transparent 38px,
-        rgba(29,78,216,0.03) 38px, rgba(29,78,216,0.03) 39px
-      );
-    }
-    /* Äußerer Ring */
-    #hero::after {
-      content: '';
-      position: absolute;
-      width: 560px; height: 560px; border-radius: 50%;
-      border: 1.5px solid rgba(29,78,216,0.18);
-      right: 4%; top: 50%; transform: translateY(-50%);
-      pointer-events: none; z-index: 1;
-      box-shadow: inset 0 0 60px rgba(212,175,107,0.08);
-    }
-    /* Innerer Ring (als div) */
-    .sd-deco-ring {
-      position: absolute;
-      width: 360px; height: 360px; border-radius: 50%;
-      border: 1px dashed rgba(212,175,107,0.45);
-      right: 10%; top: 50%; transform: translateY(-50%);
-      pointer-events: none; z-index: 1;
-    }
-    #hero .hero-bg-img  { display: none !important; }
-    #hero .hero-overlay {
+        rgba(29,78,216,0.025) 38px, rgba(29,78,216,0.025) 39px
+      ) !important;
       display: block !important;
-      background:
-        linear-gradient(to right,
-          rgba(240,245,255,0.78) 0%,
-          rgba(240,245,255,0.55) 40%,
-          rgba(240,245,255,0.18) 70%,
-          transparent 100%),
-        linear-gradient(to top,
-          rgba(240,245,255,0.72) 0%,
-          rgba(240,245,255,0.10) 40%,
-          transparent 65%) !important;
+    }
+    #hero::after {
+      content: '' !important;
+      position: absolute !important;
+      width: 500px !important; height: 500px !important; border-radius: 50% !important;
+      border: 1px solid rgba(29,78,216,0.10) !important;
+      right: 5% !important; top: 50% !important; transform: translateY(-50%) !important;
+      pointer-events: none !important;
+      display: block !important;
+    }
+    .sd-deco-ring { display: none !important; }
+    #hero .hero-bg-img  { display: none !important; }
+    .hero-overlay       { display: none !important; }
+    #heroCanvas         { display: none !important; }
+    #hero .hero-content {
+      max-width: 1200px !important;
+      text-align: left !important;
+    }
+    .sd-hero-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .sd-hero-img {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(29,78,216,0.12);
+      border: 1px solid var(--border);
+      max-height: 450px;
+    }
+    .sd-hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #hero .hero-ctas {
+      display: flex !important;
+      justify-content: flex-start !important;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 900px) {
+      .sd-hero-split { grid-template-columns: 1fr; gap: 2rem; }
+      .sd-hero-img { max-height: 300px; }
     }
     #hero .hl           { color: #1a2035 !important; }
     #hero .hl.italic    { color: var(--bright) !important; }
@@ -473,27 +493,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- HERO -->
 <section id="hero">
-  <img class="hero-bg-img"
-       src="https://images.unsplash.com/photo-1582407947304-fd86f28f26be?w=1920&q=85"
-       alt="" aria-hidden="true" style="display:none">
-  <div class="hero-overlay" style="display:none"></div>
-  <div class="sd-deco-ring" aria-hidden="true"></div>
+  <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="hero-badge rf">
-      <span class="badge-dot"></span>Scheidung &amp; Immobilien
-    </div>
-    <h1 class="hero-h1">
-      <div class="hl" data-index="0">Immobilie bei Scheidung –</div>
-      <div class="hl italic" data-index="1">was tun?</div>
-    </h1>
-    <p class="hero-sub rf">
-      Diskret. Klar. Lösungsorientiert.<br>
-      <strong>Zertifizierte Bewertung · Neutrale Vermittlung · Persönliche Beratung</strong>
-    </p>
-    <div class="hero-ctas rf">
-      <a href="index.html#contact" class="btn-pri mag-btn"><span>Jetzt Kontakt aufnehmen</span><i class="fas fa-arrow-right"></i></a>
-      <a href="#sd-optionen" class="btn-sec mag-btn"><span>Alle Optionen</span></a>
+    <div class="sd-hero-split">
+      <div class="sd-hero-text">
+        <div class="hero-badge rf">
+          <span class="badge-dot"></span>Scheidung &amp; Immobilien
+        </div>
+        <h1 class="hero-h1">
+          <div class="hl" data-index="0">Immobilie bei Scheidung –</div>
+          <div class="hl italic" data-index="1">was tun?</div>
+        </h1>
+        <p class="hero-sub rf">
+          Diskret. Klar. Lösungsorientiert.<br>
+          <strong>Zertifizierte Bewertung · Neutrale Vermittlung · Persönliche Beratung</strong>
+        </p>
+        <div class="hero-ctas rf" style="justify-content:flex-start;">
+          <a href="index.html#contact" class="btn-pri mag-btn"><span>Jetzt Kontakt aufnehmen</span><i class="fas fa-arrow-right"></i></a>
+          <a href="#sd-optionen" class="btn-sec mag-btn"><span>Alle Optionen</span></a>
+        </div>
+        <div class="hero-float" style="position:relative; bottom:auto; right:auto; margin-top:2rem; display:inline-flex;">
+          <div class="hf-stat"><div class="hf-n">26</div><div class="hf-l">Jahre im Immobilienbereich</div></div>
+          <div class="hf-div"></div>
+          <div class="hf-stat"><div class="hf-n">500+</div><div class="hf-l">Bewertete Objekte</div></div>
+        </div>
+      </div>
+      <div class="sd-hero-img">
+        <img src="Bildergalerie/Scheidung%20und%20Hausverkauf%2C%20getrenntes%20Paar%20vor%20einem%20Haus%20mit%20Verkaufsschild%2C%20emotionale%20Trennung%2C%20Immobilienverkauf%20bei%20Scheidung%2C%20nachdenkliche%20Stimmung.jpg" alt="Scheidung und Hausverkauf">
+      </div>
     </div>
   </div>
 
@@ -554,11 +582,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <div class="hero-float rf">
-    <div class="hf-stat"><div class="hf-n">25</div><div class="hf-l">Jahre im Immobilienbereich</div></div>
-    <div class="hf-div"></div>
-    <div class="hf-stat"><div class="hf-n">500+</div><div class="hf-l">Bewertete Objekte</div></div>
-  </div>
+
 </section>
 
 <!-- ═══════════════════════════════════════════════
@@ -888,7 +912,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="foot-grid">
       <div class="foot-brand">
         <a href="index.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
-        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 1998.</p>
+        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 2001.</p>
       </div>
       <div class="foot-col">
         <h4>Navigation</h4>

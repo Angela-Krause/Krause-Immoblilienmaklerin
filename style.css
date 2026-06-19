@@ -235,7 +235,7 @@ button { background: none; border: none; cursor: none; font-family: inherit; }
 .hero-overlay {
   position: absolute; inset: 0; z-index: 2;
   background:
-    linear-gradient(to right, rgba(5,8,15,0.95) 0%, rgba(5,8,15,0.78) 45%, rgba(5,8,15,0.25) 80%, rgba(5,8,15,0.1) 100%),
+    linear-gradient(to right, rgba(5,8,15,0.95) 0%, rgba(5,8,15,0.85) 45%, rgba(5,8,15,0.45) 80%, rgba(5,8,15,0.25) 100%),
     linear-gradient(to top,   rgba(5,8,15,0.98) 0%, transparent 38%);
 }
 .hero-content {
@@ -1260,7 +1260,7 @@ kbd { display: inline-block; padding: 0.1rem 0.4rem; border: 1px solid rgba(255,
 #hero #rotaWord               { color: #93c5fd; border-bottom-color: #93c5fd; }
 
 /* Subtext */
-#hero .hero-sub               { color: rgba(255,255,255,0.95); font-size: clamp(1rem, 2vw, 1.15rem); font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+#hero .hero-sub               { color: #fff; font-size: clamp(1rem, 2vw, 1.15rem); font-weight: 600; letter-spacing: 0.01em; }
 #hero .hero-sub strong        { color: #fff; font-weight: 700; }
 
 /* Badge */
