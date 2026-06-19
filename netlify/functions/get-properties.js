@@ -86,10 +86,7 @@ exports.handler = async (event) => {
           'anzahl_badezimmer', 'grundstuecksflaeche', 'baujahr',
           'objektbeschreibung', 'status'
         ],
-        listlimit: 100,
-        filter: {
-          status: [{ op: '=', val: 1 }]
-        }
+        listlimit: 100
       }
     );
 
