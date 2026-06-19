@@ -74,6 +74,7 @@ exports.handler = async (event) => {
   }
 
   try {
+    // Debug: erst ohne Filter testen
     const result = await apiRequest(token, secret,
       'urn:onoffice-de-ns:smart:2.5:smartml:action:read',
       'estate',
@@ -86,14 +87,14 @@ exports.handler = async (event) => {
           'objektbeschreibung', 'energieeffizienzklasse', 'endenergieverbrauch',
           'status', 'veroeffentlichen'
         ],
-        filter: {
-          vermarktungsart: [{ op: '=', val: 'kauf' }],
-          status: [{ op: 'in', val: ['1', '2'] }]
-        },
-        listlimit: 100,
-        sortby: { objektnr_extern: 'ASC' }
+        listlimit: 100
       }
     );
+
+    // Debug: rohe Antwort loggen
+    if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
+      return { statusCode: 200, headers, body: JSON.stringify(result, null, 2) };
+    }
 
     const records = result?.response?.results?.[0]?.data?.records || [];
 
