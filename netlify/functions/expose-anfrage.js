@@ -180,6 +180,44 @@ exports.handler = async (event) => {
           req.end();
         });
       } catch (mailErr) { mailResult = { error: mailErr.message }; }
+
+      // 5. Anfrage-Mail an onOffice-Postfach senden (triggert Anfragenmanager)
+      if (objnr) {
+        try {
+          const portalMailBody = JSON.stringify({
+            sender: { name: vorname + ' ' + nachname, email: email },
+            to: [{ email: 'anfragen@immokrause.eu', name: 'Krause Immobilien' }],
+            replyTo: { email: email, name: vorname + ' ' + nachname },
+            subject: 'Exposé-Anfrage zu Objekt ' + objnr + ' über krauseimmo.com',
+            htmlContent: '<p>Neue Anfrage über die Website krauseimmo.com</p>' +
+              '<p><strong>Objekt:</strong> ' + objnr + '</p>' +
+              '<p><strong>Name:</strong> ' + vorname + ' ' + nachname + '</p>' +
+              '<p><strong>E-Mail:</strong> ' + email + '</p>' +
+              '<p><strong>Telefon:</strong> ' + (telefon || '-') + '</p>' +
+              '<p><strong>Nachricht:</strong> ' + (nachricht || '-') + '</p>'
+          });
+          const brevoUrl2 = new URL('https://api.brevo.com/v3/smtp/email');
+          await new Promise((resolve, reject) => {
+            const req = https.request({
+              hostname: brevoUrl2.hostname,
+              path: brevoUrl2.pathname,
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'api-key': brevoKey,
+                'Content-Length': Buffer.byteLength(portalMailBody)
+              }
+            }, (res) => {
+              let b = '';
+              res.on('data', chunk => { b += chunk; });
+              res.on('end', () => resolve(b));
+            });
+            req.on('error', reject);
+            req.write(portalMailBody);
+            req.end();
+          });
+        } catch (e) {}
+      }
     }
 
     return {
