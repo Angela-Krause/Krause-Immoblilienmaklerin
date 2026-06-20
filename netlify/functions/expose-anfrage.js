@@ -181,20 +181,40 @@ exports.handler = async (event) => {
         });
       } catch (mailErr) { mailResult = { error: mailErr.message }; }
 
-      // 5. Anfrage-Mail an onOffice-Postfach senden (triggert Anfragenmanager)
+      // 5. Anfrage-Mail mit OpenImmo XML an onOffice senden (triggert Anfragenmanager)
       if (objnr) {
         try {
+          const today = new Date().toISOString().split('T')[0];
+          const xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+            '<openimmo_feedback>\n' +
+            '  <version>1.2.7</version>\n' +
+            '  <sender>\n' +
+            '    <name>krauseimmo.com</name>\n' +
+            '    <datum>' + today + '</datum>\n' +
+            '  </sender>\n' +
+            '  <objekt>\n' +
+            '    <oobj_id>' + objnr + '</oobj_id>\n' +
+            '    <vermarktungsart>KAUF</vermarktungsart>\n' +
+            '    <interessent>\n' +
+            '      <vorname>' + vorname + '</vorname>\n' +
+            '      <nachname>' + nachname + '</nachname>\n' +
+            '      <email>' + email + '</email>\n' +
+            '      <tel>' + (telefon || '') + '</tel>\n' +
+            '      <bevorzugt>EMAIL</bevorzugt>\n' +
+            '      <wunsch>DETAIL</wunsch>\n' +
+            '      <anfrage>' + (nachricht || 'Exposé-Anfrage über krauseimmo.com') + '</anfrage>\n' +
+            '    </interessent>\n' +
+            '  </objekt>\n' +
+            '</openimmo_feedback>';
+
+          const xmlBase64 = Buffer.from(xmlContent).toString('base64');
           const portalMailBody = JSON.stringify({
-            sender: { name: 'Website Anfrage', email: 'info@krauseimmo.com' },
+            sender: { name: 'krauseimmo.com', email: 'info@krauseimmo.com' },
             to: [{ email: 'anfragen@immokrause.eu', name: 'Krause Immobilien' }],
             replyTo: { email: email, name: vorname + ' ' + nachname },
-            subject: 'Exposé-Anfrage zu Objekt ' + objnr + ' über krauseimmo.com',
-            htmlContent: '<p>Neue Anfrage über die Website krauseimmo.com</p>' +
-              '<p><strong>Objekt:</strong> ' + objnr + '</p>' +
-              '<p><strong>Name:</strong> ' + vorname + ' ' + nachname + '</p>' +
-              '<p><strong>E-Mail:</strong> ' + email + '</p>' +
-              '<p><strong>Telefon:</strong> ' + (telefon || '-') + '</p>' +
-              '<p><strong>Nachricht:</strong> ' + (nachricht || '-') + '</p>'
+            subject: 'Anfrage zu Objekt ' + objnr,
+            htmlContent: '<p>Anfrage von ' + vorname + ' ' + nachname + ' (' + email + ') zu Objekt ' + objnr + '</p>',
+            attachment: [{ content: xmlBase64, name: 'kontaktanfrage.xml' }]
           });
           const brevoUrl2 = new URL('https://api.brevo.com/v3/smtp/email');
           await new Promise((resolve, reject) => {
