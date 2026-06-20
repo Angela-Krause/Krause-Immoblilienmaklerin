@@ -142,16 +142,42 @@ exports.handler = async (event) => {
       } catch (relErr) {}
     }
 
-    // 4. Exposé per E-Mail senden (auch ohne erfolgreiche Kontakt-Anlage)
-    if (estateId) {
+    // 4. Bestätigungs-E-Mail per Brevo senden
+    const brevoKey = process.env.BREVO_API_KEY;
+    if (brevoKey) {
       try {
-        mailResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:do', 'sendmail', {
-          emailidentity: 'anfragen@immokrause.eu',
-          subject: 'Ihr angefordertes Exposé – KRAUSE Immobilien',
-          body: 'Sehr geehrte/r ' + vorname + ' ' + nachname + ',\n\nvielen Dank für Ihr Interesse! Anbei erhalten Sie das gewünschte Exposé.\n\nBei Fragen stehe ich Ihnen gerne zur Verfügung.\n\nMit freundlichen Grüßen\nAngela Krause\nKRAUSE Immobilien UG',
-          pdfexposeidentifiers: ['urn:onoffice-de-ns:smart:2.5:pdf:expose:lang:Exposé Alba'],
-          estateids: [estateId],
-          receiver: [email]
+        const mailBody = JSON.stringify({
+          sender: { name: 'KRAUSE Immobilien', email: 'info@krauseimmo.com' },
+          to: [{ email: email, name: vorname + ' ' + nachname }],
+          subject: 'Ihre Exposé-Anfrage – KRAUSE Immobilien',
+          htmlContent: '<p>Sehr geehrte/r ' + vorname + ' ' + nachname + ',</p>' +
+            '<p>vielen Dank für Ihr Interesse an unserem Objekt <strong>' + (objnr || '') + '</strong>.</p>' +
+            '<p>Ihre Anfrage ist bei uns eingegangen. Wir senden Ihnen das Exposé schnellstmöglich zu.</p>' +
+            '<p>Bei Fragen erreichen Sie uns unter 0160 / 800 6113 oder info@krauseimmo.com.</p>' +
+            '<p>Mit freundlichen Grüßen<br>Angela Krause<br>KRAUSE Immobilien UG (haftungsbeschränkt)</p>'
+        });
+        const brevoUrl = new URL('https://api.brevo.com/v3/smtp/email');
+        mailResult = await new Promise((resolve, reject) => {
+          const req = https.request({
+            hostname: brevoUrl.hostname,
+            path: brevoUrl.pathname,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'api-key': brevoKey,
+              'Content-Length': Buffer.byteLength(mailBody)
+            }
+          }, (res) => {
+            let body = '';
+            res.on('data', chunk => { body += chunk; });
+            res.on('end', () => {
+              try { resolve(JSON.parse(body)); }
+              catch (e) { resolve({ status: res.statusCode, body }); }
+            });
+          });
+          req.on('error', reject);
+          req.write(mailBody);
+          req.end();
         });
       } catch (mailErr) { mailResult = { error: mailErr.message }; }
     }
