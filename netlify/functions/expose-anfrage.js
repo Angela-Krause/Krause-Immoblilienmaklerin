@@ -185,7 +185,7 @@ exports.handler = async (event) => {
       if (objnr) {
         try {
           const portalMailBody = JSON.stringify({
-            sender: { name: vorname + ' ' + nachname, email: email },
+            sender: { name: 'Website Anfrage', email: 'info@krauseimmo.com' },
             to: [{ email: 'anfragen@immokrause.eu', name: 'Krause Immobilien' }],
             replyTo: { email: email, name: vorname + ' ' + nachname },
             subject: 'Exposé-Anfrage zu Objekt ' + objnr + ' über krauseimmo.com',
