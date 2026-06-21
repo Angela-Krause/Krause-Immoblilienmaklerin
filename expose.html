@@ -400,7 +400,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <input type="email" name="email" placeholder="E-Mail *" required style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;">
             <input type="tel" name="telefon" placeholder="Telefon (optional)" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;">
             <textarea name="nachricht" placeholder="Ihre Nachricht (optional)" rows="3" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;resize:vertical;"></textarea>
-            <p style="font-size:0.72rem;color:var(--muted);line-height:1.5;">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Daten gemäß unserer <a href="datenschutz.html" style="color:var(--bright);">Datenschutzerklärung</a> zu.</p>
+            <label style="font-size:0.72rem;color:var(--muted);line-height:1.5;display:flex;gap:0.5rem;align-items:flex-start;cursor:pointer;">
+              <input type="checkbox" name="datenschutz" required style="margin-top:0.2rem;flex-shrink:0;">
+              <span>Ich habe die <a href="datenschutz.html" style="color:var(--bright);">Datenschutzerklärung</a> zur Kenntnis genommen. Ich stimme zu, dass meine Angaben und Daten zur Beantwortung meiner Anfrage elektronisch erhoben und gespeichert werden. <strong>Hinweis:</strong> Sie können Ihre Einwilligung jederzeit für die Zukunft per E-Mail an info@krauseimmo.com widerrufen. *</span>
+            </label>
             <button type="submit" class="btn-pri mag-btn" style="width:100%;justify-content:center;border:none;cursor:pointer;">
               <span>Exposé anfordern</span><i class="fas fa-arrow-right"></i>
             </button>
