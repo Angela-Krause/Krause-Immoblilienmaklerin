@@ -395,6 +395,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           <h4 style="font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;">Exposé anfordern</h4>
           <form id="exposeForm" style="display:flex;flex-direction:column;gap:0.7rem;">
+            <select name="anrede" required style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;">
+              <option value="" disabled selected>Anrede *</option>
+              <option value="Herr">Herr</option>
+              <option value="Frau">Frau</option>
+            </select>
             <input type="text" name="vorname" placeholder="Vorname *" required style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;">
             <input type="text" name="nachname" placeholder="Nachname *" required style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;">
             <input type="email" name="email" placeholder="E-Mail *" required style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.7rem 1rem;font-size:0.85rem;color:var(--text);font-family:inherit;">
@@ -671,6 +676,7 @@ document.getElementById('exposeForm').addEventListener('submit', async function(
   const _p = new URLSearchParams(window.location.search);
   const objnr = _p.get('objnr') || _p.get('id') || '';
   const data = {
+    anrede: form.anrede.value,
     vorname: form.vorname.value.trim(),
     nachname: form.nachname.value.trim(),
     email: form.email.value.trim(),
