@@ -66,27 +66,12 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers, body: '' };
   }
 
-  const token = process.env.ONOFFICE_API_TOKEN;
-  const secret = process.env.ONOFFICE_API_SECRET;
-
-  // Debug: Vorlagen abfragen
-  if (event.queryStringParameters && event.queryStringParameters.debug === 'templates') {
-    const templates = await apiRequest(token, secret,
-      'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
-      'templates',
-      { type: 'pdf' }
-    );
-    const emailTemplates = await apiRequest(token, secret,
-      'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
-      'templates',
-      { type: 'email' }
-    );
-    return { statusCode: 200, headers, body: JSON.stringify({ pdf: templates, email: emailTemplates }, null, 2) };
-  }
-
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
+
+  const token = process.env.ONOFFICE_API_TOKEN;
+  const secret = process.env.ONOFFICE_API_SECRET;
 
   if (!token || !secret) {
     return { statusCode: 500, headers, body: JSON.stringify({ error: 'API not configured' }) };

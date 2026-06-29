@@ -74,7 +74,6 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Debug: erst ohne Filter testen
     const result = await apiRequest(token, secret,
       'urn:onoffice-de-ns:smart:2.5:smartml:action:read',
       'estate',
@@ -90,36 +89,8 @@ exports.handler = async (event) => {
       }
     );
 
-    // Debug: Felder-Liste abfragen
-    if (event.queryStringParameters && event.queryStringParameters.debug === 'fields') {
-      const fieldsResult = await apiRequest(token, secret,
-        'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
-        'fields',
-        { labels: true, language: 'DEU', modules: ['estate'] }
-      );
-      return { statusCode: 200, headers, body: JSON.stringify({ raw: fieldsResult?.response?.results?.[0] }, null, 2) };
-    }
-
-    // Debug: rohe Antwort loggen
-    if (event.queryStringParameters && event.queryStringParameters.debug === '1') {
-      return { statusCode: 200, headers, body: JSON.stringify({ apiResponse: result }, null, 2) };
-    }
-
     const allRecords = result?.response?.results?.[0]?.data?.records || [];
     const records = allRecords.filter(r => r.elements?.status2 === 'aktive_vermarktung');
-
-    // Debug: Fotos testen
-    if (event.queryStringParameters && event.queryStringParameters.debug === 'photos') {
-      const testId = records[0]?.id;
-      if (testId) {
-        const photoTest = await apiRequest(token, secret,
-          'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
-          'estatepictures',
-          { estateids: [testId], categories: ['Titelbild', 'Foto', 'Aussenansichten'], size: '640x480' }
-        );
-        return { statusCode: 200, headers, body: JSON.stringify({ estateId: testId, photoResponse: photoTest }, null, 2) };
-      }
-    }
 
     // Fotos für gefilterte Objekte laden
     const photoPromises = records.map(r => {
@@ -175,7 +146,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ total: allRecords.length, filtered: records.length, items })
+      body: JSON.stringify({ items })
     };
 
   } catch (error) {
