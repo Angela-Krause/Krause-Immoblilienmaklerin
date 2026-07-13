@@ -84,7 +84,17 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid request' }) };
   }
 
-  const { vorname, nachname, email, telefon, nachricht, objnr } = body;
+  const { vorname, nachname, email, telefon, nachricht, objnr, website, formzeit } = body;
+
+  // Honeypot
+  if (website) {
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+  }
+
+  // Zeitstempel-Check: unter 3 Sekunden = Bot
+  if (!formzeit || (Date.now() - parseInt(formzeit)) < 3000) {
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+  }
 
   if (!vorname || !nachname || !email) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };

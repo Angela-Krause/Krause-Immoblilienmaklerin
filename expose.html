@@ -409,6 +409,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <input type="checkbox" name="datenschutz" required style="margin-top:0.2rem;flex-shrink:0;">
               <span>Ich habe die <a href="datenschutz.html" style="color:var(--bright);">Datenschutzerklärung</a> zur Kenntnis genommen. Ich stimme zu, dass meine Angaben und Daten zur Beantwortung meiner Anfrage elektronisch erhoben und gespeichert werden. <strong>Hinweis:</strong> Sie können Ihre Einwilligung jederzeit für die Zukunft per E-Mail an info@krauseimmo.com widerrufen. *</span>
             </label>
+            <div style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
+              <input type="text" name="website" tabindex="-1" autocomplete="off">
+              <input type="hidden" name="formzeit" id="expFormzeit">
+            </div>
             <button type="submit" class="btn-pri mag-btn" style="width:100%;justify-content:center;border:none;cursor:pointer;">
               <span>Exposé anfordern</span><i class="fas fa-arrow-right"></i>
             </button>
@@ -664,6 +668,8 @@ async function loadProperty() {
 
 loadProperty();
 
+document.getElementById('expFormzeit').value = Date.now();
+
 document.getElementById('exposeForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const form = this;
@@ -682,7 +688,9 @@ document.getElementById('exposeForm').addEventListener('submit', async function(
     email: form.email.value.trim(),
     telefon: form.telefon.value.trim(),
     nachricht: form.nachricht.value.trim(),
-    objnr: objnr
+    objnr: objnr,
+    website: form.website.value,
+    formzeit: document.getElementById('expFormzeit').value
   };
 
   btn.disabled = true;

@@ -313,14 +313,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p class="vk-form-sub">Antwort innerhalb von 24 Stunden · vertraulich &amp; unverbindlich</p>
         <form id="vkForm" novalidate>
           <div class="vk-fg-row">
-            <div class="vk-fg"><label>Vorname *</label><input type="text" placeholder="Max" required></div>
-            <div class="vk-fg"><label>Nachname *</label><input type="text" placeholder="Mustermann" required></div>
+            <div class="vk-fg"><label>Vorname *</label><input type="text" name="vorname" placeholder="Max" required></div>
+            <div class="vk-fg"><label>Nachname *</label><input type="text" name="nachname" placeholder="Mustermann" required></div>
           </div>
-          <div class="vk-fg"><label>E-Mail *</label><input type="email" placeholder="max@mustermann.de" required></div>
-          <div class="vk-fg"><label>Telefon</label><input type="tel" placeholder="0951 / 123 456"></div>
+          <div class="vk-fg"><label>E-Mail *</label><input type="email" name="email" placeholder="max@mustermann.de" required></div>
+          <div class="vk-fg"><label>Telefon</label><input type="tel" name="telefon" placeholder="0951 / 123 456"></div>
           <div class="vk-fg">
             <label>Art des Hauses *</label>
-            <select required>
+            <select name="immobilienart" required>
               <option value="">Bitte wählen …</option>
               <option>Einfamilienhaus</option>
               <option>Doppelhaushälfte</option>
@@ -330,8 +330,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <option>Sonstiges</option>
             </select>
           </div>
-          <div class="vk-fg"><label>Adresse des Hauses</label><input type="text" placeholder="Straße, PLZ, Ort"></div>
-          <div class="vk-fg"><label>Ihre Nachricht</label><textarea rows="3" placeholder="Baujahr, Zustand, Grundstücksgröße, Zeitrahmen …"></textarea></div>
+          <div class="vk-fg"><label>Adresse des Hauses</label><input type="text" name="adresse" placeholder="Straße, PLZ, Ort"></div>
+          <div class="vk-fg"><label>Ihre Nachricht</label><textarea name="nachricht" rows="3" placeholder="Baujahr, Zustand, Grundstücksgröße, Zeitrahmen …"></textarea></div>
+          <div style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="formzeit" id="formzeit">
+          </div>
           <button type="submit" class="btn-form"><i class="fas fa-arrow-right"></i> Jetzt Hausbewertung anfragen</button>
           <p class="vk-form-note">* Pflichtfelder · Ihre Daten werden vertraulich behandelt.</p>
         </form>
@@ -416,8 +420,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+document.getElementById('formzeit').value = Date.now();
+
 const vkForm = document.getElementById('vkForm');
-if (vkForm) { vkForm.addEventListener('submit', e => { e.preventDefault(); vkForm.style.display = 'none'; document.getElementById('vkSuccess').style.display = 'block'; }); }
+if (vkForm) {
+  vkForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = vkForm.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird gesendet …';
+
+    const data = {
+      vorname: vkForm.querySelector('[name="vorname"]').value.trim(),
+      nachname: vkForm.querySelector('[name="nachname"]').value.trim(),
+      email: vkForm.querySelector('[name="email"]').value.trim(),
+      telefon: vkForm.querySelector('[name="telefon"]').value.trim(),
+      immobilienart: vkForm.querySelector('[name="immobilienart"]').value,
+      adresse: vkForm.querySelector('[name="adresse"]').value.trim(),
+      nachricht: vkForm.querySelector('[name="nachricht"]').value.trim(),
+      website: vkForm.querySelector('[name="website"]').value,
+      formzeit: document.getElementById('formzeit').value
+    };
+
+    try {
+      const res = await fetch('/.netlify/functions/verkauf-anfrage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        vkForm.style.display = 'none';
+        document.getElementById('vkSuccess').style.display = 'block';
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-arrow-right"></i> Jetzt Hausbewertung anfragen';
+        alert('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder rufen Sie uns an.');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-arrow-right"></i> Jetzt Hausbewertung anfragen';
+      alert('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder rufen Sie uns an.');
+    }
+  });
+}
 </script>
 <div id="cb-overlay"></div>
 <div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
