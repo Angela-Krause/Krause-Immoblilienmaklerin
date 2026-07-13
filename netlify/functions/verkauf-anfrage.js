@@ -54,7 +54,12 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid request' }) };
   }
 
-  const { vorname, nachname, email, telefon, immobilienart, adresse, nachricht } = body;
+  const { vorname, nachname, email, telefon, immobilienart, adresse, nachricht, website } = body;
+
+  // Honeypot: Bots füllen das versteckte Feld aus, Menschen nicht
+  if (website) {
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+  }
 
   if (!vorname || !nachname || !email) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
@@ -78,7 +83,7 @@ exports.handler = async (event) => {
           (adresse ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Adresse</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + adresse + '</td></tr>' : '') +
           (nachricht ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Nachricht</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + nachricht + '</td></tr>' : '') +
           '</table>' +
-          '<p style="margin-top:1.5rem;color:#666">Kontakt wurde automatisch in onOffice angelegt.</p>'
+          '<p style="margin-top:1.5rem;color:#666">Diese Nachricht wurde automatisch von krauseimmo.com gesendet.</p>'
       });
 
       // 2. Bestätigung an Interessenten
