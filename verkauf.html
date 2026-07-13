@@ -804,6 +804,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="vk-fg"><label>Ihre Nachricht</label><textarea name="nachricht" rows="3" placeholder="Besonderheiten, Zeitrahmen, Wünsche …"></textarea></div>
           <div style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
             <input type="text" name="website" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="formzeit" id="formzeit">
           </div>
           <button type="submit" class="btn-form">
             <i class="fas fa-arrow-right"></i> Jetzt Bewertung anfragen
@@ -998,6 +999,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* Formular */
+document.getElementById('formzeit').value = Date.now();
+
 const vkForm = document.getElementById('vkForm');
 if (vkForm) {
   vkForm.addEventListener('submit', async e => {
@@ -1013,7 +1016,9 @@ if (vkForm) {
       telefon: vkForm.querySelector('[name="telefon"]').value.trim(),
       immobilienart: vkForm.querySelector('[name="immobilienart"]').value,
       adresse: vkForm.querySelector('[name="adresse"]').value.trim(),
-      nachricht: vkForm.querySelector('[name="nachricht"]').value.trim()
+      nachricht: vkForm.querySelector('[name="nachricht"]').value.trim(),
+      website: vkForm.querySelector('[name="website"]').value,
+      formzeit: document.getElementById('formzeit').value
     };
 
     try {

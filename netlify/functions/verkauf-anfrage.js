@@ -54,10 +54,16 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid request' }) };
   }
 
-  const { vorname, nachname, email, telefon, immobilienart, adresse, nachricht, website } = body;
+  const { vorname, nachname, email, telefon, immobilienart, adresse, nachricht, website, formzeit } = body;
 
   // Honeypot: Bots füllen das versteckte Feld aus, Menschen nicht
   if (website) {
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+  }
+
+  // Zeitstempel-Check: Formular muss mindestens 3 Sekunden offen gewesen sein
+  const now = Date.now();
+  if (!formzeit || (now - parseInt(formzeit)) < 3000) {
     return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
   }
 
