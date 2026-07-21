@@ -1249,7 +1249,7 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
         </div>
       </div>
       <div class="contact-form-wrap rf">
-        <form id="contactForm" class="cform" novalidate action="https://api.nforms.eu/f/nf_9mozyto0zaraj8nko3m3doqyiz1wleai" method="POST">
+        <form id="contactForm" class="cform" novalidate>
           <div class="fg"><label>Ihr Name *</label><input type="text" name="name" placeholder="Max Mustermann" required data-validate></div>
           <div class="fg-row">
             <div class="fg"><label>Telefon</label><input type="tel" name="phone" placeholder="+49 ..."></div>
@@ -1264,6 +1264,10 @@ button.bw-next:disabled { opacity: 0.35; pointer-events: none; }
             </select>
           </div>
           <div class="fg"><label>Nachricht</label><textarea name="message" rows="4" placeholder="Beschreiben Sie kurz Ihre Immobilie und Ihre Wünsche..."></textarea></div>
+          <div style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="formzeit" id="contactFormzeit">
+          </div>
           <button type="submit" class="btn-pri mag-btn full" id="contactSubmitBtn"><span>Nachricht senden</span><i class="fas fa-paper-plane"></i></button>
           <p id="contactError" style="display:none;color:#ef4444;font-size:0.82rem;margin-top:0.8rem;">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt per E-Mail.</p>
           <p class="form-note">* Pflichtfelder. Ihre Daten werden zur Bearbeitung Ihrer Anfrage verwendet (Art. 6 Abs. 1 lit. f DSGVO). Weitere Infos in unserer <a href="datenschutz.html" style="color:var(--bright)">Datenschutzerklärung</a>.</p>
@@ -1387,33 +1391,54 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Contact form override – ersetzt fetch durch iframe-Submission
+document.getElementById('contactFormzeit').value = Date.now();
+
 document.addEventListener('DOMContentLoaded', function() {
   var form = document.getElementById('contactForm');
   if (!form) return;
-  var submitBtn = document.getElementById('contactSubmitBtn');
-  var errorMsg  = document.getElementById('contactError');
 
-  // Alle alten Event-Listener entfernen durch Klonen
-  var newForm = form.cloneNode(true);
-  form.parentNode.replaceChild(newForm, form);
-  form = newForm;
-  submitBtn = document.getElementById('contactSubmitBtn');
-  errorMsg  = document.getElementById('contactError');
-
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
+    var submitBtn = document.getElementById('contactSubmitBtn');
+    var errorMsg = document.getElementById('contactError');
     if (errorMsg) errorMsg.style.display = 'none';
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.querySelector('span').textContent = 'Wird gesendet…';
     }
-    fetch('https://api.nforms.eu/f/nf_9mozyto0zaraj8nko3m3doqyiz1wleai', {
-      method: 'POST',
-      mode:   'no-cors',
-      body:   new FormData(form)
-    }).finally(function() {
-      window.location.href = 'danke.html';
-    });
+
+    const data = {
+      name: form.querySelector('[name="name"]').value.trim(),
+      phone: form.querySelector('[name="phone"]').value.trim(),
+      email: form.querySelector('[name="email"]').value.trim(),
+      subject: form.querySelector('[name="subject"]').value,
+      message: form.querySelector('[name="message"]').value.trim(),
+      website: form.querySelector('[name="website"]').value,
+      formzeit: document.getElementById('contactFormzeit').value
+    };
+
+    try {
+      const res = await fetch('/.netlify/functions/kontakt-anfrage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (res.ok) {
+        window.location.href = 'danke.html';
+      } else {
+        if (errorMsg) errorMsg.style.display = 'block';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.querySelector('span').textContent = 'Nachricht senden';
+        }
+      }
+    } catch (err) {
+      if (errorMsg) errorMsg.style.display = 'block';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.querySelector('span').textContent = 'Nachricht senden';
+      }
+    }
   });
 });
 </script>
