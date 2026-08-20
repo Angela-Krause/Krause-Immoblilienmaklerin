@@ -106,7 +106,7 @@ async function loadPropertiesAsync() {
     if (resp.ok) {
       const data = await resp.json();
       const items = Array.isArray(data) ? data : (data.items || []);
-      if (items.length > 0) { _propsCache = items; return _propsCache; }
+      if (items.length > 0) { _propsCache = items.sort((a, b) => b.id - a.id); return _propsCache; }
     }
   } catch (e) {}
   try {
@@ -114,7 +114,7 @@ async function loadPropertiesAsync() {
     if (resp.ok) {
       const data = await resp.json();
       const items = Array.isArray(data) ? data : (data.items || []);
-      if (items.length > 0) { _propsCache = items; return _propsCache; }
+      if (items.length > 0) { _propsCache = items.sort((a, b) => b.id - a.id); return _propsCache; }
     }
   } catch (e) {}
   _propsCache = defaultProperties;
