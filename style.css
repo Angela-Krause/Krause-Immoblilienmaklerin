@@ -34,12 +34,11 @@ body {
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
-  cursor: none;
 }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { display: block; width: 100%; }
-button { background: none; border: none; cursor: none; font-family: inherit; }
+button { background: none; border: none; font-family: inherit; }
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 6px; }
@@ -87,24 +86,6 @@ button { background: none; border: none; cursor: none; font-family: inherit; }
 .pl-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width 0.1s linear; }
 .pl-pct { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; }
 
-/* ============================================================
-   CURSOR
-============================================================ */
-.cursor-ring {
-  position: fixed; z-index: 100000; pointer-events: none;
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 1.5px solid var(--bright);
-  transform: translate(-50%, -50%);
-  transition: width 0.3s, height 0.3s, opacity 0.3s, background 0.3s;
-}
-.cursor-dot {
-  position: fixed; z-index: 100000; pointer-events: none;
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--bright);
-  transform: translate(-50%, -50%);
-}
-.cursor-ring.hover { width: 60px; height: 60px; background: var(--glow); border-color: var(--gold); }
-@media (hover: none) { .cursor-ring, .cursor-dot { display: none; } }
 
 /* ============================================================
    NAVIGATION

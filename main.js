@@ -229,25 +229,6 @@ function initParticles() {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
-   CUSTOM CURSOR
-────────────────────────────────────────────────────────── */
-function initCursor() {
-  const ring = document.getElementById('cursorRing');
-  const dot  = document.getElementById('cursorDot');
-  if (!ring || !dot) return;
-
-  document.addEventListener('mousemove', e => {
-    dot.style.left  = e.clientX + 'px';
-    dot.style.top   = e.clientY + 'px';
-    gsap.to(ring, { left: e.clientX, top: e.clientY, duration: 0.18, ease: 'power2.out' });
-  });
-
-  document.querySelectorAll('a, button, .mag-btn, .pf, .prop-cta').forEach(el => {
-    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
-  });
-}
 
 /* ──────────────────────────────────────────────────────────
    NAVIGATION
@@ -756,7 +737,6 @@ document.addEventListener('DOMContentLoaded', () => {
   runPreloader(() => {
     initLenis();
     initNav();
-    initCursor();
     initHeroAnim();
     initScrollAnims();
     initMagnet();
