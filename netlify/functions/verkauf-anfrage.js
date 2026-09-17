@@ -76,7 +76,7 @@ exports.handler = async (event) => {
       // 1. Benachrichtigung an Angela
       await brevoRequest(brevoKey, {
         sender: { name: 'KRAUSE Immobilien Website', email: 'info@krauseimmo.com' },
-        to: [{ email: 'info@krauseimmo.com', name: 'Angela Krause' }],
+        to: [{ email: 'info@krauseimmo.com', name: 'Angela Krause' }, { email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
         replyTo: { email: email, name: vorname + ' ' + nachname },
         subject: 'Neue Bewertungsanfrage – ' + vorname + ' ' + nachname,
         htmlContent:

@@ -208,6 +208,7 @@ exports.handler = async (event) => {
           const portalMailBody = JSON.stringify({
             sender: { name: 'krauseimmo.com', email: 'info@krauseimmo.com' },
             to: [{ email: 'anfragen@immokrause.eu', name: 'Krause Immobilien' }],
+            cc: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
             replyTo: { email: email, name: vorname + ' ' + nachname },
             subject: 'Objektanfrage ' + objnr + ' - krauseimmo.com',
             htmlContent: '<p>Objektanfrage über krauseimmo.com zu Objekt ' + objnr + '</p>' +
