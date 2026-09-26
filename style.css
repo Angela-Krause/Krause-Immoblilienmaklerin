@@ -4710,9 +4710,9 @@ a.xp-card-row:hover strong { text-decoration: underline; }
   align-items: center;
   justify-content: center;
   background: #fff;
-  color: var(--primary);
   font-size: 1.1rem;
 }
+.xp-ic i { color: var(--primary) !important; }
 .xp-card-btn {
   display: block;
   text-align: center;
