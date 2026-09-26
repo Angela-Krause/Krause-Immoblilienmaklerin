@@ -85,142 +85,94 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="#contact" class="btn btn-primary" data-close-nav>Jetzt Kontakt aufnehmen</a>
   </div>
 
-  <!-- HERO -->
-  <section class="exp-hero" id="expHero">
-    <img srcset="Bild-Haus-640.webp 640w, Bild-Haus-960.webp 960w, Bild-Haus-1280.webp 1280w, Bild-Haus.webp 1920w" sizes="100vw" decoding="async" width="1920" height="897" class="exp-hero-img" id="expHeroImg" src="Bild-Haus.webp" alt="Immobilie – Exposé-Ansicht">
-  </section>
-
-  <!-- TITEL / KOPF -->
-  <section class="page-body exp-titlebar">
+  <!-- EXPOSÉ: KOPF -->
+  <section class="xp-head" id="expHero">
     <div class="container">
-      <div class="exp-titlebar-inner">
-        <div class="exp-tag"><i class="fas fa-home"></i> <span id="expObjnr">Obj.-Nr. –</span></div>
-        <h1 class="exp-titlebar-h1" id="expTitle">–</h1>
-        <div class="exp-hero-addr"><i class="fas fa-location-dot"></i> <span id="expAddr">–</span></div>
-        <span class="exp-status" id="expStatus">Verfügbar</span>
+      <div class="xp-loc" id="xpLoc">&nbsp;</div>
+      <h1 class="xp-title" id="expTitle">Objekt wird geladen …</h1>
+      <div class="xp-keyfacts" id="xpKeyfacts"></div>
+      <div class="xp-head-actions">
+        <a href="#contact" class="btn btn-primary">Exposé anfordern <i class="fas fa-arrow-right"></i></a>
+        <span class="exp-status" id="expStatus" style="display:none"></span>
+        <span class="xp-objnr" id="expObjnr"></span>
       </div>
     </div>
   </section>
 
-  <!-- DETAILS -->
-  <section class="page-body">
-    <div class="container exp-details-grid">
-      <div>
-        <div class="exp-facts" id="expFacts"></div>
-
-        <div class="exp-block" style="margin-bottom: 28px;">
-          <h3>Objektbeschreibung</h3>
-          <p id="expDesc">–</p>
-        </div>
-
-        <div class="exp-block">
-          <h3>Ausstattung &amp; Merkmale</h3>
-          <div class="exp-features" id="expFeatures"></div>
-        </div>
-
-        <h3 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 600; margin: 40px 0 0;">Bildergalerie</h3>
-        <div class="exp-gallery-grid" id="expGallery"></div>
-      </div>
-
-      <div class="exp-sidebar">
-        <div class="exp-contact-box">
-          <div class="exp-price" id="expPrice">–</div>
-          <div class="exp-price-label" id="expPriceLabel">Kaufpreis</div>
-
-          <div class="exp-agent">
-            <div class="exp-agent-avatar"><img width="600" height="600" decoding="async" loading="lazy" src="ueber-mich.webp" alt="Angela Krause"></div>
-            <div>
-              <div class="exp-agent-name">Angela Krause</div>
-              <div class="exp-agent-role">Ihre Ansprechpartnerin</div>
-            </div>
-          </div>
-
-          <div class="exp-contact-links">
-            <a href="tel:+491608006113"><i class="fas fa-phone-alt"></i> 0160 / 800 6113</a>
-            <a href="mailto:info@krauseimmo.com"><i class="fas fa-envelope"></i> info@krauseimmo.com</a>
-          </div>
-
-          <div class="exp-form-title">Exposé anfordern</div>
-          <form class="exp-form" id="exposeForm" method="post" novalidate>
-            <select name="anrede" required>
-              <option value="" disabled selected>Anrede *</option>
-              <option value="Herr">Herr</option>
-              <option value="Frau">Frau</option>
-            </select>
-            <input type="text" name="vorname" placeholder="Vorname *" required>
-            <input type="text" name="nachname" placeholder="Nachname *" required>
-            <input type="email" name="email" placeholder="E-Mail *" required>
-            <input type="tel" name="telefon" placeholder="Telefon (optional)">
-            <textarea name="nachricht" rows="3" placeholder="Ihre Nachricht (optional)"></textarea>
-            <label class="dsgvo-consent"><input type="checkbox" name="dsgvo" required><span>Ich stimme zu, dass meine Daten zur Bearbeitung meiner Anfrage gespeichert werden. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</span></label>
-
-            <p class="form-note">Ihre Angaben werden ausschlie&szlig;lich zur Bearbeitung Ihrer Expos&eacute;-Anfrage verwendet (Art. 6 Abs. 1 lit. b DSGVO). Mehr dazu in der <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</p>
-            <button type="submit" class="btn btn-primary btn-block">Exposé anfordern <i class="fas fa-arrow-right"></i></button>
-          </form>
-          <div class="exp-success" id="exposeSuccess"><strong>Anfrage gesendet!</strong><br>Vielen Dank! Ihre Exposé-Anfrage wurde erfolgreich übermittelt. Sie erhalten das Exposé in Kürze per E-Mail.</div>
-        </div>
-      </div>
+  <!-- EXPOSÉ: GALERIE -->
+  <section class="xp-gallery-wrap">
+    <div class="container">
+      <div class="xp-gallery" id="xpGallery"></div>
     </div>
   </section>
 
-  <!-- KONTAKTFORMULAR -->
+  <!-- EXPOSÉ: INHALT + KONTAKTKARTE -->
+  <section class="xp-body">
+    <div class="container xp-grid">
+      <div class="xp-main" id="xpMain"></div>
+      <aside class="xp-aside">
+        <div class="xp-card">
+          <h3>Interesse an dem Objekt?</h3>
+          <div class="xp-card-row">
+            <img class="xp-avatar" width="600" height="600" decoding="async" src="ueber-mich.webp" alt="Angela Krause">
+            <div><strong>Angela Krause</strong><span>Ihre Ansprechpartnerin</span></div>
+          </div>
+          <a class="xp-card-row" href="mailto:info@krauseimmo.com">
+            <span class="xp-ic"><i class="fas fa-envelope"></i></span>
+            <div><strong>info@krauseimmo.com</strong><span>E-Mail schreiben</span></div>
+          </a>
+          <a class="xp-card-row" href="tel:+491608006113">
+            <span class="xp-ic"><i class="fas fa-phone-alt"></i></span>
+            <div><strong>0160 / 800 6113</strong><span>Direkt anrufen</span></div>
+          </a>
+          <a href="#contact" class="xp-card-btn">Exposé jetzt anfordern</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- EXPOSÉ-ANFRAGE -->
   <section class="contact" id="contact">
     <div class="container">
       <div class="contact-card">
         <div class="contact-grid">
-          <div class="contact-info reveal-left">
-            <div class="section-tag">Kontakt</div>
-            <h2>Jetzt direkt <em>anfragen</em><br>100% unverbindlich</h2>
-            <p>Ob Verkauf, Kauf oder Wertermittlung: Als Immobilienmaklerin in Bamberg und der Region entwickle ich gemeinsam mit Ihnen eine passende Strategie für Ihre Immobilie.</p>
-
+          <div class="contact-info">
+            <div class="section-tag">Exposé anfordern</div>
+            <h2>Jetzt <em>Exposé</em> anfordern<br>100% unverbindlich</h2>
+            <p id="xpFormIntro">Sie erhalten das vollständige Exposé mit allen Unterlagen per E-Mail. Gerne beantworte ich Ihre Fragen auch persönlich.</p>
             <div class="contact-details">
               <div class="contact-detail-item">
                 <div class="contact-detail-icon"><i class="fas fa-phone-alt"></i></div>
-                <div class="contact-detail-text">
-                  <span class="contact-detail-label">Telefon</span>
-                  <a href="tel:+491608006113">0160 / 800 6113</a>
-                </div>
+                <div class="contact-detail-text"><span class="contact-detail-label">Telefon</span><a href="tel:+491608006113">0160 / 800 6113</a></div>
               </div>
               <div class="contact-detail-item">
                 <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
-                <div class="contact-detail-text">
-                  <span class="contact-detail-label">E-Mail</span>
-                  <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>
-                </div>
-              </div>
-              <div class="contact-detail-item">
-                <div class="contact-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
-                <div class="contact-detail-text">
-                  <span class="contact-detail-label">B&uuml;ro</span>
-                  <span>Bamberg, Oberfranken</span>
-                </div>
-              </div>
-            </div>
-            <div class="contact-person">
-              <img width="390" height="600" decoding="async" loading="lazy" src="ueber-mich-2.webp" alt="Angela Krause – Immobilienmaklerin">
-              <div class="contact-person-info">
-                <h4>Angela Krause</h4>
-                <p>Ihre Ansprechpartnerin für die professionelle Vermarktung von Wohnimmobilien in Bamberg und der Region.</p>
+                <div class="contact-detail-text"><span class="contact-detail-label">E-Mail</span><a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></div>
               </div>
             </div>
           </div>
-          <form class="contact-form reveal-right" id="contactForm" method="post" novalidate>
-            <div class="form-row">
-              <div class="field"><label for="cfVorname">Vorname *</label><input type="text" id="cfVorname" name="vorname" placeholder="Max…" required></div>
-              <div class="field"><label for="cfNachname">Nachname *</label><input type="text" id="cfNachname" name="nachname" placeholder="Mustermann…" required></div>
-            </div>
-            <div class="form-row">
-              <div class="field"><label for="cfEmail">E-Mail-Adresse *</label><input type="email" id="cfEmail" name="email" placeholder="max@mustermann.de…" required></div>
-              <div class="field"><label for="cfTelefon">Telefonnummer</label><input type="tel" id="cfTelefon" name="telefon" placeholder="+49 123 456789…"></div>
-            </div>
-            <div class="form-row">
-              <div class="field field-full"><label for="cfInteresse">Interessiert an: *</label><select id="cfInteresse" name="interesse" required><option value="" disabled selected>Immobilie verkaufen…</option><option value="verkauf">Immobilie verkaufen</option><option value="kauf">Immobilie kaufen</option><option value="wertermittlung">Wertermittlung</option><option value="beratung">Allgemeine Beratung</option></select></div>
-            </div>
-            <label class="dsgvo-consent"><input type="checkbox" name="dsgvo" required><span>Ich stimme zu, dass meine Daten zur Bearbeitung meiner Anfrage gespeichert werden. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</span></label>
-
-            <p class="form-note">Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet (Art. 6 Abs. 1 lit. b DSGVO), freiwillige Angaben sind optional. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
-            <button type="submit" class="btn contact-submit">Senden</button>
-          </form>
+          <div class="xp-form-col">
+            <form class="contact-form xp-form" id="exposeForm" method="post" novalidate>
+              <div class="form-row">
+                <div class="field field-full"><label for="xfAnrede">Anrede *</label><select id="xfAnrede" name="anrede" required><option value="" disabled selected>Bitte wählen…</option><option value="Herr">Herr</option><option value="Frau">Frau</option></select></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label for="xfVorname">Vorname *</label><input type="text" id="xfVorname" name="vorname" placeholder="Max…" required></div>
+                <div class="field"><label for="xfNachname">Nachname *</label><input type="text" id="xfNachname" name="nachname" placeholder="Mustermann…" required></div>
+              </div>
+              <div class="form-row">
+                <div class="field"><label for="xfEmail">E-Mail-Adresse *</label><input type="email" id="xfEmail" name="email" placeholder="max@mustermann.de…" required></div>
+                <div class="field"><label for="xfTelefon">Telefonnummer</label><input type="tel" id="xfTelefon" name="telefon" placeholder="+49 123 456789…"></div>
+              </div>
+              <div class="form-row">
+                <div class="field field-full"><label for="xfNachricht">Ihre Nachricht</label><textarea id="xfNachricht" name="nachricht" rows="3" placeholder="Optional…"></textarea></div>
+              </div>
+              <label class="dsgvo-consent"><input type="checkbox" name="dsgvo" required><span>Ich stimme zu, dass meine Daten zur Bearbeitung meiner Anfrage gespeichert werden. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</span></label>
+              <p class="form-note">Ihre Angaben werden ausschlie&szlig;lich zur Bearbeitung Ihrer Expos&eacute;-Anfrage verwendet (Art. 6 Abs. 1 lit. b DSGVO). Mehr dazu in der <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</p>
+              <button type="submit" class="btn contact-submit">Exposé anfordern</button>
+            </form>
+            <div class="exp-success" id="exposeSuccess"><strong>Anfrage gesendet!</strong><br>Vielen Dank! Ihre Exposé-Anfrage wurde erfolgreich übermittelt. Sie erhalten das Exposé in Kürze per E-Mail.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -255,114 +207,120 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="vendor/lenis.min.js"></script>
   <script src="subpage.js"></script>
   <script>
-  /* ── Objektdaten live aus onOffice (Netlify Function get-properties) ── */
+  /* ── Exposé: Objektdaten live aus onOffice (Netlify Function get-properties) ── */
   (async function(){
-  var params = new URLSearchParams(window.location.search);
-  var idParam = params.get('id') || params.get('objnr');
+    var params = new URLSearchParams(window.location.search);
+    var idParam = params.get('objnr') || params.get('id');
+    var items = await loadOnOfficeProperties();
+    var p = items.find(function(x) { return String(x.objnr) === String(idParam) || String(x.id) === String(idParam); });
+    var d = (p && p.details) || {};
 
-  var items = await loadOnOfficeProperties();
-  var raw = items.find(function(x) { return String(x.objnr) === String(idParam) || String(x.id) === String(idParam); });
-  var p = raw ? {
-    objnr: raw.objnr || raw.id,
-    status: raw.status || 'Verfügbar',
-    statusKey: raw.status === 'Reserviert' ? 'reserved' : raw.status === 'Verkauft' ? 'sold' : 'available',
-    art: 'Kauf',
-    ort: raw.address || '',
-    title: raw.title || '',
-    size: raw.size ? raw.size + ' m²' : null,
-    rooms: raw.rooms,
-    plot: raw.plot ? raw.plot + ' m²' : null,
-    year: raw.year,
-    bathrooms: raw.bathrooms,
-    price: raw.price ? raw.price + ' €' : 'Preis auf Anfrage',
-    label: 'Kaufpreis',
-    desc: raw.description || '',
-    features: raw.features || [],
-    image: raw.image || 'Bild-Haus.webp',
-    images: (raw.images && raw.images.length) ? raw.images : [raw.image || 'Bild-Haus.webp']
-  } : null;
+    if (!p) {
+      document.title = 'Objekt nicht gefunden | Krause Immobilien';
+      document.getElementById('xpLoc').textContent = '';
+      document.getElementById('expTitle').textContent = 'Objekt nicht gefunden';
+      document.getElementById('xpKeyfacts').innerHTML = '<p class="xp-notfound">Dieses Objekt existiert nicht mehr oder wurde bereits vermittelt.</p>';
+      document.querySelector('.xp-head-actions').innerHTML = '<a href="immobilien.html" class="btn btn-primary">Alle Objekte ansehen <i class="fas fa-arrow-right"></i></a>';
+      document.querySelector('.xp-gallery-wrap').style.display = 'none';
+      document.querySelector('.xp-body').style.display = 'none';
+      return;
+    }
 
-  function showNotFound() {
-    document.getElementById('expHero').style.display = 'none';
-    document.title = 'Objekt nicht gefunden | Krause Immobilien';
-    var sec = document.querySelector('.exp-details-grid').closest('section');
-    sec.innerHTML = '<div style="text-align:center;padding:80px 20px;"><i class="fas fa-home" style="font-size:3rem;color:var(--border);display:block;margin-bottom:16px;"></i><h2 style="font-family:var(--font-serif);font-size:2rem;margin-bottom:10px;">Objekt nicht gefunden</h2><p class="text-small">Dieses Objekt existiert nicht oder wurde entfernt.</p><a href="immobilien.html" class="btn btn-primary" style="margin-top:20px;">Alle Objekte ansehen <i class="fas fa-arrow-right"></i></a></div>';
-  }
-
-  if (!p) {
-    showNotFound();
-  } else {
+    var price = p.price ? p.price + ' €' : 'Preis auf Anfrage';
     document.title = p.title + ' | Krause Immobilien';
-    var heroImg = document.getElementById('expHeroImg');
-    heroImg.removeAttribute('srcset');
-    heroImg.removeAttribute('sizes');
-    heroImg.src = p.image;
-    document.getElementById('expHeroImg').alt = p.title;
+    document.getElementById('xpLoc').textContent = p.city || p.address || '';
     document.getElementById('expTitle').textContent = p.title;
-    document.getElementById('expAddr').textContent = p.ort;
     document.getElementById('expObjnr').textContent = 'Obj.-Nr. ' + p.objnr;
-    document.getElementById('expStatus').textContent = p.status;
-    document.getElementById('expStatus').className = 'exp-status ' + p.statusKey;
-    document.getElementById('expPrice').textContent = p.price;
-    document.getElementById('expPriceLabel').textContent = p.label;
-    var descEl = document.getElementById('expDesc');
-    descEl.textContent = p.desc;
-    descEl.style.whiteSpace = 'pre-line';
-    if (!p.desc) descEl.closest('.exp-block').style.display = 'none';
+    var st = document.getElementById('expStatus');
+    if (p.status && p.status !== 'Verfügbar') {
+      st.textContent = p.status;
+      st.className = 'exp-status ' + (p.status === 'Reserviert' ? 'reserved' : 'sold');
+      st.style.display = 'inline-block';
+    }
+    document.getElementById('xpFormIntro').textContent = 'Sie erhalten das vollständige Exposé zu „' + p.title + '“ per E-Mail. Gerne beantworte ich Ihre Fragen auch persönlich.';
 
-    var facts = [
-      { icon: 'fa-ruler-combined', val: p.size, label: 'Wohnfläche' },
-      { icon: 'fa-door-open', val: p.rooms ? p.rooms + ' Zimmer' : null, label: 'Zimmer' },
-      { icon: 'fa-tree', val: p.plot, label: 'Grundstück' },
-      { icon: 'fa-calendar', val: p.year ? 'Bj. ' + p.year : null, label: 'Baujahr' },
-      { icon: 'fa-bath', val: p.bathrooms ? p.bathrooms + ' Bad' : null, label: 'Badezimmer' },
-      { icon: 'fa-tag', val: p.art, label: 'Vermarktung' }
-    ].filter(function(f){ return f.val; });
-
-    document.getElementById('expFacts').innerHTML = facts.map(function(f){
-      return '<div class="exp-fact"><i class="fas ' + f.icon + '"></i><div class="ef-val">' + f.val + '</div><div class="ef-label">' + f.label + '</div></div>';
+    /* Eckdaten im Kopf */
+    var key = [['Kaufpreis', price]];
+    if (p.size) key.push(['Wohnfläche', 'ca. ' + p.size + ' m²']);
+    if (p.rooms) key.push(['Zimmer', p.rooms]);
+    if (p.plot) key.push(['Grundstück', 'ca. ' + p.plot + ' m²']);
+    document.getElementById('xpKeyfacts').innerHTML = key.map(function(k){
+      return '<div><span>' + escHtml(k[0]) + '</span><strong>' + escHtml(k[1]) + '</strong></div>';
     }).join('');
 
-    if (!p.features.length) document.getElementById('expFeatures').closest('.exp-block').style.display = 'none';
-    document.getElementById('expFeatures').innerHTML = p.features.map(function(f){
-      return '<div class="exp-feature"><i class="fas fa-check"></i> ' + f + '</div>';
-    }).join('');
+    /* Galerie: großes Bild + bis zu 4 Vorschaubilder */
+    var imgs = (p.images && p.images.length) ? p.images : [p.image || 'Bild-Haus.webp'];
+    var thumbs = imgs.slice(1, 5);
+    var gal = document.getElementById('xpGallery');
+    gal.classList.toggle('single', thumbs.length === 0);
+    gal.innerHTML =
+      '<button type="button" class="xp-g-main" data-index="0"><img src="' + escHtml(imgs[0]) + '" alt="' + escHtml(p.title) + '"></button>' +
+      (thumbs.length ? '<div class="xp-g-thumbs">' + thumbs.map(function(src, i){
+        var more = (i === thumbs.length - 1 && imgs.length > 5) ? '<span class="xp-g-more">+' + (imgs.length - 5) + ' Bilder</span>' : '';
+        return '<button type="button" data-index="' + (i + 1) + '"><img src="' + escHtml(src) + '" alt="' + escHtml(p.title) + ' – Bild ' + (i + 2) + '" loading="lazy">' + more + '</button>';
+      }).join('') + '</div>' : '');
 
-    var imgs = p.images;
-    var gallery = document.getElementById('expGallery');
-    gallery.innerHTML = imgs.map(function(src, i){
-      return '<img src="' + src + '" alt="' + p.title + ' – Bild ' + (i+1) + '" loading="lazy" data-index="' + i + '">';
-    }).join('');
+    /* Inhaltsabschnitte – nur anzeigen, was onOffice liefert */
+    function section(title, inner) { return inner ? '<div class="xp-sec"><h2>' + title + '</h2>' + inner + '</div>' : ''; }
+    function text(t) { return t ? '<p class="xp-text">' + escHtml(t) + '</p>' : ''; }
+    function grid(rows) {
+      rows = rows.filter(function(r){ return r[1] !== '' && r[1] !== null && r[1] !== undefined; });
+      return rows.length ? '<div class="xp-data">' + rows.map(function(r){
+        return '<div><strong>' + escHtml(r[0]) + '</strong><span>' + escHtml(r[1]) + '</span></div>';
+      }).join('') + '</div>' : '';
+    }
+    var feats = (d.features || []).map(function(f){ return '<li><i class="fas fa-check"></i>' + escHtml(f) + '</li>'; }).join('');
+    var html = '';
+    html += section('Objektbeschreibung', text(p.description));
+    html += section('Ausstattung', (feats ? '<ul class="xp-feats">' + feats + '</ul>' : '') + text(d.ausstattung));
+    html += section('Objektdaten', grid([
+      ['Objektart', d.objektart], ['Objekttyp', d.objekttyp], ['Vermarktungsart', d.vermarktungsart],
+      ['Nutzungsart', d.nutzungsart], ['Verfügbar ab', d.verfuegbar_ab], ['Zustand', d.zustand],
+      ['Verfügbarkeit', p.status], ['Objekt-Nr.', p.objnr]
+    ]));
+    html += section('Fläche', grid([
+      ['Wohnfläche', p.size ? 'ca. ' + p.size + ' m²' : ''], ['Nutzfläche', p.nutzflaeche ? 'ca. ' + p.nutzflaeche + ' m²' : ''],
+      ['Grundstück', p.plot ? 'ca. ' + p.plot + ' m²' : ''], ['Anzahl Zimmer', p.rooms || ''], ['Badezimmer', p.bathrooms || '']
+    ]));
+    html += section('Energieausweis', grid([
+      ['Baujahr', p.year || ''], ['Energieausweistyp', d.energieausweistyp], ['Gültig bis', d.energieausweis_gueltig_bis],
+      ['Energieträger', d.energietraeger], ['Energieeffizienzklasse', d.energieklasse],
+      ['Endenergiebedarf', d.endenergiebedarf], ['Energieverbrauch', d.energieverbrauch], ['Heizungsart', d.heizungsart]
+    ]));
+    html += section('Lage', text(d.lage));
+    html += section('Sonstiges', text(d.sonstiges));
+    document.getElementById('xpMain').innerHTML = html;
 
+    /* Lightbox */
     var lightbox = document.getElementById('expLightbox');
     var lbImg = document.getElementById('lbImg');
     var lbIdx = 0;
     function openLb(i){ lbIdx = i; lbImg.src = imgs[lbIdx]; lightbox.classList.add('open'); document.body.classList.add('no-scroll'); }
     function closeLb(){ lightbox.classList.remove('open'); document.body.classList.remove('no-scroll'); }
-    gallery.querySelectorAll('img').forEach(function(img){
-      img.addEventListener('click', function(){ openLb(parseInt(img.dataset.index)); });
+    function step(n){ lbIdx = (lbIdx + n + imgs.length) % imgs.length; lbImg.src = imgs[lbIdx]; }
+    gal.querySelectorAll('button[data-index]').forEach(function(b){
+      b.addEventListener('click', function(){ openLb(parseInt(b.dataset.index, 10)); });
     });
     document.getElementById('lbClose').addEventListener('click', closeLb);
-    document.getElementById('lbPrev').addEventListener('click', function(){ lbIdx = (lbIdx - 1 + imgs.length) % imgs.length; lbImg.src = imgs[lbIdx]; });
-    document.getElementById('lbNext').addEventListener('click', function(){ lbIdx = (lbIdx + 1) % imgs.length; lbImg.src = imgs[lbIdx]; });
+    document.getElementById('lbPrev').addEventListener('click', function(){ step(-1); });
+    document.getElementById('lbNext').addEventListener('click', function(){ step(1); });
     lightbox.addEventListener('click', function(e){ if (e.target === lightbox) closeLb(); });
     document.addEventListener('keydown', function(e){
       if (!lightbox.classList.contains('open')) return;
       if (e.key === 'Escape') closeLb();
-      if (e.key === 'ArrowLeft'){ lbIdx = (lbIdx - 1 + imgs.length) % imgs.length; lbImg.src = imgs[lbIdx]; }
-      if (e.key === 'ArrowRight'){ lbIdx = (lbIdx + 1) % imgs.length; lbImg.src = imgs[lbIdx]; }
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
     });
-  }
   })();
 
-  /* Exposé-Formular: Angaben im E-Mail-Programm vorbereiten */
+  /* Exposé-Formular */
   document.getElementById('exposeForm').addEventListener('submit', function(e){
     e.preventDefault();
     var form = this;
     if (!form.checkValidity()) { form.reportValidity(); return; }
     var btn = form.querySelector('button[type="submit"]');
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird gesendet …';
     sendForm(form).then(function(ok){
       form.style.display = 'none';
       var success = document.getElementById('exposeSuccess');

@@ -59,6 +59,61 @@ function formatPrice(val) {
   return Number(val).toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 }
 
+/* ---------- Zusatzdaten (Objektdaten, Energie, Lage, Ausstattung) ----------
+   Werden in eigenen Anfragen geladen. Schlägt eine Gruppe fehl (z. B. weil ein
+   Feld im onOffice-Mandanten nicht existiert), werden die Felder einzeln
+   nachgeladen – die Objektliste selbst ist davon nie betroffen. */
+const DETAIL_GROUPS = [
+  ['objektart', 'objekttyp', 'vermarktungsart', 'nutzungsart', 'verfuegbar_ab', 'zustand'],
+  ['lage', 'ausstatt_beschr', 'sonstige_angaben'],
+  ['energieausweistyp', 'energyClass', 'endenergiebedarf', 'energieverbrauchskennwert', 'energieausweis_gueltig_bis', 'befeuerung', 'heizungsart'],
+  ['balkon', 'terrasse', 'gaeste_wc', 'unterkellert', 'fahrstuhl', 'kamin', 'barrierefrei', 'wintergarten', 'sauna', 'swimmingpool', 'klimatisiert', 'dachboden']
+];
+
+const FEATURE_LABELS = {
+  balkon: 'Balkon', terrasse: 'Terrasse', gaeste_wc: 'Gäste-WC', unterkellert: 'Keller',
+  fahrstuhl: 'Aufzug', kamin: 'Kamin', barrierefrei: 'Barrierefrei', wintergarten: 'Wintergarten',
+  sauna: 'Sauna', swimmingpool: 'Pool', klimatisiert: 'Klimaanlage', dachboden: 'Dachboden'
+};
+
+function okResult(res) {
+  const r = res?.response?.results?.[0];
+  return r && (!r.status || String(r.status.errorcode) === '0') ? (r.data?.records || []) : null;
+}
+
+async function readFields(token, secret, ids, fields) {
+  const res = await apiRequest(token, secret,
+    'urn:onoffice-de-ns:smart:2.5:smartml:action:read', 'estate',
+    { data: ['Id'].concat(fields), filter: { Id: [{ op: 'in', val: ids }] }, formatoutput: true, listlimit: 100 });
+  const recs = okResult(res);
+  if (!recs) throw new Error('onOffice error');
+  return recs;
+}
+
+async function loadDetails(token, secret, ids) {
+  const byId = {};
+  const merge = recs => recs.forEach(r => { byId[r.id] = Object.assign(byId[r.id] || {}, r.elements || {}); });
+  await Promise.all(DETAIL_GROUPS.map(async group => {
+    try { merge(await readFields(token, secret, ids, group)); }
+    catch (e) {
+      await Promise.all(group.map(f => readFields(token, secret, ids, [f]).then(merge).catch(() => null)));
+    }
+  }));
+  return byId;
+}
+
+function clean(v) {
+  if (Array.isArray(v)) v = v.filter(Boolean).join(', ');
+  if (v === null || v === undefined) return '';
+  v = String(v).trim();
+  if (!v || v === '0' || v === '0,00' || v === '0.00' || v.startsWith('0000-00-00') || v === '00.00.0000') return '';
+  return v;
+}
+
+function isYes(v) {
+  return v === true || v === 1 || ['1', 'ja', 'yes', 'true'].includes(String(v).trim().toLowerCase());
+}
+
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -97,15 +152,19 @@ exports.handler = async (event) => {
       return apiRequest(token, secret,
         'urn:onoffice-de-ns:smart:2.5:smartml:action:get',
         'estatepictures',
-        { estateids: [r.id], categories: ['Titelbild', 'Foto', 'Aussenansichten'], size: '640x480' }
+        { estateids: [r.id], categories: ['Titelbild', 'Foto', 'Aussenansichten'], size: '1600x1200' }
       ).catch(() => null);
     });
     const photoResults = await Promise.all(photoPromises);
 
+    let details = {};
+    try { details = await loadDetails(token, secret, records.map(r => r.id)); } catch (e) { details = {}; }
+
     const items = records.map((r, i) => {
       const d = r.elements || {};
       const street = [d.strasse, d.hausnummer].filter(Boolean).join(' ');
-      const address = street + (d.ort ? ', ' + (d.plz ? d.plz + ' ' : '') + d.ort : '');
+      const city = [d.plz, d.ort].filter(Boolean).join(' ');
+      const address = [street, city].filter(Boolean).join(', ');
       const size = d.wohnflaeche || d.nutzflaeche || '';
       const rooms = d.anzahl_zimmer ? (d.anzahl_zimmer % 1 === 0 ? Math.round(d.anzahl_zimmer) : d.anzahl_zimmer) : null;
 
@@ -127,6 +186,7 @@ exports.handler = async (event) => {
         objnr: d.objektnr_extern || '',
         title: d.objekttitel || (d.objektart + ' ' + d.ort),
         address,
+        city,
         price: formatPrice(d.kaufpreis),
         size: size && Number(size) > 0 ? Math.round(Number(size)).toString() : '',
         rooms: rooms && rooms > 0 ? rooms : null,
@@ -138,6 +198,21 @@ exports.handler = async (event) => {
         energyClass: null,
         energyValue: null,
         secret_sale: isSecret,
+        nutzflaeche: d.nutzflaeche && Number(d.nutzflaeche) > 0 ? Math.round(Number(d.nutzflaeche)).toString() : '',
+        details: (function () {
+          const x = details[r.id] || {};
+          return {
+            objektart: clean(x.objektart), objekttyp: clean(x.objekttyp),
+            vermarktungsart: clean(x.vermarktungsart), nutzungsart: clean(x.nutzungsart),
+            verfuegbar_ab: clean(x.verfuegbar_ab), zustand: clean(x.zustand),
+            lage: clean(x.lage), ausstattung: clean(x.ausstatt_beschr), sonstiges: clean(x.sonstige_angaben),
+            energieausweistyp: clean(x.energieausweistyp), energieklasse: clean(x.energyClass),
+            endenergiebedarf: clean(x.endenergiebedarf), energieverbrauch: clean(x.energieverbrauchskennwert),
+            energieausweis_gueltig_bis: clean(x.energieausweis_gueltig_bis),
+            energietraeger: clean(x.befeuerung), heizungsart: clean(x.heizungsart),
+            features: Object.keys(FEATURE_LABELS).filter(k => isYes(x[k])).map(k => FEATURE_LABELS[k])
+          };
+        })(),
         image: photos[0] || null,
         images: photos
       };
