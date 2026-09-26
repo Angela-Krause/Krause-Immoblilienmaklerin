@@ -255,18 +255,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="vendor/lenis.min.js"></script>
   <script src="subpage.js"></script>
   <script>
-  /* ── Objektdaten (Platzhalter, später über OnOffice) ── */
-  var properties = [
-    { id: 441, status: "Verfügbar", statusKey: "available", art: "Kauf", typ: "Haus", ort: "Lichtenfels", title: "Wohnen am Herberg – Großzügiges Einfamilienhaus in bevorzugter Wohnlage mit Traumgarten", size: "165 m²", rooms: 4, plot: "1.856 m²", price: "535.000 €", label: "Kaufpreis", desc: "Dieses großzügige Einfamilienhaus besticht durch seine bevorzugte Wohnlage am Herberg. Helle, geräumige Zimmer, ein gepflegter Garten und ein durchdachter Grundriss bieten der ganzen Familie ein Zuhause zum Wohlfühlen.", features: ["Großer Garten", "Bevorzugte Wohnlage", "Ausgebauter Keller", "Sonnige Terrasse", "Garage", "Ruhige Lage"] },
-    { id: 467, status: "Verfügbar", statusKey: "available", art: "Kauf", typ: "Grundstück", ort: "Bad Staffelstein", title: "Voll erschlossenes Gewerbegrundstück | Gesamtfläche 18.421 m² | Kauf ab 2.000 m² möglich", size: "17.000 m²", rooms: null, plot: "18.421 m²", price: "2.295.000 €", label: "Kaufpreis", desc: "Voll erschlossenes Gewerbegrundstück mit idealer Verkehrsanbindung. Teilflächen ab 2.000 m² möglich – perfekt für Gewerbe, Logistik oder Produktion.", features: ["Voll erschlossen", "Teilung ab 2.000 m²", "Gute Verkehrsanbindung", "Baureif"] },
-    { id: 462, status: "Verfügbar", statusKey: "available", art: "Miete", typ: "Wohnung", ort: "Bad Staffelstein", title: "Großzügige, lichtdurchflutete 4-Zimmer-Wohnung mit Balkon, Aufzug und zwei Stellplätzen", size: "119 m²", rooms: 4, plot: null, price: "980 €", label: "Kaltmiete", desc: "Lichtdurchflutete 4-Zimmer-Wohnung mit großem Balkon, Aufzug und zwei Stellplätzen. Die Wohnung überzeugt mit durchdachtem Schnitt und zentraler Lage.", features: ["Balkon", "Aufzug", "2 Stellplätze", "Einbauküche", "Zentrale Lage"] },
-    { id: 453, status: "Verfügbar", statusKey: "available", art: "Kauf", typ: "Wohnung", ort: "Lichtenfels", title: "Maisonettewohnung am Breiten Rasen | Liebevoll modernisiert und voller Möglichkeiten", size: "91,92 m²", rooms: 4, plot: null, price: "220.000 €", label: "Kaufpreis", desc: "Diese liebevoll modernisierte Maisonettewohnung bietet auf zwei Ebenen viel Raum und eine offene Wohnatmosphäre. Ideal für Paare und kleine Familien.", features: ["Maisonette über 2 Ebenen", "Modernisiert", "Offene Küche", "Zentrale Lage"] }
-  ];
-
+  /* ── Objektdaten live aus onOffice (Netlify Function get-properties) ── */
+  (async function(){
   var params = new URLSearchParams(window.location.search);
   var idParam = params.get('id') || params.get('objnr');
 
-  var p = properties.find(function(x) { return String(x.id) === String(idParam); });
+  var items = await loadOnOfficeProperties();
+  var raw = items.find(function(x) { return String(x.objnr) === String(idParam) || String(x.id) === String(idParam); });
+  var p = raw ? {
+    objnr: raw.objnr || raw.id,
+    status: raw.status || 'Verfügbar',
+    statusKey: raw.status === 'Reserviert' ? 'reserved' : raw.status === 'Verkauft' ? 'sold' : 'available',
+    art: 'Kauf',
+    ort: raw.address || '',
+    title: raw.title || '',
+    size: raw.size ? raw.size + ' m²' : null,
+    rooms: raw.rooms,
+    plot: raw.plot ? raw.plot + ' m²' : null,
+    year: raw.year,
+    bathrooms: raw.bathrooms,
+    price: raw.price ? raw.price + ' €' : 'Preis auf Anfrage',
+    label: 'Kaufpreis',
+    desc: raw.description || '',
+    features: raw.features || [],
+    image: raw.image || 'Bild-Haus.webp',
+    images: (raw.images && raw.images.length) ? raw.images : [raw.image || 'Bild-Haus.webp']
+  } : null;
 
   function showNotFound() {
     document.getElementById('expHero').style.display = 'none';
@@ -279,21 +293,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     showNotFound();
   } else {
     document.title = p.title + ' | Krause Immobilien';
-    document.getElementById('expHeroImg').src = 'Bild-Haus.webp';
+    var heroImg = document.getElementById('expHeroImg');
+    heroImg.removeAttribute('srcset');
+    heroImg.removeAttribute('sizes');
+    heroImg.src = p.image;
     document.getElementById('expHeroImg').alt = p.title;
     document.getElementById('expTitle').textContent = p.title;
     document.getElementById('expAddr').textContent = p.ort;
-    document.getElementById('expObjnr').textContent = 'Obj.-Nr. ' + p.id;
+    document.getElementById('expObjnr').textContent = 'Obj.-Nr. ' + p.objnr;
     document.getElementById('expStatus').textContent = p.status;
     document.getElementById('expStatus').className = 'exp-status ' + p.statusKey;
     document.getElementById('expPrice').textContent = p.price;
     document.getElementById('expPriceLabel').textContent = p.label;
-    document.getElementById('expDesc').textContent = p.desc;
+    var descEl = document.getElementById('expDesc');
+    descEl.textContent = p.desc;
+    descEl.style.whiteSpace = 'pre-line';
+    if (!p.desc) descEl.closest('.exp-block').style.display = 'none';
 
     var facts = [
       { icon: 'fa-ruler-combined', val: p.size, label: 'Wohnfläche' },
       { icon: 'fa-door-open', val: p.rooms ? p.rooms + ' Zimmer' : null, label: 'Zimmer' },
       { icon: 'fa-tree', val: p.plot, label: 'Grundstück' },
+      { icon: 'fa-calendar', val: p.year ? 'Bj. ' + p.year : null, label: 'Baujahr' },
+      { icon: 'fa-bath', val: p.bathrooms ? p.bathrooms + ' Bad' : null, label: 'Badezimmer' },
       { icon: 'fa-tag', val: p.art, label: 'Vermarktung' }
     ].filter(function(f){ return f.val; });
 
@@ -301,11 +323,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return '<div class="exp-fact"><i class="fas ' + f.icon + '"></i><div class="ef-val">' + f.val + '</div><div class="ef-label">' + f.label + '</div></div>';
     }).join('');
 
+    if (!p.features.length) document.getElementById('expFeatures').closest('.exp-block').style.display = 'none';
     document.getElementById('expFeatures').innerHTML = p.features.map(function(f){
       return '<div class="exp-feature"><i class="fas fa-check"></i> ' + f + '</div>';
     }).join('');
 
-    var imgs = ['Bild-Haus.webp', 'bamberg.webp', 'Bamberg1.webp'];
+    var imgs = p.images;
     var gallery = document.getElementById('expGallery');
     gallery.innerHTML = imgs.map(function(src, i){
       return '<img src="' + src + '" alt="' + p.title + ' – Bild ' + (i+1) + '" loading="lazy" data-index="' + i + '">';
@@ -330,6 +353,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       if (e.key === 'ArrowRight'){ lbIdx = (lbIdx + 1) % imgs.length; lbImg.src = imgs[lbIdx]; }
     });
   }
+  })();
 
   /* Exposé-Formular: Angaben im E-Mail-Programm vorbereiten */
   document.getElementById('exposeForm').addEventListener('submit', function(e){

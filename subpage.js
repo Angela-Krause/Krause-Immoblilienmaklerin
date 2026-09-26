@@ -357,3 +357,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+/* ============================================
+   IMMOBILIEN AUS ONOFFICE LADEN (immobilien.html)
+   Quelle: Netlify Function get-properties
+   ============================================ */
+function escHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+async function loadOnOfficeProperties() {
+  try {
+    var resp = await fetch('/.netlify/functions/get-properties');
+    if (resp.ok) {
+      var data = await resp.json();
+      var items = Array.isArray(data) ? data : (data.items || []);
+      return items.sort(function(a, b) { return b.id - a.id; });
+    }
+  } catch (e) {}
+  return [];
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  var grid = document.getElementById('propGrid');
+  if (!grid) return;
+  var empty = document.getElementById('propEmpty');
+  var countEl = document.getElementById('propCount');
+
+  var props = await loadOnOfficeProperties();
+  grid.innerHTML = '';
+  if (props.length === 0) {
+    if (empty) empty.style.display = 'block';
+    if (countEl) countEl.textContent = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  if (countEl) countEl.textContent = props.length + ' Immobilie' + (props.length !== 1 ? 'n' : '');
+
+  props.forEach(function(p) {
+    var statusClass = p.status === 'Verfügbar' ? 'available' : p.status === 'Reserviert' ? 'reserved' : 'sold';
+    var img = p.image || 'Bild-Haus.webp';
+    var priceText = p.price ? p.price + ' €' : 'Preis auf Anfrage';
+    var sizeText = p.size ? 'ca. ' + p.size + ' m²' : '';
+    var secretBadge = p.secret_sale ? '<span class="property-status secret">Secret Sale</span>' : '';
+    var card = document.createElement('article');
+    card.className = 'property-card';
+    card.innerHTML =
+      '<a href="expose.html?objnr=' + encodeURIComponent(p.objnr) + '">' +
+        '<span class="property-status ' + statusClass + '">' + escHtml(p.status) + '</span>' +
+        secretBadge +
+        '<img src="' + escHtml(img) + '" alt="' + escHtml(p.title) + '" loading="lazy">' +
+        '<div class="property-card-overlay">' +
+          '<h3>' + escHtml(p.title) + '</h3>' +
+          '<div class="property-card-meta">' +
+            '<span><i class="fas fa-tag"></i> ' + escHtml(priceText) + '</span>' +
+            (sizeText ? '<span><i class="fas fa-expand"></i> ' + escHtml(sizeText) + '</span>' : '') +
+            (p.rooms ? '<span><i class="fas fa-door-open"></i> ' + escHtml(p.rooms) + ' Zi.</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    grid.appendChild(card);
+  });
+});
