@@ -1,750 +1,744 @@
-﻿/* ============================================================
-   KRAUSE IMMOBILIEN – main.js (BEIGE VERSION)
-   Einziger Unterschied zur Copper-Version: PARTICLE_COLOR
-============================================================ */
+/* ============================================
+   KRAUSE IMMOBILIEN – MAIN JS
+   ============================================ */
 
-const PARTICLE_COLOR = 0x1d4ed8; // Cremeweiß/Blau
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ──────────────────────────────────────────────────────────
-   DEFAULT PROPERTY DATA
-────────────────────────────────────────────────────────── */
-const defaultProperties = [
-  {
-    id: 1,
-    isExample: true,
-    title: "Gepflegtes Einfamilienhaus",
-    address: "Bamberg, Gereuth",
-    price: "485.000",
-    size: "148",
-    rooms: 5,
-    year: 1982,
-    bathrooms: 2,
-    plot: "620",
-    status: "Verfügbar",
-    badge: "Neu",
-    description: "Charmantes Einfamilienhaus in ruhiger Wohnlage mit großzügigem Garten, Garage und herrlichem Blick auf das Bamberger Umland.",
-    description_long: "Dieses gepflegte Einfamilienhaus überzeugt durch seine ruhige, grüne Lage im Bamberger Stadtteil Gereuth. Das 1982 erbaute und gut erhaltene Haus bietet auf 148 m² Wohnfläche viel Platz für die ganze Familie. Das großzügige Grundstück von 620 m² lädt zum Erholen und Spielen ein. Eine angebaute Garage, ein ausgebauter Keller sowie eine sonnige Terrasse runden das Angebot ab. Die ruhige Wohnstraße, die gute Infrastruktur und die herrliche Aussicht auf das Bamberger Umland machen diese Immobilie zu einem echten Juwel.",
-    features: ["Angebaute Garage", "Großer Garten (620 m²)", "Ausgebauter Keller", "Sonnige Terrasse", "Ruhige Wohnlage", "Herrlicher Ausblick", "2 Vollbäder"],
-    energyClass: "E",
-    energyValue: "178",
-    image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80",
-    images: [
-      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80",
-      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=900&q=80",
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80",
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=900&q=80",
-      "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=900&q=80",
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80"
-    ]
-  },
-  {
-    id: 2,
-    isExample: true,
-    title: "Moderne Eigentumswohnung",
-    address: "Forchheim, Zentrum",
-    price: "265.000",
-    size: "82",
-    rooms: 3,
-    year: 2008,
-    bathrooms: 1,
-    plot: "",
-    status: "Verfügbar",
-    badge: "",
-    description: "Helle und moderne Eigentumswohnung in zentraler Lage. Balkon mit Südausrichtung und Tiefgaragenstellplatz inklusive.",
-    description_long: "Diese lichtdurchflutete Eigentumswohnung im Herzen von Forchheim bietet modernen Wohnkomfort auf 82 m². Das 2008 errichtete Gebäude ist in gepflegtem Zustand und verfügt über eine hochwertige Ausstattung. Der großzügige Balkon mit Südausrichtung lädt zum Entspannen ein. Ein Tiefgaragenstellplatz ist im Kaufpreis inbegriffen. Die zentrale Lage bietet alle Annehmlichkeiten des täglichen Lebens in fußläufiger Entfernung – Einkaufsmöglichkeiten, Schulen und öffentliche Verkehrsmittel sind direkt vor der Tür.",
-    features: ["Balkon Südausrichtung", "Tiefgaragenstellplatz", "Aufzug", "Fußbodenheizung", "Einbauküche", "Zentrale Lage", "Baujahr 2008"],
-    energyClass: "B",
-    energyValue: "52",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80",
-    images: [
-      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80",
-      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=900&q=80",
-      "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=900&q=80",
-      "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?w=900&q=80",
-      "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=900&q=80"
-    ]
-  },
-  {
-    id: 3,
-    isExample: true,
-    title: "Doppelhaushälfte mit Garten",
-    address: "Herzogenaurach",
-    price: "375.000",
-    size: "125",
-    rooms: 4,
-    year: 1995,
-    bathrooms: 2,
-    plot: "380",
-    status: "Reserviert",
-    badge: "",
-    description: "Gut geschnittene Doppelhaushälfte in familienfreundlicher Wohnlage mit großem Garten und Garage.",
-    description_long: "Diese gepflegte Doppelhaushälfte in Herzogenaurach bietet Familien auf 125 m² Wohnfläche viel Raum zum Leben. Das 1995 erbaute Haus überzeugt durch seinen gut geschnittenen Grundriss, einen großzügigen Garten von 380 m² sowie eine Garage. Die familienfreundliche Wohnlage mit nahegelegenen Schulen, Kindergärten und Einkaufsmöglichkeiten macht diese Immobilie besonders attraktiv für junge Familien. Terrasse, Keller und ein gepflegter Außenbereich runden das Angebot ab.",
-    features: ["Garage", "Großer Garten (380 m²)", "Keller", "Terrasse", "Familienfreundliche Lage", "2 Vollbäder", "Nahe Schulen & KiTa"],
-    energyClass: "D",
-    energyValue: "128",
-    image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80",
-    images: [
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=900&q=80",
-      "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=900&q=80",
-      "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=900&q=80",
-      "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?w=900&q=80",
-      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=900&q=80"
-    ]
+function markLoaded() {
+  document.documentElement.classList.add('is-loaded');
+}
+
+function hidePreloader() {
+  markLoaded();
+  if (typeof window.__startHero === 'function') window.__startHero();
+  const preloader = document.getElementById('preloader');
+  if (!preloader || preloader.classList.contains('hidden')) return;
+  preloader.classList.add('hidden');
+  document.body.classList.remove('no-scroll');
+}
+
+/* Failsafe: nie weiße Seite, selbst wenn ein CDN (Gsap/Lenis) nicht lädt */
+setTimeout(hidePreloader, 4000);
+window.addEventListener('load', () => setTimeout(hidePreloader, 800));
+
+/* ============================================
+   FORMULAR-VERSAND (DSGVO)
+   Kein Dienst Dritter: Die Angaben werden im E-Mail-Programm des Nutzers
+   als Entwurf vorbereitet – übermittelt wird erst durch dessen Sendeklick.
+   Endpunkte sind in FORM_ENDPOINTS pro Formular konfiguriert
+   (POST, JSON mit benannten Feldern an Netlify Functions).
+   ============================================ */
+const FORM_ENDPOINTS = {
+  contactForm: '/.netlify/functions/kontakt-anfrage',
+  valuationForm: '/.netlify/functions/verkauf-anfrage',
+  bewertungForm: '/.netlify/functions/verkauf-anfrage',
+  exposeForm: '/.netlify/functions/expose-anfrage',
+  suchprofilForm: '/.netlify/functions/kontakt-anfrage',
+  rgModalForm: '/.netlify/functions/kontakt-anfrage'
+};
+const FORM_EMAIL = 'info@krauseimmo.com';
+
+function formLabelFor(form, el) {
+  if (el.id) {
+    const label = form.querySelector('label[for="' + el.id + '"]');
+    if (label) return label.textContent.replace(/\s*\*+\s*$/, '').trim();
   }
-];
+  if (el.name) return el.name;
+  const holder = el.closest('.field');
+  const groupLabel = holder && holder.querySelector('label');
+  const suffix = el.placeholder ? el.placeholder.replace(/\s*\*+\s*$/, '').trim() : '';
+  if (groupLabel) {
+    const group = groupLabel.textContent.replace(/\s*\*+\s*$/, '').trim();
+    return suffix ? group + ' (' + suffix + ')' : group;
+  }
+  return suffix || el.id || '';
+}
 
-/* ──────────────────────────────────────────────────────────
-   STORAGE HELPERS
-────────────────────────────────────────────────────────── */
-let _propsCache = null;
-
-async function loadPropertiesAsync() {
-  if (_propsCache !== null) return _propsCache;
-  // Erst onOffice API versuchen, dann statische JSON als Fallback
-  try {
-    const resp = await fetch('/.netlify/functions/get-properties');
-    if (resp.ok) {
-      const data = await resp.json();
-      const items = Array.isArray(data) ? data : (data.items || []);
-      if (items.length > 0) { _propsCache = items.sort((a, b) => b.id - a.id); return _propsCache; }
+function formDataRows(form) {
+  const rows = [];
+  Array.prototype.forEach.call(form.elements, (el) => {
+    const type = (el.type || '').toLowerCase();
+    if (el.disabled || type === 'submit' || type === 'button' || type === 'reset' || type === 'file') return;
+    if (type === 'checkbox') {
+      if (el.checked) rows.push([formLabelFor(form, el) || 'Zustimmung', 'ja']);
+      return;
     }
-  } catch (e) {}
-  try {
-    const resp = await fetch('/data/properties.json');
-    if (resp.ok) {
-      const data = await resp.json();
-      const items = Array.isArray(data) ? data : (data.items || []);
-      if (items.length > 0) { _propsCache = items.sort((a, b) => b.id - a.id); return _propsCache; }
+    if (type === 'radio') {
+      if (el.checked && el.value) rows.push([formLabelFor(form, el), el.value]);
+      return;
     }
-  } catch (e) {}
-  _propsCache = defaultProperties;
-  return _propsCache;
-}
-
-function loadProperties() {
-  return _propsCache || defaultProperties;
-}
-function saveProperties(props) {
-  _propsCache = props;
-}
-function getNextId(props) {
-  return props.length ? Math.max(...props.map(p => p.id || 0)) + 1 : 1;
-}
-
-/* ──────────────────────────────────────────────────────────
-   PRELOADER
-────────────────────────────────────────────────────────── */
-function runPreloader(onDone) {
-  const fill = document.getElementById('plFill');
-  const pct  = document.getElementById('plPct');
-  const pl   = document.getElementById('preloader');
-
-  // Kein Preloader auf dieser Seite (Unterseiten) → sofort weitermachen
-  if (!fill || !pl) { onDone(); return; }
-
-  let progress = 0;
-
-  const tick = setInterval(() => {
-    const step = Math.random() * 12 + 4;
-    progress = Math.min(progress + step, 100);
-    fill.style.width = progress + '%';
-    if (pct) pct.textContent = Math.floor(progress) + '%';
-
-    if (progress >= 100) {
-      clearInterval(tick);
-      setTimeout(() => {
-        gsap.to(pl, {
-          yPercent: -100, duration: 1, ease: 'power4.inOut',
-          onComplete: () => { pl.style.display = 'none'; onDone(); }
-        });
-      }, 300);
-    }
-  }, 60);
-}
-
-/* ──────────────────────────────────────────────────────────
-   LENIS SMOOTH SCROLL
-────────────────────────────────────────────────────────── */
-var lenis;
-function initLenis() {
-  lenis = new Lenis({
-    duration: 1.3,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothTouch: false,
+    const value = (el.value || '').trim();
+    if (value) rows.push([formLabelFor(form, el), value]);
   });
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add(time => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-}
-
-/* ──────────────────────────────────────────────────────────
-   THREE.JS PARTICLES
-────────────────────────────────────────────────────────── */
-function initParticles() {
-  const canvas = document.getElementById('heroCanvas');
-  if (!canvas || typeof THREE === 'undefined') return;
-
-  const scene    = new THREE.Scene();
-  const camera   = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.1, 100);
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(innerWidth, innerHeight);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  camera.position.z = 3.5;
-
-  const count = 1800;
-  const pos   = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i++) pos[i] = (Math.random() - 0.5) * 12;
-
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-
-  const mat = new THREE.PointsMaterial({
-    size: 0.025, color: PARTICLE_COLOR,
-    transparent: true, opacity: 0.65,
-    sizeAttenuation: true,
-  });
-
-  const points = new THREE.Points(geo, mat);
-  scene.add(points);
-
-  let mx = 0, my = 0;
-  document.addEventListener('mousemove', e => {
-    mx = (e.clientX / innerWidth  - 0.5) * 2;
-    my = (e.clientY / innerHeight - 0.5) * 2;
-  });
-
-  (function animate() {
-    requestAnimationFrame(animate);
-    points.rotation.y += 0.0007;
-    points.rotation.x += 0.0003;
-    camera.position.x += (mx * 0.4 - camera.position.x) * 0.04;
-    camera.position.y += (-my * 0.4 - camera.position.y) * 0.04;
-    renderer.render(scene, camera);
-  })();
-
-  window.addEventListener('resize', () => {
-    camera.aspect = innerWidth / innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth, innerHeight);
-  });
-}
-
-
-/* ──────────────────────────────────────────────────────────
-   NAVIGATION
-────────────────────────────────────────────────────────── */
-function initNav() {
-  const nav    = document.getElementById('nav');
-  const burger = document.getElementById('burger');
-  const mobile = document.getElementById('mobileNav');
-
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', scrollY > 60);
-  }, { passive: true });
-
-  burger.addEventListener('click', () => mobile.classList.toggle('open'));
-  mobile.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => mobile.classList.remove('open'));
-  });
-
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target && lenis) { e.preventDefault(); lenis.scrollTo(target, { offset: -80 }); }
-    });
-  });
-}
-
-/* ──────────────────────────────────────────────────────────
-   TEXT SPLITTING
-────────────────────────────────────────────────────────── */
-function splitChars(el) {
-  const text = el.innerHTML
-    .replace(/<br\s*\/?>/gi, ' ')
-    .replace(/<[^>]+>/g, '');
-  el.innerHTML = '';
-  // Woerter als Einheit umbrechen - kein Zeilenbruch mitten im Wort
-  text.split(' ').forEach((word, i, arr) => {
-    if (word.length > 0) {
-      const wordWrap = document.createElement('span');
-      wordWrap.style.cssText = 'display:inline; white-space:nowrap;';
-      [...word].forEach(ch => {
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.textContent = ch;
-        wordWrap.appendChild(span);
-      });
-      el.appendChild(wordWrap);
-    }
-    if (i < arr.length - 1) {
-      el.appendChild(document.createTextNode(' '));
-    }
-  });
-  return el.querySelectorAll('.char');
-}
-
-/* ──────────────────────────────────────────────────────────
-   HERO ANIMATIONS
-────────────────────────────────────────────────────────── */
-function initHeroAnim() {
-  const tl = gsap.timeline({ delay: 0.2 });
-
-  // 1. "Ihr Partner für Erfahrung" zuerst
-  tl.to('.hero-rota', {
-    opacity: 1, y: 0, duration: 0.7, ease: 'power3.out'
-  });
-
-  // 2. "Immobilien" – erste Zeile
-  const lines = document.querySelectorAll('.hl');
-  if (lines[0]) {
-    const chars0 = splitChars(lines[0]);
-    tl.to(chars0, {
-      opacity: 1, y: 0, duration: 0.65, stagger: 0.016, ease: 'power4.out'
-    }, '-=0.2');
-  }
-
-  // 3. "erfolgreich" – zweite Zeile
-  if (lines[1]) {
-    const chars1 = splitChars(lines[1]);
-    tl.to(chars1, {
-      opacity: 1, y: 0, duration: 0.65, stagger: 0.016, ease: 'power4.out'
-    }, '-=0.1');
-  }
-
-  // 4. "verkaufen." – dritte Zeile
-  if (lines[2]) {
-    const chars2 = splitChars(lines[2]);
-    tl.to(chars2, {
-      opacity: 1, y: 0, duration: 0.65, stagger: 0.016, ease: 'power4.out'
-    }, '-=0.1');
-  }
-
-  // 5. Subtext
-  tl.to('.hero-sub', {
-    opacity: 1, y: 0, duration: 0.7, ease: 'power3.out'
-  }, '-=0.1');
-
-  // 6. CTA-Buttons
-  tl.to('.hero-ctas', {
-    opacity: 1, y: 0, duration: 0.6, ease: 'power3.out'
-  }, '-=0.3');
-
-  // 7. Float-Widget, Badge, Scroll-Hint
-  tl.to('.hero-float, .hero-badge, .hero-scroll', {
-    opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: 'power3.out'
-  }, '-=0.2');
-}
-
-/* ──────────────────────────────────────────────────────────
-   SCROLL ANIMATIONS
-────────────────────────────────────────────────────────── */
-function initScrollAnims() {
-  gsap.registerPlugin(ScrollTrigger);
-
-  document.querySelectorAll('.rf').forEach((el, i) => {
-    ScrollTrigger.create({
-      trigger: el, start: 'top 88%',
-      onEnter: () => {
-        gsap.to(el, { opacity: 1, y: 0, duration: 0.85, delay: (i % 4) * 0.08, ease: 'power3.out' });
-        el.classList.add('in');
-      },
-      once: true
-    });
-  });
-
-  document.querySelectorAll('.ss').forEach(el => {
-    const chars = splitChars(el);
-    ScrollTrigger.create({
-      trigger: el, start: 'top 85%',
-      onEnter: () => {
-        gsap.to(chars, { opacity: 1, y: 0, duration: 0.7, stagger: 0.015, ease: 'power4.out' });
-      },
-      once: true
-    });
-  });
-
-  document.querySelectorAll('.stat').forEach(stat => {
-    const numEl  = stat.querySelector('.sn');
-    const target = parseInt(stat.dataset.count);
-    const suffix = stat.dataset.suffix || '';
-    ScrollTrigger.create({
-      trigger: stat, start: 'top 85%',
-      onEnter: () => {
-        gsap.to({ val: 0 }, {
-          val: target, duration: 2, ease: 'power2.out',
-          onUpdate() { numEl.textContent = Math.floor(this.targets()[0].val) + suffix; }
-        });
-      },
-      once: true
-    });
-  });
-
-  const procFill = document.getElementById('procFill');
-  if (procFill) {
-    ScrollTrigger.create({
-      trigger: '#process', start: 'top 70%', end: 'bottom 30%', scrub: true,
-      onUpdate: self => {
-        procFill.style.height = (self.progress * 100) + '%';
-        document.querySelectorAll('.proc-step').forEach((step, i) => {
-          step.classList.toggle('active', self.progress > i / 5);
-        });
-      }
-    });
-  }
-
-  gsap.to('#aboutBg',  { yPercent: 30, ease: 'none', scrollTrigger: { trigger: '#about',   scrub: true } });
-  gsap.to('#procBg',   { yPercent: 20, ease: 'none', scrollTrigger: { trigger: '#process', scrub: true } });
-
-  document.querySelectorAll('.svc-card').forEach((card, i) => {
-    gsap.from(card, {
-      opacity: 0, y: 50, duration: 0.8, delay: i * 0.15, ease: 'power3.out',
-      scrollTrigger: { trigger: card, start: 'top 85%', once: true }
-    });
-  });
-}
-
-/* ──────────────────────────────────────────────────────────
-   MAGNETIC BUTTONS
-────────────────────────────────────────────────────────── */
-function initMagnet() {
-  if (window.matchMedia('(hover: none)').matches) return;
-  document.querySelectorAll('.mag-btn').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const r = btn.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width  / 2;
-      const y = e.clientY - r.top  - r.height / 2;
-      gsap.to(btn, { x: x * 0.28, y: y * 0.28, duration: 0.4, ease: 'power2.out' });
-    });
-    btn.addEventListener('mouseleave', () => {
-      gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1,0.4)' });
-    });
-  });
-}
-
-/* ──────────────────────────────────────────────────────────
-   PROPERTIES RENDERING
-────────────────────────────────────────────────────────── */
-let currentFilter = 'all';
-
-async function renderProperties(filter) {
-  currentFilter = filter;
-  const allProps = await loadPropertiesAsync();
-  const props  = allProps;
-  const grid   = document.getElementById('propGrid');
-  const empty  = document.getElementById('propEmpty');
-  if (!grid) return;
-
-  const filtered = filter === 'all' ? props : props.filter(p => p.status === filter);
-  grid.innerHTML = '';
-
-  if (filtered.length === 0) { empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-
-  // Show/hide demo notice based on whether all properties are examples
-  const demoNotice = document.getElementById('propDemoNotice');
-  if (demoNotice) {
-    const allExample = props.length > 0 && props.every(p => p.isExample);
-    demoNotice.classList.toggle('hidden', !allExample);
-  }
-
-  filtered.forEach((p, i) => {
-    const statusClass = p.status === 'Verfügbar' ? 'status-v' : p.status === 'Reserviert' ? 'status-r' : 'status-k';
-    const soldOverlay = p.status === 'Verkauft'
-      ? `<div class="prop-sold-overlay"><div class="prop-sold-stamp">VERKAUFT</div></div>` : '';
-    const badge = p.badge ? `<div class="prop-status ${statusClass}">${p.badge}</div>` : `<div class="prop-status ${statusClass}">${p.status}</div>`;
-    const img = p.image || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80';
-    const wmHtml = p.isExample ? `<div class="prop-wm">Beispielimmobilie</div>` : '';
-    const secretBadge = p.secret_sale ? `<div class="prop-secret-badge">SECRET SALE</div>` : '';
-
-    const card = document.createElement('div');
-    card.className = p.isExample ? 'prop-card is-example' : 'prop-card';
-    card.style.animationDelay = (i * 0.08) + 's';
-    card.innerHTML = `
-      <div class="prop-img-wrap">
-        <img src="${img}" alt="${p.title}" loading="lazy">
-        ${badge}
-        ${soldOverlay}
-        ${wmHtml}
-        ${secretBadge}
-        <div class="prop-id">Obj.-Nr. ${p.objnr || String(p.id).padStart(3, '0')}</div>
-      </div>
-      <div class="prop-body">
-        <div class="prop-price">€ ${p.price}</div>
-        <div class="prop-title">${p.title}</div>
-        <div class="prop-addr"><i class="fas fa-map-marker-alt"></i>${p.address}</div>
-        <div class="prop-stats">
-          ${p.size  ? `<div class="ps-item"><i class="fas fa-ruler-combined"></i>${p.size} m²</div>` : ''}
-          ${p.rooms ? `<div class="ps-item"><i class="fas fa-door-open"></i>${p.rooms} Zimmer</div>` : ''}
-          ${p.year      ? `<div class="ps-item"><i class="fas fa-calendar"></i>Bj. ${p.year}</div>` : ''}
-          ${p.bathrooms ? `<div class="ps-item"><i class="fas fa-bath"></i>${p.bathrooms} Bad</div>` : ''}
-          ${p.plot      ? `<div class="ps-item"><i class="fas fa-expand-arrows-alt"></i>${p.plot} m² Grund.</div>` : ''}
-        </div>
-        ${p.description ? `<div class="prop-desc">${p.description}</div>` : ''}
-        <div class="prop-cta-row">
-          <a href="expose.html?objnr=${encodeURIComponent(p.objnr)}&titel=${encodeURIComponent(p.title)}" class="prop-expose mag-btn"><span>Exposé anfordern</span><i class="fas fa-file-alt"></i></a>
-        </div>
-      </div>`;
-    grid.appendChild(card);
-  });
-
-  initMagnet();
-}
-
-function initPropertyFilters() {
-  document.querySelectorAll('.pf').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.pf').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderProperties(btn.dataset.filter);
-    });
-  });
-}
-
-/* ──────────────────────────────────────────────────────────
-   ADMIN PANEL
-────────────────────────────────────────────────────────── */
-function initAdmin() {
-  const overlay   = document.getElementById('admOverlay');
-  const closeBtn  = document.getElementById('admClose');
-  const saveBtn   = document.getElementById('admSave');
-  const cancelBtn = document.getElementById('admCancel');
-  if (!overlay) return;
-
-  document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'A') { e.preventDefault(); toggleAdmin(); }
-    if (e.key === 'Escape') closeAdmin();
-  });
-
-  closeBtn.addEventListener('click', closeAdmin);
-  overlay.addEventListener('click', e => { if (e.target === overlay) closeAdmin(); });
-  saveBtn.addEventListener('click', saveProperty);
-  cancelBtn.addEventListener('click', resetAdminForm);
-
-  function toggleAdmin() {
-    overlay.classList.toggle('open');
-    if (overlay.classList.contains('open')) renderAdminList();
-  }
-  function closeAdmin() { overlay.classList.remove('open'); resetAdminForm(); }
-
-  function renderAdminList() {
-    const list  = document.getElementById('admList');
-    const count = document.getElementById('propCount');
-    const props = loadProperties();
-    count.textContent = `(${props.length})`;
-    list.innerHTML = props.map(p => `
-      <div class="adm-prop-item">
-        <div class="adm-pi-info">
-          <div class="adm-pi-title">${p.title}</div>
-          <div class="adm-pi-meta">${p.address} · ${p.status} · € ${p.price}</div>
-        </div>
-        <div class="adm-pi-actions">
-          <button onclick="editProperty(${p.id})" title="Bearbeiten"><i class="fas fa-edit"></i></button>
-          <button class="del" onclick="deleteProperty(${p.id})" title="Löschen"><i class="fas fa-trash"></i></button>
-        </div>
-      </div>`).join('');
-  }
-
-  function saveProperty() {
-    const id    = document.getElementById('editId').value;
-    const props = loadProperties();
-    const entry = {
-      title:       document.getElementById('pTitle').value.trim(),
-      address:     document.getElementById('pAddr').value.trim(),
-      price:       document.getElementById('pPrice').value.trim(),
-      size:        document.getElementById('pSize').value.trim(),
-      rooms:       parseInt(document.getElementById('pRooms').value) || 0,
-      year:        parseInt(document.getElementById('pYear').value) || 0,
-      status:      document.getElementById('pStatus').value,
-      image:       document.getElementById('pImg').value.trim(),
-      description: document.getElementById('pDesc').value.trim(),
-      badge:       '',
-    };
-    if (!entry.title || !entry.price) { alert('Bitte mindestens Titel und Preis ausfüllen.'); return; }
-
-    if (id) {
-      const idx = props.findIndex(p => p.id === parseInt(id));
-      if (idx !== -1) { props[idx] = { ...props[idx], ...entry }; }
+  Array.prototype.forEach.call(form.querySelectorAll('[data-value].selected'), (el) => {
+    let label = 'Auswahl';
+    if (el.classList.contains('object-option')) {
+      label = 'Objekttyp';
     } else {
-      entry.id = getNextId(props);
-      props.push(entry);
+      const holder = el.closest('.field');
+      const groupLabel = holder && holder.querySelector('label');
+      if (groupLabel) label = groupLabel.textContent.replace(/\s*\*+\s*$/, '').trim();
     }
-    saveProperties(props);
-    renderAdminList();
-    renderProperties(currentFilter);
-    resetAdminForm();
-  }
-
-  window.editProperty = function(id) {
-    const props = loadProperties();
-    const p = props.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('editId').value  = p.id;
-    document.getElementById('pTitle').value  = p.title || '';
-    document.getElementById('pAddr').value   = p.address || '';
-    document.getElementById('pPrice').value  = p.price || '';
-    document.getElementById('pSize').value   = p.size || '';
-    document.getElementById('pRooms').value  = p.rooms || '';
-    document.getElementById('pYear').value   = p.year || '';
-    document.getElementById('pStatus').value = p.status || 'Verfügbar';
-    document.getElementById('pImg').value    = p.image || '';
-    document.getElementById('pDesc').value   = p.description || '';
-    document.getElementById('admFormTitle').textContent = 'Objekt bearbeiten';
-    cancelBtn.style.display = 'inline';
-    document.getElementById('admFormTitle').scrollIntoView({ behavior: 'smooth' });
-  };
-
-  window.deleteProperty = function(id) {
-    if (!confirm('Dieses Objekt wirklich löschen?')) return;
-    let props = loadProperties();
-    props = props.filter(p => p.id !== id);
-    saveProperties(props);
-    renderAdminList();
-    renderProperties(currentFilter);
-  };
-
-  function resetAdminForm() {
-    document.getElementById('editId').value   = '';
-    document.getElementById('pTitle').value   = '';
-    document.getElementById('pAddr').value    = '';
-    document.getElementById('pPrice').value   = '';
-    document.getElementById('pSize').value    = '';
-    document.getElementById('pRooms').value   = '';
-    document.getElementById('pYear').value    = '';
-    document.getElementById('pStatus').value  = 'Verfügbar';
-    document.getElementById('pImg').value     = '';
-    document.getElementById('pDesc').value    = '';
-    document.getElementById('admFormTitle').textContent = 'Neues Objekt hinzufügen';
-    cancelBtn.style.display = 'none';
-  }
-}
-
-/* ──────────────────────────────────────────────────────────
-   CONTACT FORM
-────────────────────────────────────────────────────────── */
-function initContactForm() {
-  const form      = document.getElementById('contactForm');
-  const success   = document.getElementById('formSuccess');
-  const submitBtn = document.getElementById('contactSubmitBtn');
-  const errorMsg  = document.getElementById('contactError');
-  if (!form) return;
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    if (errorMsg) errorMsg.style.display = 'none';
-
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.querySelector('span').textContent = 'Wird gesendet…';
-    }
-
-    // Hidden iframe – vermeidet fetch-Redirect-Probleme mit nForms
-    const iframe = document.createElement('iframe');
-    iframe.name = 'nforms_cf_' + Date.now();
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-
-    form.target = iframe.name;
-
-    iframe.addEventListener('load', () => {
-      document.body.removeChild(iframe);
-      window.location.href = 'danke.html';
-    });
-
-    form.submit();
+    rows.push([label, el.getAttribute('data-value')]);
   });
+  return rows;
 }
 
-/* ──────────────────────────────────────────────────────────
-   WORD ROTATOR  (raum96-inspired)
-────────────────────────────────────────────────────────── */
-function initRotator() {
-  const el = document.getElementById('rotaWord');
-  if (!el) return;
-  const words = ['Erfahrung', 'Kompetenz', 'Ihren Erfolg', 'Sicherheit', 'besten Preis'];
-  let idx = 0;
+function collectFormFields(form) {
+  var data = {};
+  var fd = new FormData(form);
+  fd.forEach(function(val, key) { if (key !== 'dsgvo' && key !== 'website') data[key] = val; });
+  form.querySelectorAll('[data-value].selected').forEach(function(el) {
+    var key = el.closest('[data-step="1"]') ? 'immobilienart' : el.closest('[data-step="4"]') ? 'zustand' : 'auswahl';
+    data[key] = el.getAttribute('data-value');
+  });
+  return data;
+}
 
-  setInterval(() => {
-    gsap.to(el, {
-      opacity: 0, y: -10, duration: 0.3, ease: 'power2.in',
+function buildPayload(formId, fields) {
+  if (formId === 'contactForm') {
+    return {
+      name: ((fields.vorname || '') + ' ' + (fields.nachname || '')).trim(),
+      phone: fields.telefon || '',
+      email: fields.email || '',
+      subject: fields.interesse || 'Kontaktanfrage',
+      message: fields.nachricht || '',
+      website: '',
+      formzeit: Date.now().toString()
+    };
+  }
+  if (formId === 'valuationForm' || formId === 'bewertungForm') {
+    var adresse = [fields.strasse, fields.plz, fields.ort].filter(Boolean).join(', ');
+    return {
+      vorname: fields.vorname || fields.name || '',
+      nachname: fields.nachname || '',
+      email: fields.email || '',
+      telefon: fields.telefon || '',
+      immobilienart: fields.immobilienart || '',
+      adresse: adresse || fields.adresse || '',
+      nachricht: [fields.zustand, fields.notizen, fields.nachricht, fields.wohnflaeche ? 'Wohnfl.: ' + fields.wohnflaeche + ' m²' : '', fields.zimmer ? 'Zimmer: ' + fields.zimmer : '', fields.baujahr ? 'Baujahr: ' + fields.baujahr : '', fields.lage ? 'Lage: ' + fields.lage : ''].filter(Boolean).join(' | '),
+      website: '',
+      formzeit: Date.now().toString()
+    };
+  }
+  if (formId === 'exposeForm') {
+    var params = new URLSearchParams(window.location.search);
+    return {
+      vorname: fields.vorname || '',
+      nachname: fields.nachname || '',
+      email: fields.email || '',
+      telefon: fields.telefon || '',
+      nachricht: fields.nachricht || '',
+      objnr: params.get('objnr') || fields.objnr || '',
+      website: '',
+      formzeit: Date.now().toString()
+    };
+  }
+  fields.website = '';
+  fields.formzeit = Date.now().toString();
+  return fields;
+}
+
+function sendForm(form) {
+  var endpoint = FORM_ENDPOINTS[form.id];
+  if (endpoint) {
+    var fields = collectFormFields(form);
+    var payload = buildPayload(form.id, fields);
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return true;
+    }).catch(function() { return false; });
+  }
+  var rows = formDataRows(form);
+  var body = rows.map(function(row) { return row[0] + ': ' + row[1]; }).join('\r\n');
+  var subject = 'Anfrage über die Website';
+  window.location.href = 'mailto:' + FORM_EMAIL +
+    '?subject=' + encodeURIComponent(subject) +
+    '&body=' + encodeURIComponent(body);
+  return Promise.resolve(true);
+}
+
+function formSuccess(title, text) {
+  return '<div class="valuation-success">' +
+    '<i class="fas fa-paper-plane"></i>' +
+    '<h3>' + title + '</h3>' +
+    '<p>' + text + '</p>' +
+    '</div>';
+}
+
+const FORM_SUCCESS_TEXT = 'Vielen Dank! Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns innerhalb von 24 Stunden bei Ihnen. Bei dringenden Anliegen erreichen Sie uns unter <a href="tel:+491608006113">0160 / 800 6113</a>.';
+const FORM_ERROR_TEXT = 'Beim Senden ist leider ein Fehler aufgetreten. Bitte schreiben Sie uns direkt an <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a> oder rufen Sie <a href="tel:+491608006113">0160 / 800 6113</a> an.';
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------- HERO-STARTE (sobald der Preloader verschwindet) ---------- */
+  window.__startHero = function () {
+    if (window.__heroStarted) return;
+    window.__heroStarted = true;
+    if (prefersReducedMotion) return;
+    initParticles();
+    initHeroAnimations();
+  };
+
+  /* ---------- PRELOADER (elegante KI Logo-Aufbau Animation) ---------- */
+  const preloader = document.getElementById('preloader');
+  const preloaderFill = document.getElementById('preloaderFill');
+  const prRect = document.getElementById('prRect');
+  const prK = document.getElementById('prK');
+  const prI = document.getElementById('prI');
+
+  if (preloader && prRect && window.gsap && !prefersReducedMotion) {
+    const prTl = gsap.timeline({
       onComplete: () => {
-        idx = (idx + 1) % words.length;
-        el.textContent = words[idx];
-        gsap.fromTo(el,
-          { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
-        );
+        markLoaded();
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.inOut',
+          onComplete: hidePreloader
+        });
       }
     });
-  }, 2800);
-}
 
-/* ──────────────────────────────────────────────────────────
-   SUCHPROFIL  (raum96-inspired)
-────────────────────────────────────────────────────────── */
-function initSuchprofil() {
-  const toggle  = document.getElementById('spToggle');
-  const form    = document.getElementById('spForm');
-  const submit  = document.getElementById('spSubmit');
-  const success = document.getElementById('spSuccess');
-  if (!toggle || !form) return;
+    prTl.to(prRect, { opacity: 1, duration: 0.4, ease: 'power2.out' })
+        .to(prK, { opacity: 1, y: 0, duration: 0.32, ease: 'back.out(1.7)' }, '-=0.1')
+        .to(prI, { opacity: 1, y: 0, duration: 0.32, ease: 'back.out(1.7)' }, '-=0.18')
+        .to(preloaderFill, { width: '100%', duration: 0.55, ease: 'power2.inOut' }, '-=0.25')
+        .to({}, { duration: 0.15 });
+  } else {
+    hidePreloader();
+  }
 
-  toggle.addEventListener('click', () => {
-    const isOpen = form.classList.toggle('open');
-    const label  = toggle.querySelector('span');
-    if (label) label.textContent = isOpen ? 'Suchprofil schließen' : 'Suchprofil anlegen';
-    if (isOpen) setTimeout(() => form.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
-    initMagnet();
-  });
+  /* ---------- PARTICLE SYSTEM (dezente grüne Punkte + Linien) ---------- */
+  function initParticles() {
+    const canvas = document.getElementById('heroParticles');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [], mouse = { x: -1000, y: -1000 };
 
-  if (submit) {
-    submit.addEventListener('click', () => {
-      const email = document.getElementById('spEmail');
-      if (!email || !email.value.trim()) { if (email) email.focus(); return; }
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
 
-      /* ── nForms Submission ── */
-      const fd = new FormData();
-      fd.append('name',         document.getElementById('spName')?.value   || '');
-      fd.append('email',        email.value);
-      fd.append('telefon',      document.getElementById('spPhone')?.value  || '');
-      fd.append('objektart',    document.getElementById('spType')?.value   || '');
-      fd.append('region',       document.getElementById('spRegion')?.value || '');
-      fd.append('max_kaufpreis',document.getElementById('spPrice')?.value  || '');
-      fd.append('min_zimmer',   document.getElementById('spRooms')?.value  || '');
-      fd.append('min_flaeche',  document.getElementById('spSize')?.value   || '');
-      fd.append('wuensche',     document.getElementById('spNotes')?.value  || '');
-      fd.append('quelle',       'index.html');
+    document.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
 
-      fetch('https://api.nforms.eu/f/nf_z810ws5qsp2qiv28vutc8tpxk4gr9n5r', {
-        method: 'POST', mode: 'no-cors', body: fd
+    const count = Math.min(60, Math.floor(window.innerWidth / 25));
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.15 + 0.05
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+
+      particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(42, 95, 141, ${p.opacity})`;
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(42, 95, 141, ${0.04 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+
+        const mdx = p.x - mouse.x;
+        const mdy = p.y - mouse.y;
+        const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (mDist < 150) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(201, 162, 39, ${0.08 * (1 - mDist / 150)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
       });
 
-      if (success) {
-        success.classList.add('show');
-        gsap.from(success, { opacity: 0, y: 10, duration: 0.5, ease: 'power3.out' });
-      }
-      submit.style.display = 'none';
-      setTimeout(() => { window.location.href = 'danke-suchprofil.html'; }, 800);
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  /* ---------- LENIS SMOOTH SCROLL ---------- */
+  let lenis = null;
+
+  if (typeof Lenis !== 'undefined' && !prefersReducedMotion) {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+      wheelMultiplier: 1,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    if (window.gsap) {
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+    }
+  }
+
+  /* ---------- NAVIGATION SCROLL ---------- */
+  const nav = document.getElementById('nav');
+  const topbar = document.querySelector('.topbar');
+
+  function checkNavScroll() {
+    if (window.scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    if (topbar) {
+      const span = Math.max(300, window.innerHeight * 0.45);
+      const solid = Math.min(1, Math.max(0, window.scrollY / span));
+      topbar.style.setProperty('--tb-solid', solid.toFixed(3));
+    }
+  }
+
+  window.addEventListener('scroll', checkNavScroll, { passive: true });
+  checkNavScroll();
+
+  /* ---------- BURGER MENU ---------- */
+  const burger = document.getElementById('navBurger');
+  const mobileNav = document.getElementById('navMobile');
+
+  if (burger && mobileNav) {
+    burger.addEventListener('click', () => {
+      const isOpen = burger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+      document.body.classList.toggle('no-scroll', isOpen);
+    });
+
+    mobileNav.querySelectorAll('a[data-close-nav]').forEach(link => {
+      link.addEventListener('click', () => {
+        burger.classList.remove('open');
+        mobileNav.classList.remove('open');
+        document.body.classList.remove('no-scroll');
+      });
     });
   }
-}
 
-/* ──────────────────────────────────────────────────────────
-   INIT
-────────────────────────────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  initParticles();
-
-  runPreloader(() => {
-    initLenis();
-    initNav();
-    initHeroAnim();
-    initScrollAnims();
-    initMagnet();
-    initPropertyFilters();
-    loadPropertiesAsync().then(() => renderProperties('all'));
-    initAdmin();
-    initContactForm();
-    initRotator();
-    initSuchprofil();
+  /* ---------- SMOOTH ANCHOR SCROLL ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        if (lenis) {
+          lenis.scrollTo(target, { offset: -80 });
+        } else {
+          const y = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    });
   });
+
+  /* ---------- CUSTOM CURSOR (eleganter grüner Punkt mit Lag) ---------- */
+  const cursor = document.getElementById('cursor');
+  const isTouchDevice = window.matchMedia('(hover: none)').matches ||
+                        'ontouchstart' in window ||
+                        navigator.maxTouchPoints > 0;
+
+  if (cursor && window.innerWidth > 768 && !isTouchDevice) {
+    let mouseX = -100, mouseY = -100;
+    let cursorX = -100, cursorY = -100;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function updateCursor() {
+      const ease = 0.12;
+      cursorX += (mouseX - cursorX) * ease;
+      cursorY += (mouseY - cursorY) * ease;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(updateCursor);
+    }
+    updateCursor();
+
+    document.querySelectorAll('a, button, .btn, input, select, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+    });
+  } else if (cursor) {
+    cursor.style.display = 'none';
+  }
+
+  /* ---------- MAGNETIC BUTTONS ---------- */
+  if (window.innerWidth > 768 && !isTouchDevice) {
+    document.querySelectorAll('.magnetic-btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        if (window.gsap) {
+          gsap.to(btn, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: 'elastic.out(1, 0.4)',
+            clearProps: 'transform'
+          });
+        }
+      });
+    });
+  }
+
+  /* ---------- HERO ANIMATIONS ---------- */
+  function initHeroAnimations() {
+    if (typeof gsap === 'undefined') return;
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.out' },
+      onComplete: () => { if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh(); }
+    });
+
+    tl.from('.hero-headline', {
+      opacity: 0,
+      y: 40,
+      duration: 0.8
+    })
+    .from('.hero-cities', {
+      opacity: 0,
+      y: 30,
+      duration: 0.6
+    }, '-=0.4')
+    .from('.hero-buttons .btn', {
+      opacity: 0,
+      y: 25,
+      duration: 0.5,
+      stagger: 0.12
+    }, '-=0.3')
+    .from('.hero-angela img', {
+      opacity: 0,
+      x: 60,
+      duration: 1,
+      ease: 'power2.out'
+    }, '-=0.8');
+  }
+
+  /* ---------- STATS COUNTER (GSAP ScrollTrigger) ---------- */
+  function initStatsCounter() {
+    if (typeof gsap === 'undefined') {
+      document.querySelectorAll('.stat-number').forEach(el => {
+        const target = parseInt(el.getAttribute('data-target'));
+        const suffix = el.getAttribute('data-suffix') || '';
+        el.textContent = target + suffix;
+      });
+      return;
+    }
+
+    const statsBar = document.querySelector('.stats-bar');
+    if (!statsBar) return;
+
+    gsap.from('.stat-item', {
+      scrollTrigger: {
+        trigger: statsBar,
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.6,
+      stagger: 0.15,
+      ease: 'power3.out'
+    });
+
+    document.querySelectorAll('.stat-number').forEach(el => {
+      const target = parseInt(el.getAttribute('data-target'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      const obj = { val: 0 };
+
+      gsap.to(obj, {
+        val: target,
+        duration: 2,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: statsBar,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        },
+        onUpdate: () => {
+          el.textContent = Math.floor(obj.val) + suffix;
+        },
+        onComplete: () => {
+          el.textContent = target + suffix;
+        }
+      });
+    });
+  }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  const hasGsap = typeof gsap !== 'undefined';
+  const hasScrollTrigger = typeof ScrollTrigger !== 'undefined';
+  if (hasGsap && hasScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  function initScrollReveal() {
+    if (!(hasGsap && hasScrollTrigger)) return;
+
+    gsap.utils.toArray('.reveal-up').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    });
+
+    gsap.utils.toArray('.reveal-left').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+        opacity: 0,
+        x: -40,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    });
+
+    gsap.utils.toArray('.reveal-right').forEach(el => {
+      gsap.from(el, {
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          toggleActions: 'play none none none',
+        },
+        opacity: 0,
+        x: 40,
+        duration: 0.8,
+        ease: 'power3.out',
+      });
+    });
+
+    gsap.utils.toArray('.stagger-children').forEach(parent => {
+      const children = parent.children;
+      gsap.from(children, {
+        scrollTrigger: {
+          trigger: parent,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+          once: true
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.6,
+        stagger: 0.12,
+        ease: 'power3.out',
+        clearProps: 'opacity,transform'
+      });
+    });
+  }
+
+  initScrollReveal();
+
+  /* ---------- PARALLAX (Hero + Leistungen) ---------- */
+  function initParallax() {
+    if (!(hasGsap && hasScrollTrigger) || prefersReducedMotion) return;
+
+    // Hero: Hintergrundbild & Angela-Foto bewegen sich langsamer
+    gsap.to('.hero-dark-img', {
+      yPercent: 12,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+
+    gsap.to('.hero-angela img', {
+      yPercent: -8,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      }
+    });
+  }
+  initStatsCounter();
+  initParallax();
+
+  /* ---------- FOOTER JAHR ---------- */
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ---------- WERTERMITTLUNG: mehrstufiges Formular ---------- */
+  const valuationForm = document.getElementById('valuationForm');
+  if (valuationForm) {
+    const steps = valuationForm.querySelectorAll('.valuation-step');
+    const prevBtn = document.getElementById('valuationPrev');
+    const nextBtn = document.getElementById('valuationNext');
+    const progressFill = document.getElementById('progressFill');
+    const stepLabel = document.getElementById('stepLabel');
+    const stepCurrent = document.getElementById('stepCurrent');
+
+    const stepNames = ['Objekttyp', 'Eckdaten', 'Lage', 'Zustand', 'Kontakt'];
+    const selectedData = {
+      objekttyp: null,
+      zustand: null
+    };
+
+    let currentStep = 1;
+    const totalSteps = steps.length;
+
+    function updateStep() {
+      steps.forEach(step => {
+        step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
+      });
+      progressFill.style.width = (currentStep / totalSteps) * 100 + '%';
+      stepLabel.textContent = stepNames[currentStep - 1];
+      stepCurrent.textContent = currentStep;
+
+      prevBtn.disabled = currentStep === 1;
+      if (currentStep === totalSteps) {
+        nextBtn.innerHTML = 'Anfrage senden <i class="fas fa-paper-plane"></i>';
+      } else {
+        nextBtn.innerHTML = 'Weiter <i class="fas fa-arrow-right"></i>';
+      }
+    }
+
+    // Objekttyp auswählen
+    valuationForm.querySelectorAll('.object-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        valuationForm.querySelectorAll('.object-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        selectedData.objekttyp = opt.dataset.value;
+      });
+    });
+
+    // Zustand auswählen
+    valuationForm.querySelectorAll('.state-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        valuationForm.querySelectorAll('.state-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        selectedData.zustand = opt.dataset.value;
+      });
+    });
+
+    function stepValid(stepIndex) {
+      if (stepIndex < totalSteps) return true;
+      const name = valuationForm.querySelector('#objName');
+      const email = valuationForm.querySelector('#objEmail');
+      return name.value.trim() !== '' &&
+             email.value.trim() !== '' &&
+             email.checkValidity();
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateStep();
+      } else {
+        if (!stepValid(currentStep)) {
+          if (!valuationForm.querySelector('#objName').value.trim()) valuationForm.querySelector('#objName').focus();
+          else valuationForm.querySelector('#objEmail').focus();
+          return;
+        }
+        // Angaben vorbereiten: E-Mail-Programm öffnen (Versand nur durch den Nutzer)
+        nextBtn.disabled = true;
+        nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
+        sendForm(valuationForm).then((ok) => {
+          valuationForm.innerHTML = ok
+            ? formSuccess('Anfrage gesendet!', FORM_SUCCESS_TEXT)
+            : formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        });
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStep();
+      }
+    });
+
+    updateStep();
+  }
+
+  /* ---------- KONTAKTFORMULAR ---------- */
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!contactForm.checkValidity()) {
+        contactForm.reportValidity();
+        return;
+      }
+      const submitBtn = contactForm.querySelector('.contact-submit');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
+      sendForm(contactForm).then((ok) => {
+        contactForm.innerHTML = ok
+          ? formSuccess('Anfrage gesendet!', FORM_SUCCESS_TEXT)
+          : formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+      });
+    });
+  }
+
+  /* ---------- SCROLL REVEAL für neue Sektionen ---------- */
+  if (hasGsap && hasScrollTrigger) {
+    ScrollTrigger.refresh();
+  }
 });

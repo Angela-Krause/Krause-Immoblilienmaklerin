@@ -2,13 +2,153 @@
   publish = "."
   functions = "netlify/functions"
 
+# Security Headers
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "frame-ancestors 'none'"
 
+# Versteckte Angebotsseite + CMS nicht indexieren
 [[headers]]
   for = "/secret.html"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Cache-Control für Bilder
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.avif"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpeg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache-Control für CSS/JS
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Cache-Control für Fonts
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/vendor/fontawesome/webfonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects: Seiten ohne .html-Endung erreichbar
+[[redirects]]
+  from = "/hausverkauf"
+  to = "/hausverkauf.html"
+  status = 200
+
+[[redirects]]
+  from = "/wohnungsverkauf"
+  to = "/wohnungsverkauf.html"
+  status = 200
+
+[[redirects]]
+  from = "/ueber-mich"
+  to = "/ueber-mich.html"
+  status = 200
+
+[[redirects]]
+  from = "/immobilien"
+  to = "/immobilien.html"
+  status = 200
+
+[[redirects]]
+  from = "/ratgeber"
+  to = "/ratgeber.html"
+  status = 200
+
+[[redirects]]
+  from = "/nachlass"
+  to = "/nachlass.html"
+  status = 200
+
+[[redirects]]
+  from = "/scheidung"
+  to = "/scheidung.html"
+  status = 200
+
+[[redirects]]
+  from = "/expose"
+  to = "/expose.html"
+  status = 200
+
+[[redirects]]
+  from = "/impressum"
+  to = "/impressum.html"
+  status = 200
+
+[[redirects]]
+  from = "/datenschutz"
+  to = "/datenschutz.html"
+  status = 200
+
+[[redirects]]
+  from = "/agb"
+  to = "/agb.html"
+  status = 200
+
+[[redirects]]
+  from = "/widerrufen"
+  to = "/widerrufen.html"
+  status = 200
+
+# Redirects für alte Seitennamen (LIVE → NEU)
+[[redirects]]
+  from = "/verkauf"
+  to = "/hausverkauf.html"
+  status = 301
+
+[[redirects]]
+  from = "/nachlass-hell"
+  to = "/nachlass.html"
+  status = 301
+
+[[redirects]]
+  from = "/scheidung-hell"
+  to = "/scheidung.html"
+  status = 301
+
+[[redirects]]
+  from = "/ratgeber-hell"
+  to = "/ratgeber.html"
+  status = 301

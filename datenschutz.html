@@ -1,651 +1,301 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Datenschutzerklärung – Krause Immobilien UG, Angela Krause, Bamberg.">
-  <meta name="robots" content="noindex, follow">
-  <title>Datenschutz | Krause Immobilien – Bamberg & Region</title>  <link rel="stylesheet" href="style.css">
-  <style>
-    body { cursor: auto; }
-    .cursor-ring, .cursor-dot { display: none; }
-
-    /* ── Graue Texte auf hellen Hintergründen – 40% dunkler ── */
-    #ds-hero, #ds-content { --muted: rgba(30,58,138,0.46); }
-
-    /* ── PAGE HERO ── */
-    #ds-hero {
-      background: var(--bg2);
-      padding: 9rem 0 5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .ds-hero-inner {
-      max-width: 800px;
-    }
-    .ds-hero-tag {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--bright);
-      background: rgba(29,78,216,0.08); border: 1px solid rgba(29,78,216,0.18);
-      border-radius: 100px; padding: 0.4rem 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .ds-hero-tag span { width: 6px; height: 6px; border-radius: 50%; background: var(--bright); }
-    #ds-hero h1 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.8rem, 5vw, 4rem);
-      font-weight: 600; line-height: 1.1;
-      color: var(--text); margin-bottom: 1rem;
-    }
-    #ds-hero p {
-      font-size: 0.9rem; color: var(--muted); line-height: 1.8;
-    }
-
-    /* ── CONTENT LAYOUT ── */
-    #ds-content {
-      padding: 6rem 0 8rem;
-      background: var(--bg);
-    }
-    .ds-grid {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 5rem;
-      align-items: start;
-    }
-    .ds-sidebar {
-      position: sticky;
-      top: 6rem;
-    }
-    .ds-nav-title {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 1rem;
-    }
-    .ds-nav-list { list-style: none; }
-    .ds-nav-list li { margin-bottom: 0.4rem; }
-    .ds-nav-list a {
-      font-size: 0.82rem; color: var(--muted);
-      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
-      transition: color 0.2s;
-    }
-    .ds-nav-list a:hover { color: var(--bright); }
-    .ds-nav-list a::before {
-      content: '';
-      width: 16px; height: 1px;
-      background: currentColor; flex-shrink: 0;
-      transition: width 0.2s;
-    }
-    .ds-nav-list a:hover::before { width: 24px; }
-
-    /* ── SECTIONS ── */
-    .ds-section {
-      margin-bottom: 4rem;
-      padding-bottom: 4rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .ds-section:last-child {
-      border-bottom: none; margin-bottom: 0; padding-bottom: 0;
-    }
-    .ds-section-id {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--bright);
-      margin-bottom: 0.8rem;
-    }
-    .ds-section h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.7rem; font-weight: 600;
-      color: var(--text); margin-bottom: 1.5rem; line-height: 1.2;
-    }
-    .ds-section h3 {
-      font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--text);
-      margin: 1.8rem 0 0.8rem;
-    }
-    .ds-block {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem 2rem;
-      margin-bottom: 1rem;
-    }
-    .ds-block-label {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-    .ds-block-val {
-      font-size: 0.9rem; color: var(--text); line-height: 1.7;
-    }
-    .ds-block-val a {
-      color: var(--bright); text-decoration: none;
-    }
-    .ds-block-val a:hover { text-decoration: underline; }
-    .ds-prose {
-      font-size: 0.88rem; color: var(--muted); line-height: 1.85;
-    }
-    .ds-prose p { margin-bottom: 1rem; }
-    .ds-prose p:last-child { margin-bottom: 0; }
-    .ds-prose ul {
-      padding-left: 1.3rem;
-      margin-bottom: 1rem;
-    }
-    .ds-prose ul li { margin-bottom: 0.4rem; }
-    .ds-info-box {
-      background: rgba(29,78,216,0.05);
-      border: 1px solid rgba(29,78,216,0.16);
-      border-left: 3px solid var(--bright);
-      border-radius: var(--radius);
-      padding: 1.2rem 1.6rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.85rem; color: var(--muted); line-height: 1.75;
-    }
-    .ds-info-box strong { color: var(--text); }
-
-    @media (max-width: 900px) {
-      .ds-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .ds-sidebar { position: static; }
-    }
-  </style>
+  <!-- Google Consent Mode v2 Default -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'functionality_storage': 'denied',
+      'personalization_storage': 'denied',
+      'security_storage': 'denied',
+      'wait_for_update': 1000
+    });
+  </script>
   <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NDGHX59P');</script>
+  <script>
+    var __gtmLoaded = false;
+    function loadGTM() {
+      if (__gtmLoaded) return;
+      __gtmLoaded = true;
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-NDGHX59P');
+    }
+  </script>
   <!-- End Google Tag Manager -->
+  <link rel="canonical" href="https://www.krauseimmo.com/datenschutz">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#2A5F8D">
+  <meta name="robots" content="noindex, follow">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Datenschutzerklärung | Krause Immobilien</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
+  <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDGHX59P"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-
-<!-- CURSOR --><!-- NAVIGATION -->
-<nav id="nav">
-  <div class="nav-wrap">
-    <a href="index.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
-    <ul class="nav-links">
-      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
-      <li class="has-drop"><a href="verkauf.html" class="nl">Verkauf<svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="nav-drop"><a href="verkauf.html">Immobilienverkauf</a><a href="hausverkauf.html">Hausverkauf</a><a href="wohnungsverkauf.html">Wohnungsverkauf</a></div></li>
-      <li><a href="immobilien.html" class="nl">Immobilien</a></li>
-      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
-      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
-      <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
-    </ul>
-    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
-    <a href="index.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
-    <button class="burger" id="burger" aria-label="Menü öffnen">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-  <div class="mobile-nav" id="mobileNav">
-    <a href="ueber-mich.html">Über mich</a>
-    <a href="verkauf.html">Verkauf</a>
-    <a href="immobilien.html">Immobilien</a>
-    <a href="nachlass-hell.html">Nachlass und Erbe</a>
-    <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
-    <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
-    <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
-    <a href="index.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
-  </div>
-</nav>
-
-<!-- PAGE HERO -->
-<section id="ds-hero">
-  <div class="container">
-    <div class="ds-hero-inner">
-      <div class="ds-hero-tag"><span></span>Rechtliche Angaben</div>
-      <h1>Datenschutzerklärung</h1>
-      <p>Informationen gemäß der Datenschutz-Grundverordnung (DSGVO) zum Umgang mit Ihren personenbezogenen Daten – gültig ab 25. Mai 2018.</p>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <a href="mailto:info@krauseimmo.com" class="topbar-item"><i class="fas fa-envelope"></i> info@krauseimmo.com</a>
+      <a href="tel:+491608006113" class="topbar-item"><i class="fas fa-phone-alt"></i> 0160 / 800 6113</a>
     </div>
   </div>
-</section>
-
-<!-- CONTENT -->
-<section id="ds-content">
-  <div class="container">
-    <div class="ds-grid">
-
-      <!-- SIDEBAR NAVIGATION -->
-      <aside class="ds-sidebar">
-        <p class="ds-nav-title">Inhalt</p>
-        <ul class="ds-nav-list">
-          <li><a href="#ueberblick">Datenschutz auf einen Blick</a></li>
-          <li><a href="#allgemein">Allgemeine Hinweise</a></li>
-          <li><a href="#cookies">Cookies</a></li>
-          <li><a href="#server-logs">Server-Log-Dateien</a></li>
-          <li><a href="#kontaktformular">Kontaktformular</a></li>
-          <li><a href="#vertragsdaten">Kunden- & Vertragsdaten</a></li>
-          <li><a href="#newsletter">Newsletter</a></li>
-          <li><a href="#youtube">YouTube</a></li>
-          <li><a href="#google-maps">Google Maps</a></li>
-          <li><a href="#cdn-dienste">Technische CDN-Dienste</a></li>
-          <li><a href="#hosting">Hosting</a></li>
-          <li><a href="#gtm">Google Tag Manager</a></li>
-          <li><a href="#brevo">E-Mail-Versand (Brevo)</a></li>
-          <li><a href="#pexels">Bildmaterial (Pexels)</a></li>
-          <li><a href="#widerrufsbutton">Widerrufsbutton (§ 312k BGB)</a></li>
-        </ul>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main>
-
-        <!-- 01 ÜBERBLICK -->
-        <div class="ds-section" id="ueberblick">
-          <p class="ds-section-id">01</p>
-          <h2>Datenschutz auf einen Blick</h2>
-          <div class="ds-info-box">
-            Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie unsere Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><rect width="42" height="42" rx="8" fill="rgba(42,95,141,0.12)"/><text x="21" y="29" font-family="'Cormorant Garamond', serif" font-size="18" font-weight="700" fill="#2A5F8D" text-anchor="middle" letter-spacing="2">KI</text></svg><span class="nav-logo-text">Krause Immobilien</span></a>
+      <div class="nav-right">
+        <div class="nav-links">
+          <a href="ueber-mich.html" class="nav-link">Über mich</a>
+          <div class="nav-dropdown">
+            <a href="hausverkauf.html" class="nav-link nav-dropdown-trigger">Verkauf<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg></a>
+            <div class="nav-dropdown-menu"><a href="hausverkauf.html" class="nav-dropdown-item">Hausverkauf</a><a href="wohnungsverkauf.html" class="nav-dropdown-item">Wohnungsverkauf</a></div>
           </div>
-
-          <h3>Datenerfassung auf unserer Website</h3>
-          <div class="ds-prose">
-            <p>Ein Teil der Daten wird erhoben, um eine fehlerfreie Bereitstellung der Website zu gewährleisten. Andere Daten können zur Analyse Ihres Nutzerverhaltens verwendet werden. Die Datenerfassung erfolgt zum einen dadurch, dass Sie uns Daten mitteilen (z. B. Angaben im Kontaktformular). Andere Daten werden automatisch beim Besuch der Website durch unsere IT-Systeme erfasst – das sind vor allem technische Daten wie Internetbrowser, Betriebssystem oder die Uhrzeit des Seitenaufrufs.</p>
-          </div>
-
-          <h3>Ihre Rechte</h3>
-          <div class="ds-prose">
-            <p>Sie haben jederzeit das Recht, unentgeltlich Auskunft über Herkunft, Empfänger und Zweck Ihrer gespeicherten personenbezogenen Daten zu erhalten. Sie haben außerdem ein Recht, die Berichtigung, Sperrung oder Löschung dieser Daten zu verlangen. Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden.</p>
-            <p>Des Weiteren steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu.</p>
-          </div>
-
-          <h3>Analyse-Tools und Drittanbieter</h3>
-          <div class="ds-prose">
-            <p>Beim Besuch unserer Website kann Ihr Surf-Verhalten statistisch ausgewertet werden. Das geschieht vor allem mit Cookies und mit sogenannten Analyseprogrammen. Die Analyse Ihres Surf-Verhaltens erfolgt in der Regel anonym; das Surf-Verhalten kann nicht zu Ihnen zurückverfolgt werden. Sie können dieser Analyse widersprechen oder sie durch die Nichtbenutzung bestimmter Tools verhindern.</p>
-          </div>
+          <a href="immobilien.html" class="nav-link nav-link-highlight">Immobilien</a>
+          <a href="ratgeber.html" class="nav-link">Immobilien-Ratgeber</a>
         </div>
-
-        <!-- 02 ALLGEMEINE HINWEISE -->
-        <div class="ds-section" id="allgemein">
-          <p class="ds-section-id">02</p>
-          <h2>Allgemeine Hinweise und Pflichtinformationen</h2>
-
-          <h3>Verantwortliche Stelle</h3>
-          <div class="ds-block">
-            <p class="ds-block-label">Datenschutzverantwortliche</p>
-            <p class="ds-block-val">
-              KRAUSE Immobilien UG (haftungsbeschränkt)<br>
-              Angela Krause<br>
-              Peter-Graf-Str. 7, 96135 Stegaurach<br>
-              <a href="tel:+4916080061130">+49 (0)160 / 800 6113</a><br>
-              <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung. Wenn Sie diese Website benutzen, werden verschiedene personenbezogene Daten erhoben. Die vorliegende Datenschutzerklärung erläutert, welche Daten wir erheben und wofür wir sie nutzen.</p>
-            <p>Wir weisen darauf hin, dass die Datenübertragung im Internet (z. B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.</p>
-          </div>
-
-          <h3>Widerruf Ihrer Einwilligung zur Datenverarbeitung</h3>
-          <div class="ds-prose">
-            <p>Viele Datenverarbeitungsvorgänge sind nur mit Ihrer ausdrücklichen Einwilligung möglich. Sie können eine bereits erteilte Einwilligung jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitung bleibt vom Widerruf unberührt.</p>
-          </div>
-
-          <h3>Widerspruchsrecht gegen Datenerhebung (Art. 21 DSGVO)</h3>
-          <div class="ds-prose">
-            <p>Wenn die Datenverarbeitung auf Grundlage von Art. 6 Abs. 1 lit. e oder f DSGVO erfolgt, haben Sie jederzeit das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, gegen die Verarbeitung Ihrer personenbezogenen Daten Widerspruch einzulegen. Die jeweilige Rechtsgrundlage, auf denen eine Verarbeitung beruht, entnehmen Sie dieser Datenschutzerklärung.</p>
-            <p>Wenn Sie Widerspruch einlegen, werden wir Ihre betroffenen personenbezogenen Daten nicht mehr verarbeiten, es sei denn, wir können zwingende schutzwürdige Gründe für die Verarbeitung nachweisen, die Ihre Interessen, Rechte und Freiheiten überwiegen oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen.</p>
-          </div>
-
-          <h3>Beschwerderecht bei der Aufsichtsbehörde</h3>
-          <div class="ds-prose">
-            <p>Im Falle von Verstößen gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres gewöhnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes zu. Das Beschwerderecht besteht unbeschadet anderweitiger verwaltungsrechtlicher oder gerichtlicher Rechtsbehelfe.</p>
-            <p>Die für KRAUSE Immobilien UG zuständige Datenschutzaufsichtsbehörde ist:</p>
-          </div>
-          <div class="ds-block">
-            <p class="ds-block-label">Zuständige Aufsichtsbehörde</p>
-            <p class="ds-block-val">
-              Bayerisches Landesamt für Datenschutzaufsicht (BayLDA)<br>
-              Promenade 18<br>
-              91522 Ansbach<br>
-              <a href="https://www.lda.bayern.de" target="_blank" rel="noopener">www.lda.bayern.de</a>
-            </p>
-          </div>
-
-          <h3>Recht auf Datenübertragbarkeit</h3>
-          <div class="ds-prose">
-            <p>Sie haben das Recht, Daten, die wir auf Grundlage Ihrer Einwilligung oder in Erfüllung eines Vertrags automatisiert verarbeiten, an sich oder an einen Dritten in einem gängigen, maschinenlesbaren Format aushändigen zu lassen. Sofern Sie die direkte Übertragung der Daten an einen anderen Verantwortlichen verlangen, erfolgt dies nur, soweit es technisch machbar ist.</p>
-          </div>
-
-          <h3>SSL- bzw. TLS-Verschlüsselung</h3>
-          <div class="ds-info-box">
-            <strong><i class="fas fa-lock" style="color:var(--bright); margin-right:0.5rem;"></i>Sichere Verbindung:</strong> Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt.
-          </div>
-
-          <h3>Auskunft, Sperrung, Löschung und Berichtigung</h3>
-          <div class="ds-prose">
-            <p>Sie haben im Rahmen der geltenden gesetzlichen Bestimmungen jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten. Hierzu sowie zu weiteren Fragen zum Thema personenbezogene Daten können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden.</p>
-          </div>
-
-          <h3>Recht auf Einschränkung der Verarbeitung</h3>
-          <div class="ds-prose">
-            <p>Sie haben das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen. Hierzu können Sie sich jederzeit unter der im Impressum angegebenen Adresse an uns wenden. Das Recht auf Einschränkung der Verarbeitung besteht in folgenden Fällen:</p>
-            <ul>
-              <li>Wenn Sie die Richtigkeit Ihrer bei uns gespeicherten personenbezogenen Daten bestreiten, benötigen wir in der Regel Zeit, um dies zu überprüfen.</li>
-              <li>Wenn die Verarbeitung Ihrer personenbezogenen Daten unrechtmäßig geschah/geschieht, können Sie statt der Löschung die Einschränkung der Datenverarbeitung verlangen.</li>
-              <li>Wenn wir Ihre personenbezogenen Daten nicht mehr benötigen, Sie sie jedoch zur Ausübung, Verteidigung oder Geltendmachung von Rechtsansprüchen benötigen, haben Sie das Recht, statt der Löschung die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li>
-              <li>Wenn Sie einen Widerspruch nach Art. 21 Abs. 1 DSGVO eingelegt haben, muss eine Abwägung zwischen Ihren und unseren Interessen vorgenommen werden. Solange noch nicht feststeht, wessen Interessen überwiegen, haben Sie das Recht, die Einschränkung der Verarbeitung Ihrer personenbezogenen Daten zu verlangen.</li>
-            </ul>
-            <p>Wenn Sie die Verarbeitung Ihrer personenbezogenen Daten eingeschränkt haben, dürfen diese Daten – von ihrer Speicherung abgesehen – nur mit Ihrer Einwilligung oder zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen oder zum Schutz der Rechte einer anderen natürlichen oder juristischen Person oder aus Gründen eines wichtigen öffentlichen Interesses der Europäischen Union oder eines Mitgliedstaats verarbeitet werden.</p>
-          </div>
-
-          <h3>Widerspruch gegen Werbe-E-Mails</h3>
-          <div class="ds-prose">
-            <p>Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-E-Mails, vor.</p>
-          </div>
-        </div>
-
-        <!-- 03 COOKIES -->
-        <div class="ds-section" id="cookies">
-          <p class="ds-section-id">03</p>
-          <h2>Cookies</h2>
-          <div class="ds-prose">
-            <p>Unsere Internetseiten verwenden so genannte „Cookies". Cookies sind kleine Textdateien und richten auf Ihrem Endgerät keinen Schaden an. Sie werden entweder vorübergehend für die Dauer einer Sitzung (Session-Cookies) oder dauerhaft (permanente Cookies) auf Ihrem Endgerät gespeichert. Session-Cookies werden nach Ende Ihres Besuchs automatisch gelöscht. Permanente Cookies bleiben auf Ihrem Endgerät gespeichert, bis Sie diese selbst löschen oder eine automatische Lösung durch Ihren Webbrowser erfolgt.</p>
-            <p>Teilweise können auch Cookies von Drittunternehmen auf Ihrem Endgerät gespeichert werden, wenn Sie unsere Seite betreten (Third-Party-Cookies). Diese ermöglichen uns oder Ihnen die Nutzung bestimmter Dienstleistungen des Drittunternehmens.</p>
-            <p>Cookies haben verschiedene Funktionen. Zahlreiche Cookies sind technisch notwendig, da bestimmte Webseitenfunktionen ohne diese nicht funktionieren würden. Andere Cookies dienen dazu, das Nutzerverhalten auszuwerten oder Werbung anzuzeigen.</p>
-            <p>Cookies, die zur Durchführung des elektronischen Kommunikationsvorgangs oder zur Bereitstellung bestimmter, von Ihnen erwünschter Funktionen notwendig sind, werden auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO gespeichert. Der Websitebetreiber hat ein berechtigtes Interesse an der Speicherung von Cookies zur technisch fehlerfreien und optimierten Bereitstellung seiner Dienste.</p>
-            <p>Sie können Ihren Browser so einstellen, dass Sie über das Setzen von Cookies informiert werden und Cookies nur im Einzelfall erlauben, die Annahme von Cookies für bestimmte Fälle oder generell ausschließen sowie das automatische Löschen der Cookies beim Schließen des Browsers aktivieren. Bei der Deaktivierung von Cookies kann die Funktionalität dieser Website eingeschränkt sein.</p>
-          </div>
-        </div>
-
-        <!-- 04 SERVER-LOGS -->
-        <div class="ds-section" id="server-logs">
-          <p class="ds-section-id">04</p>
-          <h2>Server-Log-Dateien</h2>
-          <div class="ds-prose">
-            <p>Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:</p>
-            <ul>
-              <li>Browsertyp und Browserversion</li>
-              <li>Verwendetes Betriebssystem</li>
-              <li>Referrer URL</li>
-              <li>Hostname des zugreifenden Rechners</li>
-              <li>Uhrzeit der Serveranfrage</li>
-              <li>IP-Adresse</li>
-            </ul>
-            <p>Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Grundlage für die Datenverarbeitung ist Art. 6 Abs. 1 lit. f DSGVO, der die Verarbeitung von Daten zur Erfüllung eines Vertrags oder vorvertraglicher Maßnahmen gestattet.</p>
-          </div>
-        </div>
-
-        <!-- 05 KONTAKTFORMULAR -->
-        <div class="ds-section" id="kontaktformular">
-          <p class="ds-section-id">05</p>
-          <h2>Kontaktformular</h2>
-          <div class="ds-prose">
-            <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
-            <p>Die Verarbeitung der in das Kontaktformular eingegebenen Daten erfolgt somit ausschließlich auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Sie können diese Einwilligung jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns. Die Rechtmäßigkeit der bis zum Widerruf erfolgten Datenverarbeitungsvorgänge bleibt vom Widerruf unberührt.</p>
-            <p>Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z. B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen – insbesondere Aufbewahrungsfristen – bleiben unberührt.</p>
-          </div>
-
-          <h3>Registrierung auf dieser Website</h3>
-          <div class="ds-prose">
-            <p>Sie können sich auf unserer Website registrieren, um zusätzliche Funktionen auf der Seite zu nutzen. Die dazu eingegebenen Daten verwenden wir nur zum Zwecke der Nutzung des jeweiligen Angebotes oder Dienstes, für den Sie sich registriert haben. Die bei der Registrierung abgefragten Pflichtangaben müssen vollständig angegeben werden. Anderenfalls werden wir die Registrierung ablehnen.</p>
-            <p>Für wichtige Änderungen etwa beim Angebotsumfang oder bei technisch notwendigen Änderungen nutzen wir die bei der Registrierung angegebene E-Mail-Adresse, um Sie auf diesem Wege zu informieren.</p>
-            <p>Die Verarbeitung der bei der Registrierung eingegebenen Daten erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Sie können eine von Ihnen erteilte Einwilligung jederzeit widerrufen. Dazu reicht eine formlose Mitteilung per E-Mail an uns. Die Rechtmäßigkeit der bereits erfolgten Datenverarbeitung bleibt vom Widerruf unberührt.</p>
-            <p>Die bei der Registrierung erfassten Daten werden von uns gespeichert, solange Sie auf unserer Website registriert sind und werden anschließend gelöscht. Gesetzliche Aufbewahrungsfristen bleiben unberührt.</p>
-          </div>
-        </div>
-
-        <!-- 06 KUNDEN- & VERTRAGSDATEN -->
-        <div class="ds-section" id="vertragsdaten">
-          <p class="ds-section-id">06</p>
-          <h2>Kunden- und Vertragsdaten</h2>
-          <div class="ds-prose">
-            <p>Wir erheben, verarbeiten und nutzen personenbezogene Daten nur, soweit sie für die Begründung, inhaltliche Ausgestaltung oder Änderung des Rechtsverhältnisses erforderlich sind (Bestandsdaten). Dies erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, der die Verarbeitung von Daten zur Erfüllung eines Vertrags oder vorvertraglicher Maßnahmen gestattet. Personenbezogene Daten über die Inanspruchnahme unserer Internetseiten (Nutzungsdaten) erheben, verarbeiten und nutzen wir nur, soweit dies erforderlich ist, um dem Nutzer die Inanspruchnahme des Dienstes zu ermöglichen oder abzurechnen.</p>
-            <p>Die erhobenen Kundendaten werden nach Abschluss des Auftrags oder Beendigung der Geschäftsbeziehung gelöscht. Gesetzliche Aufbewahrungsfristen bleiben unberührt.</p>
-          </div>
-
-          <h3>Datenübermittlung bei Vertragsschluss</h3>
-          <div class="ds-prose">
-            <p>Wir übermitteln personenbezogene Daten an Dritte nur dann, wenn dies im Rahmen der Vertragsabwicklung notwendig ist, etwa an das mit der Zahlungsabwicklung beauftragte Kreditinstitut.</p>
-            <p>Eine weitergehende Übermittlung der Daten erfolgt nicht bzw. nur dann, wenn Sie der Übermittlung ausdrücklich zugestimmt haben. Eine Weitergabe Ihrer Daten an Dritte ohne ausdrückliche Einwilligung, etwa zu Zwecken der Werbung, erfolgt nicht.</p>
-            <p>Grundlage für die Datenverarbeitung ist Art. 6 Abs. 1 lit. b DSGVO, der die Verarbeitung von Daten zur Erfüllung eines Vertrags oder vorvertraglicher Maßnahmen gestattet.</p>
-          </div>
-        </div>
-
-        <!-- 07 NEWSLETTER -->
-        <div class="ds-section" id="newsletter">
-          <p class="ds-section-id">07</p>
-          <h2>Newsletter</h2>
-          <div class="ds-prose">
-            <p>Wenn Sie den auf der Website angebotenen Newsletter beziehen möchten, benötigen wir von Ihnen eine E-Mail-Adresse sowie Informationen, welche uns die Überprüfung gestatten, dass Sie der Inhaber der angegebenen E-Mail-Adresse sind und mit dem Empfang des Newsletters einverstanden sind. Weitere Daten werden nicht bzw. nur auf freiwilliger Basis erhoben. Diese Daten verwenden wir ausschließlich für den Versand der angeforderten Informationen und geben sie nicht an Dritte weiter.</p>
-            <p>Die Verarbeitung der in das Newsletteranmeldeformular eingegebenen Daten erfolgt ausschließlich auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Die erteilte Einwilligung zur Speicherung der Daten, der E-Mail-Adresse sowie deren Nutzung zum Versand des Newsletters können Sie jederzeit widerrufen, etwa über den „Austragen"-Link im Newsletter. Die Rechtmäßigkeit der bereits erfolgten Datenverarbeitungsvorgänge bleibt vom Widerruf unberührt.</p>
-            <p>Die von Ihnen zum Zwecke des Newsletter-Bezugs bei uns hinterlegten Daten werden von uns bis zu Ihrer Austragung aus dem Newsletter gespeichert und nach der Abbestellung des Newsletters gelöscht. Daten, die zu anderen Zwecken bei uns gespeichert wurden, bleiben hiervon unberührt.</p>
-          </div>
-        </div>
-
-        <!-- 08 YOUTUBE -->
-        <div class="ds-section" id="youtube">
-          <p class="ds-section-id">08</p>
-          <h2>YouTube (erweiterter Datenschutzmodus)</h2>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">YouTube, LLC · 901 Cherry Ave. · San Bruno, CA 94066, USA</p>
-          </div>
-          <div class="ds-prose">
-            <p>Unsere Website nutzt Plugins der Website YouTube. Betreiber der Seiten ist die YouTube, LLC. Wenn Sie eine unserer mit einem YouTube-Plugin ausgestatteten Seiten besuchen, wird eine Verbindung zu den Servern von YouTube hergestellt. Dabei wird dem YouTube-Server mitgeteilt, welche unserer Seiten Sie besucht haben.</p>
-            <p>Wir nutzen YouTube im erweiterten Datenschutzmodus. Videos, die im erweiterten Datenschutzmodus abgespielt werden, werden nach Angaben von YouTube nicht zur Personalisierung des Surfens auf YouTube eingesetzt. Anzeigen, die im erweiterten Datenschutzmodus ausgespielt werden, sind ebenfalls nicht personalisiert. Im erweiterten Datenschutzmodus werden keine Cookies gesetzt, es können jedoch noch Verbindungen mit dem DoubleClick-Netzwerk von Google hergestellt werden.</p>
-            <p>Wenn Sie ein YouTube-Video starten, können weitere Datenverarbeitungsvorgänge ausgelöst werden, auf die wir keinen Einfluss haben. Wenn Sie in Ihrem YouTube-Account eingeloggt sind, ermöglichen Sie YouTube, Ihr Surfverhalten direkt Ihrem persönlichen Profil zuzuordnen. Dies können Sie verhindern, indem Sie sich aus Ihrem YouTube-Account ausloggen.</p>
-            <p>Die Nutzung von YouTube erfolgt im Interesse einer ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p>
-            <p>Weitere Informationen zum Datenschutz bei YouTube finden Sie in deren Datenschutzerklärung unter: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></p>
-          </div>
-        </div>
-
-        <!-- 09 GOOGLE MAPS -->
-        <div class="ds-section" id="google-maps">
-          <p class="ds-section-id">09</p>
-          <h2>Google Maps</h2>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">Google Inc. · 1600 Amphitheatre Parkway · Mountain View, CA 94043, USA</p>
-          </div>
-          <div class="ds-prose">
-            <p>Diese Seite nutzt über eine API den Kartendienst Google Maps. Zur Nutzung der Funktionen von Google Maps ist es notwendig, Ihre IP Adresse zu speichern. Diese Informationen werden in der Regel an einen Server von Google in den USA übertragen und dort gespeichert. Der Anbieter dieser Seite hat keinen Einfluss auf diese Datenübertragung.</p>
-            <p>Die Nutzung von Google Maps erfolgt im Interesse einer ansprechenden Darstellung unserer Online-Angebote und an einer leichten Auffindbarkeit der von uns auf der Website angegebenen Orte. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p>
-            <p>Mehr Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerklärung von Google: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></p>
-          </div>
-        </div>
-
-        <!-- 10 CDN-DIENSTE -->
-        <div class="ds-section" id="cdn-dienste">
-          <p class="ds-section-id">10</p>
-          <h2>Technische CDN-Dienste</h2>
-          <div class="ds-prose">
-            <p>Unsere Website lädt technische JavaScript-Bibliotheken (Animationen, Scroll-Effekte) von externen Content-Delivery-Networks (CDN). Dabei wird beim Seitenaufruf eine Verbindung zu den Servern des jeweiligen Anbieters hergestellt, wodurch technisch bedingt Ihre IP-Adresse übertragen wird. Die Einbindung dient ausschließlich der fehlerfreien Darstellung und technischen Funktionsfähigkeit der Website; eine Verwendung der Daten zu Werbezwecken findet nicht statt.</p>
-            <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer technisch einwandfreien Bereitstellung des Webangebots).</p>
-          </div>
-
-          <h3>Cloudflare cdnjs</h3>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">
-              Cloudflare, Inc. · 101 Townsend St. · San Francisco, CA 94107, USA<br>
-              <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung Cloudflare</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Über <strong>cdnjs.cloudflare.com</strong> werden die Animationsbibliotheken GSAP (GreenSock Animation Platform) und ScrollTrigger geladen. Cloudflare ist im EU-US Data Privacy Framework (DPF) zertifiziert, sodass für den Datentransfer in die USA ein angemessenes Schutzniveau besteht.</p>
-          </div>
-
-          <h3>jsDelivr</h3>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">
-              Prospect One · ul. Kijowska 7 · 03-738 Warszawa, Polen (EU)<br>
-              <a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">Datenschutzerklärung jsDelivr</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Über <strong>cdn.jsdelivr.net</strong> wird die Smooth-Scroll-Bibliothek Lenis geladen. jsDelivr betreibt seine Infrastruktur überwiegend innerhalb der EU; eine Datenübertragung in Drittstaaten kann im Rahmen des CDN-Betriebs nicht vollständig ausgeschlossen werden. Es gelten Standardvertragsklauseln (SCC) gemäß Art. 46 Abs. 2 lit. c DSGVO.</p>
-          </div>
-        </div>
-
-        <!-- 11 HOSTING -->
-        <div class="ds-section" id="hosting">
-          <p class="ds-section-id">11</p>
-          <h2>Hosting</h2>
-          <div class="ds-prose">
-            <p>Diese Website wird extern gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Hierbei kann es sich v. a. um IP-Adressen, Kontaktanfragen, Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Websitezugriffe und sonstige Daten handeln, die über eine Website generiert werden.</p>
-            <p>Das Hosting erfolgt zum Zweck der Vertragserfüllung gegenüber unseren potenziellen und bestehenden Kunden (Art. 6 Abs. 1 lit. b DSGVO) sowie im Interesse einer sicheren, schnellen und effizienten Bereitstellung unseres Online-Angebots durch einen professionellen Anbieter (Art. 6 Abs. 1 lit. f DSGVO).</p>
-            <p>Mit unserem Hoster wurde ein Auftragsverarbeitungsvertrag (AVV) gemäß Art. 28 DSGVO geschlossen.</p>
-          </div>
-          <div class="ds-block">
-            <p class="ds-block-label">Hosting-Anbieter</p>
-            <p class="ds-block-val">
-              Netlify, Inc.<br>
-              512 2nd Street, Suite 200 · San Francisco, CA 94107, USA<br>
-              Netlify ist im EU-US Data Privacy Framework (DPF) zertifiziert.<br>
-              <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Datenschutzerklärung Netlify</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Der Quellcode der Website wird in einem privaten Repository bei GitHub (GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA, Muttergesellschaft: Microsoft Corporation) verwaltet. GitHub ist im EU-US Data Privacy Framework (DPF) zertifiziert. Öffentlich zugängliche Daten werden dabei nicht gespeichert.</p>
-          </div>
-        </div>
-
-        <!-- 12 GOOGLE TAG MANAGER -->
-        <div class="ds-section" id="gtm">
-          <p class="ds-section-id">12</p>
-          <h2>Google Tag Manager</h2>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">
-              Google Ireland Limited · Gordon House, Barrow Street · Dublin 4, Irland<br>
-              (Muttergesellschaft: Google LLC, Mountain View, CA, USA)<br>
-              <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener">Datenschutzerklärung Google</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Diese Website verwendet den Google Tag Manager. Über diesen Dienst können Website-Tags über eine Oberfläche verwaltet werden. Der Google Tag Manager selbst setzt keine Cookies und erhebt keine personenbezogenen Daten. Er löst lediglich andere Tags aus, die ggf. Daten erfassen. Der Google Tag Manager greift nicht auf diese Daten zu. Wenn eine Deaktivierung auf Domain- oder Cookie-Ebene vorgenommen wurde, bleibt diese für alle Tracking-Tags bestehen, die mit dem Google Tag Manager implementiert werden.</p>
-            <p>Der Google Tag Manager wird ausschließlich nach Erteilung Ihrer Einwilligung über unser Cookie-Banner aktiviert (Art. 6 Abs. 1 lit. a DSGVO i. V. m. § 25 Abs. 1 TDDDG). Ohne Ihre Einwilligung werden keine Tags geladen.</p>
-            <p>Google Ireland Limited ist dem EU-US Data Privacy Framework (DPF) beigetreten, sodass für einen etwaigen Datentransfer in die USA ein angemessenes Schutzniveau besteht.</p>
-          </div>
-        </div>
-
-        <!-- 13 BREVO -->
-        <div class="ds-section" id="brevo">
-          <p class="ds-section-id">13</p>
-          <h2>E-Mail-Versand (Brevo)</h2>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">
-              Sendinblue GmbH · Köpenicker Straße 126 · 10179 Berlin<br>
-              <a href="https://www.brevo.com/de/legal/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung Brevo</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Für den technischen Versand von E-Mails nach Formularübermittlungen auf unserer Website nutzen wir den Dienst Brevo (ehemals Sendinblue). Wenn Sie ein Formular auf unserer Website absenden, werden die von Ihnen eingegebenen Daten (Name, E-Mail-Adresse, Telefonnummer, Nachricht) über die Server von Brevo verarbeitet und als E-Mail an uns weitergeleitet sowie eine Bestätigungsmail an Sie versandt.</p>
-            <p>Die Datenverarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (Anbahnung eines Vertragsverhältnisses) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer technisch zuverlässigen Kontaktmöglichkeit).</p>
-            <p>Die Server von Brevo befinden sich innerhalb der Europäischen Union. Mit Brevo wurde ein Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO geschlossen.</p>
-          </div>
-        </div>
-
-        <!-- 14 PEXELS -->
-        <div class="ds-section" id="pexels">
-          <p class="ds-section-id">14</p>
-          <h2>Bildmaterial (Pexels)</h2>
-          <div class="ds-block">
-            <p class="ds-block-label">Anbieter</p>
-            <p class="ds-block-val">
-              Canva Pty Ltd · 110 Kippax Street · Surry Hills NSW 2010, Australien<br>
-              (Betreiber von Pexels)<br>
-              <a href="https://www.pexels.com/de-de/datenschutzerklaerung/" target="_blank" rel="noopener">Datenschutzerklärung Pexels</a>
-            </p>
-          </div>
-          <div class="ds-prose">
-            <p>Auf unserer Website werden Bildmaterialien verwendet, die über das Content Delivery Network (CDN) von Pexels (<strong>images.pexels.com</strong>) eingebunden sind. Pexels stellt lizenzfreie Fotos zur Verfügung. Beim Laden der Bilder wird eine Verbindung zu den Servern von Pexels hergestellt, wodurch technisch bedingt Ihre IP-Adresse an Pexels übertragen wird.</p>
-            <p>Die Nutzung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer ansprechenden Darstellung unseres Online-Angebots mit professionellem Bildmaterial). Eine Verarbeitung der IP-Adresse zu Werbezwecken durch Pexels findet nach unserer Kenntnis nicht statt.</p>
-            <p>Canva Pty Ltd mit Sitz in Australien unterliegt dem Datenschutzrecht des australischen Bundesdatenschutzgesetzes (Privacy Act 1988). Für Datentransfers aus der EU gelten Standardvertragsklauseln (SCC) gemäß Art. 46 Abs. 2 lit. c DSGVO.</p>
-          </div>
-        </div>
-
-        <!-- 15 WIDERRUFSBUTTON -->
-        <div class="ds-section" id="widerrufsbutton">
-          <p class="ds-section-id">15</p>
-          <h2>Widerrufsbutton (§ 312k BGB)</h2>
-          <div class="ds-info-box">
-            <strong>Gesetzliche Grundlage:</strong> Seit dem 19. Juni 2026 ist der sogenannte „Widerrufsbutton" für Unternehmer gesetzlich vorgeschrieben, die online Verträge mit Verbrauchern schließen (§ 312k BGB i. V. m. der Verordnung vom 11.03.2026, BGBl. 2026 I Nr. 28).
-          </div>
-          <div class="ds-prose">
-            <p>Über die Seite <a href="widerrufen.html">„Vertrag widerrufen"</a> können Verbraucherinnen und Verbraucher einen online geschlossenen Vertrag mit KRAUSE Immobilien UG (haftungsbeschränkt) einfach und unkompliziert widerrufen.</p>
-            <p>Wenn Sie das Widerrufsformular absenden, werden folgende Daten verarbeitet:</p>
-            <ul>
-              <li>Name und Vorname</li>
-              <li>Kontaktdaten (E-Mail-Adresse, ggf. Telefonnummer)</li>
-              <li>Angaben zum betreffenden Vertrag</li>
-              <li>Datum der Widerrufserklärung</li>
-            </ul>
-            <p>Die Verarbeitung erfolgt zur Erfüllung unserer gesetzlichen Pflicht aus § 312k BGB (Art. 6 Abs. 1 lit. c DSGVO). Nach Eingang Ihres Widerrufs erhalten Sie eine automatische Bestätigungs-E-Mail.</p>
-            <p>Die Daten werden so lange gespeichert, wie es zur Bearbeitung des Widerrufs und zur Erfüllung gesetzlicher Aufbewahrungspflichten erforderlich ist.</p>
-          </div>
-        </div>
-
-      </main>
+        <div class="nav-sub-links"><a href="nachlass.html" class="nav-sub-link">Nachlass und Erbe</a><a href="scheidung.html" class="nav-sub-link">Scheidung</a></div>
+      </div>
+      <button class="nav-burger" id="navBurger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
     </div>
+  </nav>
+  <div class="nav-mobile" id="navMobile">
+    <a href="ueber-mich.html" data-close-nav>Über mich</a>
+    <div class="nav-mobile-sub"><a href="hausverkauf.html">Hausverkauf</a><a href="wohnungsverkauf.html">Wohnungsverkauf</a><a href="nachlass.html">Nachlass &amp; Erbfall</a><a href="scheidung.html">Scheidung &amp; Immobilien</a></div>
+    <a href="immobilien.html" data-close-nav>Objekte</a>
+    <a href="ratgeber.html">Ratgeber</a>
+    <a href="#contact" data-close-nav>Kontakt</a>
+    <a href="tel:+491608006113" class="nav-mobile-phone" data-close-nav><i class="fas fa-phone-alt"></i> 0160 / 800 6113</a>
+    <a href="#contact" class="btn btn-primary" data-close-nav>Jetzt Kontakt aufnehmen</a>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer id="footer">
-  <div class="container">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a href="index.html" class="logo"><svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg><span class="logo-wordmark">Krause Immobilien</span></a>
-        <p>Ihr vertrauensvoller Partner für Immobilienverkauf in Bamberg und der Region – seit 2001.</p>
+  <section class="hero" id="hero">
+    <div class="hero-dark"><img srcset="Bamberg1-640.webp 640w, Bamberg1-960.webp 960w, Bamberg1-1280.webp 1280w, Bamberg1.webp 1920w" sizes="100vw" decoding="async" width="1920" height="1303" fetchpriority="high" src="Bamberg1.webp" alt="Bamberger Altstadt – Krause Immobilien" class="hero-dark-img" loading="eager"><div class="hero-dark-overlay"></div></div>
+    <div class="hero-light">
+      <div class="hero-light-content">
+        <h1 class="hero-headline"><span class="h1-line"><span class="h1-line-inner">Datenschutzerklärung</span></span></h1>
+        <div class="hero-buttons">
+          <a href="#contact" class="btn btn-primary magnetic-btn">Jetzt Kontakt aufnehmen <i class="fas fa-arrow-right"></i></a>
+          <a href="immobilien.html" class="btn btn-outline magnetic-btn">Aktuelle Objekte</a>
+        </div>
       </div>
-      <div class="foot-col">
-        <h4>Navigation</h4>
-        <a href="ueber-mich.html">Über mich</a>
-        <a href="verkauf.html">Verkauf</a>
-        <a href="immobilien.html">Immobilien</a>
-        <a href="nachlass-hell.html">Nachlass &amp; Erbe</a>
-        <a href="scheidung-hell.html">Scheidung &amp; Trennung</a>
-        <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
-      </div>
-      <div class="foot-col">
-        <h4>Leistungen</h4>
-        <a href="verkauf.html">Immobilienverkauf</a>
-        <a href="index.html#services">Immobilienbewertung</a>
-        <a href="nachlass-hell.html">Nachlass &amp; Erbfall</a>
-        <a href="ratgeber-hell.html">Ratgeber</a>
-      </div>
-      <div class="foot-col">
-        <h4>Rechtliches</h4>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html" style="color:var(--bright)">Datenschutz</a>
-        <a href="agb.html">AGB</a>
-        <a href="widerrufen.html">Vertrag widerrufen</a>
-        <a href="#" id="cookie-settings">Cookie-Einstellungen</a>
+      <div class="hero-angela"><img width="600" height="600" decoding="async" fetchpriority="high" src="ueber-mich.webp" alt="Angela Krause" loading="eager"></div>
+      <div class="hero-light-accent"><span class="hero-ki-deco">KI</span></div>
+    </div>
+  </section>
+
+  <section class="page-body">
+    <div class="container legal-container">
+      <div class="topic-card reveal-up legal-card"><h3>1. Verantwortlicher</h3><p><strong>KRAUSE Immobilien UG (haftungsbeschränkt)</strong><br>Angela Krause<br>Peter-Graf-Str. 7, 96135 Stegaurach<br>E-Mail: <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a><br>Telefon: 0160 / 800 6113</p><p class="text-small">Ein Datenschutzbeauftragter ist nach Art. 37 DSGVO nicht zu benennen. Anfragen zum Datenschutz richten Sie bitte an die oben genannte E-Mail-Adresse.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>2. Grundsätze und Rechtsgrundlagen</h3><p class="text-small">Wir verarbeiten personenbezogene Daten nur für festgelegte, eindeutige und legitime Zwecke (Art. 5 Abs. 1 DSGVO) und ausschließlich auf einer der in Art. 6 Abs. 1 DSGVO genannten Rechtsgrundlagen: Einwilligung (lit. a), Vertragserfüllung oder vorvertragliche Maßnahmen (lit. b), rechtliche Verpflichtung (lit. c), lebenswichtige Interessen (lit. d), Aufgabenerfüllung (lit. e) oder berechtigtes Interesse (lit. f). Welche Grundlage für welche Verarbeitung gilt, steht in den folgenden Abschnitten.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>3. Server-Logfiles</h3><p class="text-small">Beim Aufruf der Website erhebt unser Server automatisch Zugriffsdaten: IP-Adresse, Datum und Uhrzeit, abgerufene Datei, übertragene Datenmenge, Browsertyp und -version, Betriebssystem sowie die zuvor besuchte Seite (Referrer-URL). Zweck ist der sichere, stabile und fehlerfreie Betrieb unserer Website. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse). Speicherdauer: automatische Löschung, spätestens nach 30 Tagen.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>4. Cookies und lokale Speicherung</h3><p class="text-small">Diese Website setzt keine Analyse-, Statistik- oder Werbe-Cookies ein. Gespeichert wird ausschließlich Ihre Entscheidung zum aufscheinenden Datenschutzhinweis im lokalen Speicher Ihres Browsers (localStorage, Schlüssel „krause_immo_consent"), damit der Hinweis nicht bei jedem Besuch erneut erscheint. Rechtsgrundlage: § 25 Abs. 2 Nr. 2 TDDDG (technisch notwendige Speicherung) in Verbindung mit Art. 6 Abs. 1 lit. f DSGVO. Speicherdauer: 12 Monate, danach wird der Eintrag automatisch entfernt. Sie können ihn jederzeit manuell löschen, indem Sie die Daten dieser Website in Ihrem Browser löschen, oder Ihre Auswahl über „Cookie-Einstellungen" im Fußbereich erneut aufrufen.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>5. Kontaktaufnahme per Formular oder E-Mail</h3><p class="text-small">Zur Bearbeitung Ihrer Anfrage verarbeiten wir die von Ihnen eingegebenen Angaben (Pflichtfelder sind mit * gekennzeichnet, alle weiteren Angaben sind freiwillig – Art. 5 Abs. 1 lit. c DSGVO). Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen bzw. Bearbeitung Ihrer Anfrage), bei allgemeinen Anfragen Art. 6 Abs. 1 lit. f DSGVO. Über die Formulare dieser Website werden die Angaben in Ihrem E-Mail-Programm als Entwurf vorbereitet; eine Übermittlung an uns erfolgt erst, wenn Sie diese E-Mail selbst absenden. Empfänger ist unser E-Mail-Postfach beim Anbieter <strong>[bitte ergänzen: E-Mail-Anbieter]</strong>. Speicherdauer: bis zum Abschluss Ihrer Anfrage, danach Löschung, spätestens jedoch nach 6 Monaten, soweit keine gesetzlichen Aufbewahrungsfristen (z. B. § 147 AO, § 257 HGB) entgegenstehen.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>6. Keine externen Dienste, keine Drittstaatenübermittlung</h3><p class="text-small">Unsere Website bindet keine Dienste Dritter ein: keine externen Schriften, keine Analyse- oder Werbedienste, keine eingebetteten Videos oder Karten, keine Social-Media-Widgets. Alle Dateien werden über die unter Abschnitt 7 genannte Website-Infrastruktur ausgeliefert. Eine Übermittlung personenbezogener Daten in Staaten außerhalb der EU/des EWR findet derzeit nicht statt; sollte sich das ändern, ergänzen wir hier die Rechtsgrundlage (Angemessenheitsbeschluss oder Standardvertragsklauseln) und die Schutzmaßnahmen. Auf einzelnen Seiten finden Sie ausschließlich Verweise (Links) auf Profile bei Instagram, Facebook und LinkedIn – erst mit Ihrem Klick verlassen Sie unsere Website, bis dahin werden keine Daten an diese Anbieter übertragen.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>7. Hosting und Auftragsverarbeitung</h3><p class="text-small">Die Website wird bei einem professionellen Hosting-Anbieter betrieben: <strong>[bitte ergänzen: Firma, vollständige Anschrift, Standort der Server]</strong>. Mit diesem Anbieter besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 Abs. 3 DSGVO. Weitere Empfänger personenbezogener Daten sind ausschließlich Dienstleister, die für die Bearbeitung Ihrer Anfrage erforderlich sind (z. B. E-Mail-Anbieter, bei Vertragsabwicklung Notar, Bank oder Behörden). Eine Weitergabe Ihrer Daten zu Werbezwecken an Dritte findet nicht statt.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>8. Speicherdauer</h3><p class="text-small">Wir speichern personenbezogene Daten nur so lange, wie es für den jeweiligen Zweck erforderlich ist. Danach werden sie gelöscht, sofern keine gesetzlichen Aufbewahrungsfristen entgegenstehen (z. B. handels- und steuerrechtliche Fristen nach § 147 AO und § 257 HGB von regelmäßig 6 bzw. 10 Jahren). Bei Einwilligungen speichern wir die Einwilligung bis zum Widerruf, damit wir sie nachweisen können (Art. 7 Abs. 1 DSGVO).</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>9. Ihre Rechte</h3><p class="text-small">Sie haben das Recht auf Auskunft (Art. 15), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21) sowie das Recht, eine Einwilligung jederzeit mit Wirkung für die Zukunft zu widerrufen (Art. 7 Abs. 3 DSGVO). Zur Ausübung Ihrer Rechte genügt eine E-Mail an <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>. Wir beantworten Ihr Anliegen unverzüglich, spätestens innerhalb eines Monats (Art. 12 Abs. 3 DSGVO).</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>10. Beschwerderecht</h3><p class="text-small">Sie haben das Recht, sich bei einer Aufsichtsbehörde zu beschweren, ohne dass es auf andere Rechtsbehelfe ankommt (Art. 77 DSGVO). Für uns zuständig ist: Bayerisches Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach, www.lda.bayern.de.</p></div>
+      <div class="topic-card reveal-up legal-card"><h3>11. Keine automatisierten Einzelentscheidungen</h3><p class="text-small">Wir nehmen keine Verarbeitungen zu automatisierten Einzelentscheidungen einschließlich Profiling nach Art. 22 DSGVO vor.</p></div>
+      <div class="topic-card reveal-up"><h3>12. SSL-/TLS-Verschlüsselung</h3><p class="text-small">Diese Seite nutzt aus Sicherheitsgründen eine SSL-/TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie an „https://" und dem Schloss-Symbol in Ihrer Browserzeile.</p></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact-card">
+        <div class="contact-grid">
+          <div class="contact-info reveal-left">
+            <div class="section-tag">Kontakt</div>
+            <h2>Jetzt direkt <em>anfragen</em><br>100% unverbindlich</h2>
+            <p>Ob Verkauf, Kauf oder Wertermittlung: Als Immobilienmaklerin in Bamberg und der Region entwickle ich gemeinsam mit Ihnen eine passende Strategie für Ihre Immobilie.</p>
+
+            <div class="contact-details">
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon"><i class="fas fa-phone-alt"></i></div>
+                <div class="contact-detail-text">
+                  <span class="contact-detail-label">Telefon</span>
+                  <a href="tel:+491608006113">0160 / 800 6113</a>
+                </div>
+              </div>
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
+                <div class="contact-detail-text">
+                  <span class="contact-detail-label">E-Mail</span>
+                  <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>
+                </div>
+              </div>
+              <div class="contact-detail-item">
+                <div class="contact-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="contact-detail-text">
+                  <span class="contact-detail-label">B&uuml;ro</span>
+                  <span>Bamberg, Oberfranken</span>
+                </div>
+              </div>
+            </div>
+            <div class="contact-person">
+              <img width="390" height="600" decoding="async" loading="lazy" src="ueber-mich-2.webp" alt="Angela Krause – Immobilienmaklerin">
+              <div class="contact-person-info">
+                <h4>Angela Krause</h4>
+                <p>Ihre Ansprechpartnerin für die professionelle Vermarktung von Wohnimmobilien in Bamberg und der Region.</p>
+              </div>
+            </div>
+          </div>
+          <form class="contact-form reveal-right" id="contactForm" method="post" novalidate>
+            <div class="form-row">
+              <div class="field"><label for="cfVorname">Vorname *</label><input type="text" id="cfVorname" name="vorname" placeholder="Max…" required></div>
+              <div class="field"><label for="cfNachname">Nachname *</label><input type="text" id="cfNachname" name="nachname" placeholder="Mustermann…" required></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label for="cfEmail">E-Mail-Adresse *</label><input type="email" id="cfEmail" name="email" placeholder="max@mustermann.de…" required></div>
+              <div class="field"><label for="cfTelefon">Telefonnummer</label><input type="tel" id="cfTelefon" name="telefon" placeholder="+49 123 456789…"></div>
+            </div>
+            <div class="form-row">
+              <div class="field field-full"><label for="cfInteresse">Interessiert an: *</label><select id="cfInteresse" name="interesse" required><option value="" disabled selected>Immobilie verkaufen…</option><option value="verkauf">Immobilie verkaufen</option><option value="kauf">Immobilie kaufen</option><option value="wertermittlung">Wertermittlung</option><option value="beratung">Allgemeine Beratung</option></select></div>
+            </div>
+            <label class="dsgvo-consent"><input type="checkbox" name="dsgvo" required><span>Ich stimme zu, dass meine Daten zur Bearbeitung meiner Anfrage gespeichert werden. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.</span></label>
+
+            <p class="form-note">Ihre Angaben werden ausschließlich zur Bearbeitung Ihrer Anfrage verwendet (Art. 6 Abs. 1 lit. b DSGVO), freiwillige Angaben sind optional. Mehr dazu in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+            <button type="submit" class="btn contact-submit">Senden</button>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="foot-bottom">
-      <p>© 2024 Krause Immobilien · Angela Krause · <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a></p>
-    </div>
-  </div>
-</footer>
+  </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-<script src="subpage.js"></script>
-
-<!-- COOKIE BANNER -->
-<div id="cb-overlay"></div>
-<div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
-  <div class="cb-inner">
-    <div class="cb-top">
-      <div class="cb-text">
-        <p class="cb-title">Ihre Privatsphäre</p>
-        <p class="cb-sub">Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung auf unserer Website zu bieten. Einige Cookies sind technisch notwendig, während andere uns helfen, unsere Website zu verbessern.</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand"><a href="index.html" class="footer-logo"><svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg"><rect width="42" height="42" rx="8" fill="#2A5F8D"/><text x="21" y="29" font-family="'Cormorant Garamond', serif" font-size="18" font-weight="700" fill="white" text-anchor="middle" letter-spacing="2">KI</text></svg><span>Krause Immobilien</span></a></div>
+        <div class="footer-col"><h4>Navigation</h4><a href="ueber-mich.html">Über mich</a><a href="immobilien.html">Immobilien</a><a href="ratgeber.html">Immobilien-Ratgeber</a></div>
+        <div class="footer-col"><h4>Leistungen</h4><a href="hausverkauf.html">Hausverkauf</a><a href="wohnungsverkauf.html">Wohnungsverkauf</a><a href="nachlass.html">Nachlass &amp; Erbfall</a></div>
+        <div class="footer-col footer-col-contact"><h4>Kontakt</h4><a href="tel:+491608006113"><i class="fas fa-phone-alt"></i> 0160 / 800 6113</a><a href="mailto:info@krauseimmo.com"><i class="fas fa-envelope"></i> info@krauseimmo.com</a></div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-legal"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a>
+          <a href="#" id="cookie-settings">Cookie-Einstellungen</a><a href="agb.html">AGB</a><a href="widerrufen.html">Widerruf</a></div>
+        <p class="footer-copy">© <span id="year"></span> Krause Immobilien. Alle Rechte vorbehalten.</p>
       </div>
     </div>
-    <div class="cb-actions">
-      <button id="cb-decline" class="cb-btn cb-decline-btn">Nur notwendige</button>
-      <button id="cb-accept" class="cb-btn cb-accept-btn">Alle akzeptieren</button>
+  </footer>
+
+  <script src="vendor/gsap.min.js"></script>
+  <script src="vendor/ScrollTrigger.min.js"></script>
+  <script src="vendor/lenis.min.js"></script>
+  <script src="subpage.js"></script>
+  <!-- Banner Overlay -->
+  <div id="cb-overlay"></div>
+
+  <!-- COOKIE BANNER — Consent Mode v2 -->
+  <div id="cb-banner" role="dialog" aria-modal="true" aria-label="Cookie-Einstellungen">
+    <div class="cb-inner">
+      <div class="cb-top">
+        <div class="cb-text">
+          <p class="cb-title">Ihre Privatsph&auml;re</p>
+          <p>
+            Diese Website verwendet Cookies und &auml;hnliche Technologien.
+            Technisch notwendige Cookies sind immer aktiv.
+            Google Tag Manager und Google Ads Conversion Tracking k&ouml;nnen Sie einzeln aktivieren &ndash;
+            standardm&auml;&szlig;ig sind beide deaktiviert.
+            Mehr Infos in unserer <a href="datenschutz.html">Datenschutzerkl&auml;rung</a>.
+          </p>
+        </div>
+      </div>
+      <div class="cb-toggles">
+        <div class="cb-toggle-row">
+          <label class="cb-switch"><input type="checkbox" checked disabled><span class="cb-slider"></span></label>
+          <div class="cb-toggle-label"><strong>Technisch notwendig</strong><span>Grundfunktionen der Website &ndash; immer aktiv, keine Einwilligung erforderlich</span></div>
+        </div>
+        <div class="cb-toggle-row">
+          <label class="cb-switch"><input type="checkbox" id="cb-gtm"><span class="cb-slider"></span></label>
+          <div class="cb-toggle-label"><strong>Google Tag Manager</strong><span>L&auml;dt den Tag Manager zur Verwaltung von Website-Tags &ndash; standardm&auml;&szlig;ig deaktiviert</span></div>
+        </div>
+        <div class="cb-toggle-row">
+          <label class="cb-switch"><input type="checkbox" id="cb-marketing"><span class="cb-slider"></span></label>
+          <div class="cb-toggle-label"><strong>Marketing &amp; Werbung</strong><span>Google Ads Conversion Tracking &amp; personalisierte Werbung &ndash; setzt Google Tag Manager voraus</span></div>
+        </div>
+      </div>
+      <div class="cb-buttons">
+        <button class="cb-btn cb-btn-accept" id="cb-accept-all">Alle akzeptieren</button>
+        <button class="cb-btn cb-btn-save" id="cb-save">Auswahl speichern</button>
+        <button class="cb-btn cb-btn-reject" id="cb-reject-all">Alle ablehnen</button>
+      </div>
     </div>
   </div>
-</div>
-
+  <script>
+  'use strict';
+  (function(){
+    var STORAGE_KEY='krause_immo_consent';
+    var EXPIRY_DAYS=365;
+    var banner=document.getElementById('cb-banner');
+    var overlay=document.getElementById('cb-overlay');
+    var chkGtm=document.getElementById('cb-gtm');
+    var chkMktg=document.getElementById('cb-marketing');
+    chkMktg.addEventListener('change',function(){if(this.checked)chkGtm.checked=true;});
+    chkGtm.addEventListener('change',function(){if(!this.checked)chkMktg.checked=false;});
+    function applyConsent(gtm,marketing){
+      loadGTM();
+      gtag('consent','update',{
+        'ad_storage':marketing?'granted':'denied',
+        'ad_user_data':marketing?'granted':'denied',
+        'ad_personalization':marketing?'granted':'denied',
+        'analytics_storage':marketing?'granted':'denied'
+      });
+      gtag('consent','update',{
+        'functionality_storage':marketing?'granted':'denied',
+        'personalization_storage':marketing?'granted':'denied',
+        'security_storage':'denied'
+      });
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({'event':'consent_update','gtm_consent':gtm?'granted':'denied','marketing_consent':marketing?'granted':'denied'});
+    }
+    function saveConsent(gtm,marketing){
+      try{localStorage.setItem(STORAGE_KEY,JSON.stringify({gtm:gtm,marketing:marketing,timestamp:new Date().toISOString(),version:'2.0',expires:Date.now()+EXPIRY_DAYS*86400000}));}catch(e){}
+      applyConsent(gtm,marketing);
+      closeBanner();
+    }
+    function openBanner(){
+      overlay.classList.add('cb-visible');
+      banner.classList.add('cb-visible');
+      requestAnimationFrame(function(){overlay.classList.add('cb-show');banner.classList.add('cb-show');});
+      document.body.style.overflow='hidden';
+    }
+    function closeBanner(){
+      banner.classList.remove('cb-show');
+      overlay.classList.remove('cb-show');
+      setTimeout(function(){banner.classList.remove('cb-visible');overlay.classList.remove('cb-visible');document.body.style.overflow='';},450);
+    }
+    function loadSaved(){
+      try{
+        var raw=localStorage.getItem(STORAGE_KEY);
+        if(!raw)return null;
+        var data=JSON.parse(raw);
+        if(data.expires&&Date.now()>data.expires){localStorage.removeItem(STORAGE_KEY);return null;}
+        return data;
+      }catch(e){return null;}
+    }
+    document.getElementById('cb-accept-all').addEventListener('click',function(){chkGtm.checked=true;chkMktg.checked=true;saveConsent(true,true);});
+    document.getElementById('cb-reject-all').addEventListener('click',function(){chkGtm.checked=false;chkMktg.checked=false;saveConsent(false,false);});
+    document.getElementById('cb-save').addEventListener('click',function(){var g=chkGtm.checked;var m=chkMktg.checked&&g;saveConsent(g,m);});
+    var settingsLink=document.getElementById('cookie-settings');
+    if(settingsLink){settingsLink.addEventListener('click',function(e){e.preventDefault();var s=loadSaved();if(s){chkGtm.checked=s.gtm||false;chkMktg.checked=s.marketing||false;}openBanner();});}
+    var saved=loadSaved();
+    if(saved){applyConsent(saved.gtm||false,saved.marketing||false);}
+    else{setTimeout(openBanner,600);}
+  })();
+  </script>
 </body>
 </html>
-

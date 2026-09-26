@@ -18,6 +18,939 @@
   <meta property="og:site_name"   content="Krause Immobilien">
   <meta name="twitter:card"       content="summary_large_image">
   <title>Immobilie verkaufen | Krause Immobilien – Bamberg & Region</title>  <link rel="stylesheet" href="style.css">
+<style id="ki-overrides">
+
+  /* ══════════════════════════════════════════
+     TOKENS
+  ══════════════════════════════════════════ */
+  :root {
+    /* Redesign-Tokens */
+    --charcoal:   #2A7D5C;
+    --charcoal-2: #3D9070;
+    --forest:     #D8EDE6;
+    --warm-white: #F5F7F5;
+    --off-white:  #EBF5F1;
+    --gold:       #C9A227;
+    --gold-light: #D4B84A;
+    --text:       #1A1A1A;
+    --text-2:     #555555;
+    --text-3:     #888888;
+    --border:     #B8D9CB;
+    --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+    /* Live-Nav-Variablen */
+    --bright:     #2A7D5C;
+    --muted:      #555555;
+    --bg:         #F5F7F5;
+    --bg2:        #E5F2EC;
+    --radius-sm:  6px;
+    --max:        1400px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* scroll-behavior: smooth entfernt fuer Lenis-Kompatibilitaet */
+
+  body {
+    background: var(--warm-white);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  /* Nav – raum96-Stil: weiß auf dunklem Hero, mehr Luft */
+  #nav:not(.scrolled) { background: transparent; }
+  #nav:not(.scrolled) .nl { color: rgba(255,255,255,0.82) !important; letter-spacing: 0.08em; }
+  #nav:not(.scrolled) .nl:hover { color: #ffffff !important; }
+  #nav:not(.scrolled) .logo-wordmark { color: #ffffff !important; }
+  #nav:not(.scrolled) .nav-phone { color: rgba(255,255,255,0.75) !important; }
+  #nav:not(.scrolled) .nav-phone i { color: rgba(255,255,255,0.75) !important; }
+  #nav:not(.scrolled) .burger span { background: #ffffff !important; }
+  #nav:not(.scrolled) .nav-cta {
+    background: transparent !important;
+    border-color: rgba(255,255,255,0.45) !important;
+    color: rgba(255,255,255,0.85) !important;
+    border-radius: 0 !important;
+  }
+  #nav:not(.scrolled) .nav-cta:hover { background: rgba(255,255,255,0.12) !important; }
+  .nav-wrap { gap: 2rem; align-items: center; }
+  /* Rechte Seite: nav-links oben, phone+cta unten — beide rechtsbündig */
+  .nav-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .nav-links {
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    row-gap: 0;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .nav-links li { list-style: none; }
+  /* Nachlass und Scheidung in zweite Zeile */
+  .nav-links li:nth-child(4) { order: 10; }
+  .nav-links li:nth-child(5) { order: 11; }
+  .nav-links li:nth-child(6) { order: 5; }
+  .nav-links::after {
+    content: '';
+    flex-basis: 100%;
+    order: 9;
+    height: 0;
+  }
+  #nav.scrolled { background: rgba(245,247,245,0.97) !important; }
+  .mobile-nav { background: rgba(245,247,245,0.98) !important; }
+
+  /* ══════════════════════════════════════════
+     HERO
+  ══════════════════════════════════════════ */
+  #hero {
+    position: relative;
+    height: calc(38vh + 1cm);
+    min-height: 280px;
+    overflow: hidden;
+    background: #1a1a1a;
+    z-index: 1;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: brightness(0.55) saturate(0.25) blur(6px);
+    transform: scale(1.03);
+  }
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to right, rgba(26,23,20,0.5) 0%, transparent 60%),
+      linear-gradient(to top, rgba(26,23,20,0.8) 0%, transparent 55%);
+  }
+  .hero-content {
+    position: absolute;
+    bottom: 3.5rem;
+    left: 4rem;
+    right: 4rem;
+    text-align: center;
+    z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .hero-region {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.6em;
+    font-style: normal;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: none;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero-h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    color: rgba(248,246,242,0.92);
+    line-height: 1.15;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .hero-h1 em {
+    font-style: italic;
+    color: rgba(248,246,242,0.6);
+  }
+
+  /* ══════════════════════════════════════════
+     MAIN SPLIT – raum96-Stil
+     Links: weißer Text | Mitte: Foto | Rechts: dunkles Panel
+  ══════════════════════════════════════════ */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 400px 260px;
+    min-height: calc(520px - 4cm);
+    align-items: stretch;
+    overflow: visible;
+  }
+
+  /* LEFT */
+  .split-left {
+    background: var(--warm-white);
+    padding: calc(5rem + 1cm) 2rem 5rem 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .split-eyebrow {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .split-eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .split-h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    text-wrap: balance;
+    margin-bottom: 1.6rem;
+  }
+  .split-h2 em {
+    font-style: italic;
+    color: var(--text-2);
+  }
+  .split-body {
+    font-size: 0.88rem;
+    line-height: 1.85;
+    color: var(--text-2);
+    max-width: 40ch;
+    margin-bottom: 2.4rem;
+  }
+  .split-actions {
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--charcoal);
+    transition: all 0.25s;
+  }
+  .btn-dark:hover {
+    background: transparent;
+    color: var(--charcoal);
+  }
+  .btn-line {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-line:hover { color: var(--text); border-color: var(--text); }
+
+  /* MITTE – Angelas Foto, überlappt nach oben in den Hero */
+  .split-photo-wrap {
+    position: relative;
+    z-index: 10;
+    margin-top: -110px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: var(--warm-white);
+  }
+  .split-photo {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: unset;
+    filter: drop-shadow(0 8px 32px rgba(0,0,0,0.18));
+  }
+
+  /* RECHTS – dunkles Panel mit Deko-K */
+  .split-right {
+    position: relative;
+    background: var(--forest);
+    overflow: hidden;
+  }
+  .split-deco {
+    position: absolute;
+    bottom: -0.08em;
+    right: -0.04em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(10rem, 16vw, 16rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1;
+    color: rgba(42,125,92,0.12);
+    pointer-events: none;
+    user-select: none;
+  }
+  .split-caption {
+    position: absolute;
+    bottom: 1.8rem;
+    left: 2rem;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(42,125,92,0.5);
+  }
+
+
+  /* ══════════════════════════════════════════
+     STATS STRIP
+  ══════════════════════════════════════════ */
+  .stats-strip {
+    background: var(--warm-white);
+    border-top: 1px solid var(--off-white);
+    display: flex;
+  }
+  .stat-item {
+    flex: 1;
+    padding: 2.2rem 2.5rem;
+    border-right: 1px solid var(--off-white);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  /* ══════════════════════════════════════════
+     WERTCHECK (simplified)
+  ══════════════════════════════════════════ */
+  #wertcheck {
+    background: var(--off-white);
+    padding: 7rem 4rem;
+  }
+  .wc-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .wc-left {}
+  .wc-tag {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .wc-tag::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .wc-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 3vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--text);
+    text-wrap: balance;
+    margin-bottom: 1.4rem;
+  }
+  .wc-h em { font-style: italic; color: var(--text-2); }
+  .wc-lead {
+    font-size: 0.87rem;
+    line-height: 1.85;
+    color: var(--text-2);
+    max-width: 40ch;
+    margin-bottom: 2rem;
+  }
+  .wc-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .wc-feat {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 0.82rem;
+    color: var(--text-2);
+  }
+  .wc-feat i { color: var(--gold); font-size: 0.75rem; width: 14px; flex-shrink: 0; }
+
+  /* Form card */
+  .wc-form {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+  }
+  .wc-form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--off-white);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .form-input {
+    padding: 0.8rem 1rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.87rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus { border-color: var(--gold); background: var(--warm-white); }
+  .form-input::placeholder { color: var(--text-3); }
+  select.form-input { cursor: pointer; }
+  .form-submit {
+    width: 100%;
+    padding: 1rem;
+    background: var(--charcoal);
+    color: var(--warm-white);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--charcoal);
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: transparent; color: var(--charcoal); }
+  .form-note {
+    font-size: 0.7rem;
+    color: var(--text-3);
+    margin-top: 0.8rem;
+    line-height: 1.6;
+  }
+  .form-note a { color: var(--gold); }
+
+  /* ══════════════════════════════════════════
+     IMMOBILIEN
+  ══════════════════════════════════════════ */
+  #immobilien {
+    background: var(--warm-white);
+    padding: 7rem 4rem;
+    border-top: 1px solid var(--off-white);
+  }
+  .immo-inner { max-width: 1200px; margin: 0 auto; }
+  .immo-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 3.5rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .immo-head-left {}
+  .section-tag {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .section-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .section-h em { font-style: italic; color: var(--text-2); }
+
+  .immo-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-self: flex-end;
+  }
+  .immo-filter {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--border);
+    color: var(--text-3);
+    background: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .immo-filter:hover,
+  .immo-filter.active {
+    background: var(--charcoal);
+    color: var(--warm-white);
+    border-color: var(--charcoal);
+  }
+
+  /* Property grid */
+  .prop-grid-neu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+    gap: 2.5rem;
+  }
+  .prop-card-neu {
+    border: 1px solid var(--border);
+    background: var(--warm-white);
+    overflow: hidden;
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+  .prop-card-neu:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    border-color: rgba(184,148,78,0.4);
+  }
+  .prop-img-neu {
+    position: relative;
+    height: 280px;
+    overflow: hidden;
+    background: var(--off-white);
+  }
+  .prop-img-neu img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+  .prop-card-neu:hover .prop-img-neu img { transform: scale(1.03); }
+  .prop-status-neu {
+    position: absolute;
+    top: 1.2rem;
+    left: 1.2rem;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+  }
+  .status-verfuegbar { background: var(--charcoal); color: var(--warm-white); }
+  .status-reserviert { background: rgba(184,148,78,0.9); color: var(--charcoal); }
+  .status-verkauft { background: rgba(255,255,255,0.85); color: var(--text-2); }
+
+  .prop-body-neu {
+    padding: 2rem 2rem 1.8rem;
+  }
+  .prop-price-neu {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    line-height: 1;
+  }
+  .prop-title-neu {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+  .prop-addr-neu {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .prop-addr-neu i { color: var(--gold); font-size: 0.65rem; }
+  .prop-stats-neu {
+    display: flex;
+    gap: 1.4rem;
+    margin-bottom: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--off-white);
+  }
+  .ps-neu {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-2);
+  }
+  .ps-neu i { color: var(--gold); font-size: 0.65rem; }
+  .prop-cta-neu {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .prop-cta-neu:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* Empty state */
+  .prop-empty-neu {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 5rem 2rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+  }
+  .prop-empty-neu p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text-2);
+    margin-bottom: 1rem;
+  }
+
+  /* Suchprofil Banner */
+  .sp-banner-neu {
+    margin-top: 3.5rem;
+    background: var(--charcoal);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .sp-text-neu {}
+  .sp-text-neu strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--warm-white);
+    margin-bottom: 0.3rem;
+  }
+  .sp-text-neu p {
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.5);
+  }
+
+  /* ══════════════════════════════════════════
+     TEASER ROW (Leistungen)
+  ══════════════════════════════════════════ */
+  .teaser-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--off-white);
+    border-top: 1px solid var(--border);
+  }
+  .teaser-card {
+    padding: 5rem 5rem 5rem;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .teaser-card:last-child { border-right: none; }
+  .teaser-tag {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .teaser-h {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.85rem;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text);
+    text-wrap: balance;
+    margin-top: 0.2rem;
+  }
+  .teaser-body {
+    font-size: 0.85rem;
+    line-height: 1.85;
+    color: var(--text-2);
+    max-width: 38ch;
+    flex: 1;
+    margin-top: 0.4rem;
+  }
+  .teaser-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    border-bottom: 1px solid var(--charcoal);
+    padding-bottom: 2px;
+    align-self: flex-start;
+    margin-top: 0.8rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .teaser-link:hover { color: var(--gold); border-color: var(--gold); }
+
+  /* ══════════════════════════════════════════
+     REVIEWS
+  ══════════════════════════════════════════ */
+  #reviews {
+    background: var(--charcoal);
+    padding: 5rem 4rem;
+  }
+  .reviews-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 220px 1px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .reviews-score {}
+  .reviews-score-tag {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .reviews-score-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: var(--warm-white);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .reviews-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+  .reviews-count { font-size: 0.68rem; color: rgba(248,246,242,0.35); }
+  .reviews-divider { background: rgba(248,246,242,0.07); }
+  .reviews-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+  .review-item { display: flex; flex-direction: column; gap: 0.8rem; }
+  .review-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(248,246,242,0.75);
+  }
+  .review-author {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(248,246,242,0.3);
+  }
+
+  /* ══════════════════════════════════════════
+     KONTAKT
+  ══════════════════════════════════════════ */
+  #kontakt {
+    background: var(--warm-white);
+    padding: 7rem 4rem;
+    border-top: 1px solid var(--off-white);
+  }
+  .kontakt-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 6rem;
+    align-items: start;
+  }
+  .kontakt-left {}
+  .kontakt-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  .kontakt-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 0.87rem;
+    color: var(--text-2);
+  }
+  .kontakt-item i { color: var(--gold); font-size: 0.8rem; margin-top: 3px; flex-shrink: 0; }
+  .kontakt-item strong { display: block; color: var(--text); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.1rem; font-weight: 600; }
+
+  .kontakt-form { display: flex; flex-direction: column; gap: 1rem; }
+  .kontakt-form .form-row { margin-bottom: 0; }
+  .kontakt-form .form-group { margin-bottom: 0; }
+  textarea.form-input { resize: vertical; min-height: 120px; font-family: 'Inter', sans-serif; }
+
+  /* ══════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════ */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid rgba(248,246,242,0.06);
+    padding: 3rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(248,246,242,0.5);
+  }
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    font-size: 0.7rem;
+    color: rgba(248,246,242,0.35);
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: rgba(248,246,242,0.7); }
+  .footer-copy {
+    font-size: 0.68rem;
+    color: rgba(248,246,242,0.22);
+  }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    #nav { padding: 1.4rem 2rem; }
+    .nav-links { display: none; }
+    .burger { display: flex; }
+    .split { grid-template-columns: 1fr; grid-template-rows: auto 420px auto; }
+    .split-photo-wrap { order: -1; }
+    .split-right { min-height: 100px; }
+    .split-left { padding: 3.5rem 2rem; }
+    .wc-inner { grid-template-columns: 1fr; gap: 3rem; }
+    #wertcheck { padding: 5rem 2rem; }
+    #immobilien { padding: 5rem 2rem; }
+    .prop-grid-neu { grid-template-columns: 1fr; }
+    .teaser-row { grid-template-columns: 1fr; }
+    .teaser-card { padding: 3.5rem 2rem; border-right: none; border-bottom: 1px solid var(--border); }
+    .reviews-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .reviews-divider { display: none; }
+    .reviews-list { grid-template-columns: 1fr; gap: 2rem; }
+    #reviews { padding: 4rem 2rem; }
+    .kontakt-inner { grid-template-columns: 1fr; gap: 3rem; }
+    #kontakt { padding: 5rem 2rem; }
+    footer { padding: 2.5rem 2rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+  @media (max-width: 600px) {
+    #hero { min-height: 320px; height: 50vh; }
+    .hero-content { bottom: 2rem; left: 2rem; right: 2rem; }
+    .stats-strip { flex-wrap: wrap; }
+    .stat-item { min-width: 50%; border-bottom: 1px solid var(--off-white); }
+    .immo-head { flex-direction: column; align-items: flex-start; }
+    .sp-banner-neu { flex-direction: column; align-items: flex-start; padding: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  
+
+/* Hero-Höhe fix */
+#hero, html body #hero {
+  height: calc(38vh + 1cm) !important;
+  min-height: 280px !important;
+  max-height: 480px !important;
+  padding: 0 !important;
+  background: #1a1a1a !important;
+  overflow: hidden !important;
+}
+.hero-bg {
+  position: absolute !important;
+  inset: 0 !important; width: 100% !important; height: 100% !important;
+  object-fit: cover !important;
+  filter: brightness(0.55) saturate(0.25) blur(6px) !important;
+  transform: scale(1.03) !important;
+}
+.hero-content, .hero-vignette { display: none !important; }
+</style>
   <script>
     window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
     gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','functionality_storage':'denied','personalization_storage':'denied','security_storage':'denied','wait_for_update':1000});
@@ -514,30 +1447,42 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <nav id="nav">
   <div class="nav-wrap">
     <a href="index.html" class="logo">
-      <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#4DAADB"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg>
+      <svg width="42" height="42" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg" aria-label="Krause Immobilien"><rect width="42" height="42" rx="5" fill="#2A7D5C"/><text x="21" y="29" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white" letter-spacing="2" text-anchor="middle">KI</text></svg>
       <span class="logo-wordmark">Krause Immobilien</span>
     </a>
-    <ul class="nav-links">
-      <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
-      <li class="has-drop"><a href="verkauf.html" class="nl" style="color:var(--bright);">Verkauf<svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="nav-drop"><a href="verkauf.html">Immobilienverkauf</a><a href="hausverkauf.html">Hausverkauf</a><a href="wohnungsverkauf.html">Wohnungsverkauf</a></div></li>
-      <li><a href="immobilien.html" class="nl">Immobilien</a></li>
-      <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
-      <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
-      <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
-    </ul>
-    <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
-    <a href="index.html#contact" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
-    <button class="burger" id="burger" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="ueber-mich.html" class="nl">Über mich</a></li>
+        <li class="has-drop"><a href="verkauf.html" class="nl">Verkauf<svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a>
+          <div class="nav-drop">
+            <a href="verkauf.html">Immobilienverkauf</a>
+            <a href="hausverkauf.html">Hausverkauf</a>
+            <a href="wohnungsverkauf.html">Wohnungsverkauf</a>
+          </div>
+        </li>
+        <li><a href="immobilien.html" class="nl">Immobilien</a></li>
+        <li><a href="nachlass-hell.html" class="nl">Nachlass und Erbe</a></li>
+        <li><a href="scheidung-hell.html" class="nl">Scheidung</a></li>
+        <li><a href="ratgeber-hell.html" class="nl">Immobilien-Ratgeber</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="tel:01608006113" class="nav-phone"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
+        <a href="#kontakt" class="nav-cta mag-btn"><span>Jetzt Kontakt aufnehmen</span></a>
+      </div>
+    </div>
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
   </div>
   <div class="mobile-nav" id="mobileNav">
     <a href="ueber-mich.html">Über mich</a>
-    <a href="verkauf.html" style="color:var(--bright);">Verkauf</a>
+    <a href="verkauf.html">Verkauf</a>
     <a href="immobilien.html">Immobilien</a>
     <a href="nachlass-hell.html">Nachlass und Erbe</a>
     <a href="scheidung-hell.html">Scheidung</a>
     <a href="ratgeber-hell.html">Immobilien-Ratgeber</a>
     <a href="tel:01608006113"><i class="fas fa-phone"></i> 0160 / 800 6113</a>
-    <a href="index.html#contact" class="mob-cta">Jetzt Kontakt aufnehmen</a>
+    <a href="#kontakt" class="mob-cta">Jetzt Kontakt aufnehmen</a>
   </div>
 </nav>
 
@@ -545,35 +1490,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ══════════════════════════════════
      HERO
 ══════════════════════════════════ -->
-<section id="vk-hero">
-  <!-- Text – links -->
-  <div class="vk-hero-left">
-    <div class="vk-eyebrow">
-      <span class="vk-eyebrow-line"></span>
-      <span>Immobilienverkauf · Bamberg &amp; Region</span>
-    </div>
-    <h1 class="vk-h1">
-      Jede Immobilie<br>
-      hat ihre <em>Zeit.</em>
-    </h1>
-    <div class="vk-hero-bottom">
-      <p class="vk-hero-sub">
-        Wir begleiten Sie professionell, diskret und persönlich –
-        vom ersten Gespräch bis zum Notartermin.
-      </p>
-      <a href="#vk-bewertung" class="vk-hero-cta">
-        <i class="fas fa-arrow-right"></i>
-        Jetzt Kontakt aufnehmen
-      </a>
-    </div>
-  </div>
-  <!-- Foto – rechts -->
-  <div class="vk-hero-right">
-    <img class="vk-bg"
-         src="https://images.pexels.com/photos/19856871/pexels-photo-19856871.jpeg?auto=compress&cs=tinysrgb&w=1920"
-         alt="" aria-hidden="true">
+
+<!-- MAIN SPLIT -->
+<section id="hero">
+  <img class="hero-bg"
+    src="https://images.pexels.com/photos/5997993/pexels-photo-5997993.jpeg?auto=compress&cs=tinysrgb&w=1920"
+    alt="Bamberg"
+    loading="eager">
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+
   </div>
 </section>
+
+<!-- MAIN SPLIT -->
+<div class="split">
+  <!-- LINKS: Text -->
+  <div class="split-left">
+    <h2 class="split-h2">
+      Immobilien <em>erfolgreich</em> verkaufen.
+    </h2>
+    <p class="split-body">
+      <span style="white-space: nowrap;">Immobilienmaklerin Angela Krause - Ihre zertifizierte Expertin in</span><br>
+      <strong style="color: var(--gold); font-weight: 600;">Bamberg · Forchheim · Herzogenaurach · Erlangen-Höchstadt</strong>
+    </p>
+    <div class="split-actions">
+      <a href="#kontakt" class="btn-dark">
+        Jetzt Kontakt aufnehmen
+        <i class="fas fa-arrow-right" style="font-size:0.7em;"></i>
+      </a>
+      <a href="#immobilien" class="btn-line">Aktuelle Objekte</a>
+    </div>
+  </div>
+
+  <!-- MITTE: Angelas Foto -->
+  <div class="split-photo-wrap">
+    <img class="split-photo"
+      src="Bildergalerie/über mich.jpg"
+      alt="Angela Krause – Immobilienmaklerin Bamberg">
+  </div>
+
+  <!-- RECHTS: dunkles Panel -->
+  <div class="split-right">
+    <div class="split-deco">KI</div>
+  </div>
+</div>
+
+
 
 
 <!-- ══════════════════════════════════
