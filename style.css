@@ -4705,14 +4705,15 @@ a.xp-card-row:hover strong { text-decoration: underline; }
   object-fit: cover;
   object-position: top;
 }
-.xp-ic {
+.xp-card .xp-ic {
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
+  color: var(--primary);
 }
-.xp-ic i { color: var(--primary) !important; }
+.xp-card .xp-ic i { color: var(--primary); }
 .xp-card-btn {
   display: block;
   text-align: center;
