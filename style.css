@@ -724,7 +724,7 @@ em {
   right: 0;
   height: calc(50%);
   display: grid;
-  grid-template-columns: 1fr 380px 240px;
+  grid-template-columns: 1fr 420px 240px;
 }
 
 .hero-light-content {
@@ -732,7 +732,7 @@ em {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3rem 3rem 2.5rem 8%;
+  padding: 3rem 3rem 2.5rem 10%;
   position: relative;
   z-index: 2;
 }
