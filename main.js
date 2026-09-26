@@ -173,6 +173,69 @@ function formSuccess(title, text) {
 const FORM_SUCCESS_TEXT = 'Vielen Dank! Ihre Anfrage wurde erfolgreich gesendet. Wir melden uns innerhalb von 24 Stunden bei Ihnen. Bei dringenden Anliegen erreichen Sie uns unter <a href="tel:+491608006113">0160 / 800 6113</a>.';
 const FORM_ERROR_TEXT = 'Beim Senden ist leider ein Fehler aufgetreten. Bitte schreiben Sie uns direkt an <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a> oder rufen Sie <a href="tel:+491608006113">0160 / 800 6113</a> an.';
 
+/* ============================================
+   IMMOBILIEN AUS ONOFFICE LADEN
+   ============================================ */
+let _propsCache = null;
+
+async function loadPropertiesAsync() {
+  if (_propsCache !== null) return _propsCache;
+  try {
+    var resp = await fetch('/.netlify/functions/get-properties');
+    if (resp.ok) {
+      var data = await resp.json();
+      var items = Array.isArray(data) ? data : (data.items || []);
+      if (items.length > 0) { _propsCache = items.sort(function(a, b) { return b.id - a.id; }); return _propsCache; }
+    }
+  } catch (e) {}
+  _propsCache = [];
+  return _propsCache;
+}
+
+async function renderProperties() {
+  var grid = document.getElementById('propGrid');
+  var empty = document.getElementById('propEmpty');
+  var countEl = document.getElementById('propCount');
+  if (!grid) return;
+
+  var props = await loadPropertiesAsync();
+
+  grid.innerHTML = '';
+  if (props.length === 0) {
+    if (empty) empty.style.display = 'block';
+    if (countEl) countEl.textContent = '';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  if (countEl) countEl.textContent = props.length + ' Immobilie' + (props.length !== 1 ? 'n' : '');
+
+  props.forEach(function(p) {
+    var statusClass = p.status === 'Verfügbar' ? 'available' : p.status === 'Reserviert' ? 'reserved' : 'sold';
+    var img = p.image || 'Bild-Haus.webp';
+    var priceText = p.price ? p.price + ' €' : 'Preis auf Anfrage';
+    var sizeText = p.size ? 'ca. ' + p.size + ' m²' : '';
+    var secretBadge = p.secret_sale ? '<span class="property-status secret">Secret Sale</span>' : '';
+
+    var card = document.createElement('article');
+    card.className = 'property-card reveal-up';
+    card.innerHTML =
+      '<a href="expose.html?objnr=' + encodeURIComponent(p.objnr) + '&titel=' + encodeURIComponent(p.title) + '">' +
+        '<span class="property-status ' + statusClass + '">' + p.status + '</span>' +
+        secretBadge +
+        '<img src="' + img + '" alt="' + (p.title || '') + '" loading="lazy">' +
+        '<div class="property-card-overlay">' +
+          '<h3>' + (p.title || '') + '</h3>' +
+          '<div class="property-card-meta">' +
+            '<span><i class="fas fa-tag"></i> ' + priceText + '</span>' +
+            (sizeText ? '<span><i class="fas fa-expand"></i> ' + sizeText + '</span>' : '') +
+            (p.rooms ? '<span><i class="fas fa-door-open"></i> ' + p.rooms + ' Zi.</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</a>';
+    grid.appendChild(card);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- HERO-STARTE (sobald der Preloader verschwindet) ---------- */
@@ -736,6 +799,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  /* ---------- IMMOBILIEN LADEN ---------- */
+  renderProperties();
 
   /* ---------- SCROLL REVEAL für neue Sektionen ---------- */
   if (hasGsap && hasScrollTrigger) {

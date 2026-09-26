@@ -142,63 +142,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <h2>Aktuelle <em>Immobilien</em></h2>
         </div>
         <div class="listing-head-right">
-          <div class="listing-count">Zeige 1 bis 4 von 4 Immobilien</div>
+          <div class="listing-count" id="propCount"></div>
         </div>
       </div>
 
-      <div class="property-grid stagger-children">
-        <article class="property-card reveal-up">
-          <a href="expose.html?id=441">
-            <span class="property-status available">Verfügbar</span>
-            <img srcset="Bild-Haus-640.webp 640w, Bild-Haus-960.webp 960w, Bild-Haus-1280.webp 1280w, Bild-Haus.webp 1920w" sizes="(max-width: 760px) 92vw, 400px" decoding="async" width="1920" height="897" loading="lazy" src="Bild-Haus.webp" alt="Einfamilienhaus in Lichtenfels">
-            <div class="property-card-overlay">
-              <h3>Wohnen am Herberg – Großzügiges Einfamilienhaus</h3>
-              <div class="property-card-meta">
-                <span><i class="fas fa-tag"></i> 535.000 €</span>
-                <span><i class="fas fa-expand"></i> ca. 165,00 m²</span>
-              </div>
-            </div>
-          </a>
-        </article>
-        <article class="property-card reveal-up">
-          <a href="expose.html?id=467">
-            <span class="property-status available">Verfügbar</span>
-            <img srcset="Bild-Haus-640.webp 640w, Bild-Haus-960.webp 960w, Bild-Haus-1280.webp 1280w, Bild-Haus.webp 1920w" sizes="(max-width: 760px) 92vw, 400px" decoding="async" width="1920" height="897" loading="lazy" src="Bild-Haus.webp" alt="Gewerbegrundstück in Bad Staffelstein">
-            <div class="property-card-overlay">
-              <h3>Voll erschlossenes Gewerbegrundstück</h3>
-              <div class="property-card-meta">
-                <span><i class="fas fa-tag"></i> 2.295.000 €</span>
-                <span><i class="fas fa-expand"></i> ca. 17.000,00 m²</span>
-              </div>
-            </div>
-          </a>
-        </article>
-        <article class="property-card reveal-up">
-          <a href="expose.html?id=462">
-            <span class="property-status available">Verfügbar</span>
-            <img srcset="Bild-Haus-640.webp 640w, Bild-Haus-960.webp 960w, Bild-Haus-1280.webp 1280w, Bild-Haus.webp 1920w" sizes="(max-width: 760px) 92vw, 400px" decoding="async" width="1920" height="897" loading="lazy" src="Bild-Haus.webp" alt="4-Zimmer-Wohnung in Bad Staffelstein">
-            <div class="property-card-overlay">
-              <h3>Großzügige 4-Zimmer-Wohnung mit Balkon</h3>
-              <div class="property-card-meta">
-                <span><i class="fas fa-tag"></i> 980 €</span>
-                <span><i class="fas fa-expand"></i> ca. 119,00 m²</span>
-              </div>
-            </div>
-          </a>
-        </article>
-        <article class="property-card reveal-up">
-          <a href="expose.html?id=453">
-            <span class="property-status available">Verfügbar</span>
-            <img srcset="Bild-Haus-640.webp 640w, Bild-Haus-960.webp 960w, Bild-Haus-1280.webp 1280w, Bild-Haus.webp 1920w" sizes="(max-width: 760px) 92vw, 400px" decoding="async" width="1920" height="897" loading="lazy" src="Bild-Haus.webp" alt="Maisonettewohnung in Lichtenfels">
-            <div class="property-card-overlay">
-              <h3>Maisonettewohnung am Breiten Rasen</h3>
-              <div class="property-card-meta">
-                <span><i class="fas fa-tag"></i> 220.000 €</span>
-                <span><i class="fas fa-expand"></i> ca. 91,92 m²</span>
-              </div>
-            </div>
-          </a>
-        </article>
+      <div class="property-grid stagger-children" id="propGrid">
+        <div class="prop-loading"><i class="fas fa-spinner fa-spin"></i> Immobilien werden geladen …</div>
+      </div>
+      <div id="propEmpty" style="display:none;text-align:center;padding:3rem 1rem;color:var(--text-light,#666);">
+        <i class="fas fa-home" style="font-size:2.5rem;margin-bottom:1rem;display:block;opacity:.4;"></i>
+        <p>Aktuell sind keine Immobilien in der aktiven Vermarktung. Bitte schauen Sie später wieder vorbei oder legen Sie ein Suchprofil an.</p>
       </div>
     </div>
   </section>
