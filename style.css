@@ -4882,3 +4882,91 @@ h1 em, h2 em, h3 em, h4 em { font-style: normal; font-weight: inherit; color: va
 .contact-submit:hover { background: #1C2C3D; }
 .footer { background: #172433; }
 .xp-card { background: #172433; }
+
+/* === KOPFBEREICH PERSOENLICH (Design 4) === */
+#heroParticles { display: none; }
+.hx {
+  position: relative;
+  height: auto;
+  min-height: 0;
+  padding: calc(var(--topbar-height) + 104px + 56px) 0 0;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--bg) 0%, var(--bg) 58%, #E6E2DB 58%, #E6E2DB 100%);
+}
+.hx-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 64px;
+  align-items: end;
+}
+.hx-text { align-self: center; padding-bottom: 80px; }
+.hx .hero-headline {
+  font-size: clamp(2.6rem, 4.6vw, 4.2rem);
+  line-height: 1.06;
+  border-left: 0;
+  padding-left: 0;
+  margin-bottom: 22px;
+}
+.hx .hero-cities { font-size: 1.05rem; margin-bottom: 32px; }
+.hx .hero-buttons { flex-direction: row; flex-wrap: wrap; gap: 14px; }
+.hx .hero-buttons .btn { border-radius: 14px; padding: 18px 30px; }
+.hx-arch-wrap { position: relative; display: flex; justify-content: center; }
+.hx-arch {
+  width: 440px;
+  max-width: 100%;
+  height: 560px;
+  border-radius: 220px 220px 0 0;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 0 0 12px rgba(255, 255, 255, 0.55);
+}
+.hx-arch img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.hx-sign {
+  position: absolute;
+  left: -10px;
+  bottom: 56px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 22px;
+  box-shadow: 0 18px 48px rgba(23, 36, 51, 0.14);
+  animation: hx-float 3s ease-in-out infinite;
+}
+@keyframes hx-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.hx-sign strong { display: block; font-family: var(--font-serif); font-size: 1.35rem; font-weight: 600; color: var(--text); line-height: 1.2; }
+.hx-sign span { font-size: 0.9rem; color: var(--text-light); }
+
+/* Seiten ohne Porträt (Danke-Seiten): nur Text, ohne Sandfläche */
+.hx-noimg { background: var(--bg); padding-bottom: 24px; }
+.hx-noimg .hx-grid { grid-template-columns: 1fr; }
+
+@media (max-width: 1100px) {
+  .hx-grid { gap: 40px; }
+  .hx-arch { width: 380px; height: 500px; border-radius: 190px 190px 0 0; }
+}
+@media (max-width: 960px) {
+  .hx { padding-top: calc(var(--topbar-height) + 72px + 40px); padding-bottom: 0; background: var(--bg); }
+  .hx-noimg { padding-bottom: 24px; }
+  .hx-arch-wrap {
+    margin: 0 -24px;
+    padding-top: 0;
+    background: linear-gradient(180deg, transparent 0, transparent 90px, #E6E2DB 90px, #E6E2DB 100%);
+  }
+  .hx-grid { grid-template-columns: 1fr; gap: 8px; }
+  .hx-text { text-align: center; padding-bottom: 40px; }
+  .hx .hero-buttons { justify-content: center; }
+  .hx-arch { width: 300px; height: 390px; border-radius: 150px 150px 0 0; }
+  .hx-sign { left: 50%; bottom: 24px; padding: 10px 18px; white-space: nowrap; animation-name: hx-float-mobile; }
+  @keyframes hx-float-mobile {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+  }
+  .hx-sign strong { font-size: 1.1rem; }
+  .hx-sign span { font-size: 0.8rem; }
+}
+@media (max-width: 480px) {
+  .hx .hero-buttons { flex-direction: column; }
+  .hx .hero-buttons .btn { justify-content: center; }
+}
