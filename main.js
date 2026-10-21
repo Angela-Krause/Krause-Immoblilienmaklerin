@@ -763,9 +763,11 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.disabled = true;
         nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
         sendForm(valuationForm).then((ok) => {
-          valuationForm.innerHTML = ok
-            ? formSuccess('Anfrage gesendet!', FORM_SUCCESS_TEXT)
-            : formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+          if (ok) {
+            window.location.href = 'danke-bewertung.html';
+          } else {
+            valuationForm.innerHTML = formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+          }
         });
       }
     });
@@ -793,12 +795,23 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
       sendForm(contactForm).then((ok) => {
-        contactForm.innerHTML = ok
-          ? formSuccess('Anfrage gesendet!', FORM_SUCCESS_TEXT)
-          : formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        if (ok) {
+          window.location.href = 'danke.html';
+        } else {
+          contactForm.innerHTML = formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        }
       });
     });
   }
+
+  /* ---------- TELEFON-KLICK TRACKING (GTM) ---------- */
+  document.querySelectorAll('a[href^="tel:"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (window.dataLayer) {
+        window.dataLayer.push({ event: 'phone_click', phone_number: link.href.replace('tel:', '') });
+      }
+    });
+  });
 
   /* ---------- IMMOBILIEN LADEN ---------- */
   renderProperties();

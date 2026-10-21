@@ -327,9 +327,11 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
       sendForm(contactForm).then((ok) => {
-        contactForm.innerHTML = ok
-          ? formSuccess('Anfrage gesendet!', FORM_SUCCESS_TEXT)
-          : formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        if (ok) {
+          window.location.href = 'danke.html';
+        } else {
+          contactForm.innerHTML = formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        }
       });
     });
   }
@@ -350,10 +352,22 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wird vorbereitet …';
       }
       sendForm(form).then((ok) => {
-        form.innerHTML = ok
-          ? formSuccess('Anfrage gesendet!', FORM_SUCCESS_TEXT)
-          : formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        if (ok) {
+          var page = id === 'suchprofilForm' ? 'danke-suchprofil.html' : 'danke-bewertung.html';
+          window.location.href = page;
+        } else {
+          form.innerHTML = formSuccess('Fehler beim Senden', FORM_ERROR_TEXT);
+        }
       });
+    });
+  });
+
+  /* ---------- TELEFON-KLICK TRACKING (GTM) ---------- */
+  document.querySelectorAll('a[href^="tel:"]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (window.dataLayer) {
+        window.dataLayer.push({ event: 'phone_click', phone_number: link.href.replace('tel:', '') });
+      }
     });
   });
 });

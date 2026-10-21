@@ -1476,7 +1476,7 @@ section {
   width: 100%;
 }
 
-.field input, .field select, .field textarea {
+.field input:not([type="checkbox"]), .field select, .field textarea {
   -webkit-appearance: none;
   appearance: none;
 }
