@@ -108,6 +108,11 @@
   status = 200
 
 [[redirects]]
+  from = "/faq"
+  to = "/faq.html"
+  status = 200
+
+[[redirects]]
   from = "/expose"
   to = "/expose.html"
   status = 200
@@ -151,4 +156,30 @@
 [[redirects]]
   from = "/ratgeber-hell"
   to = "/ratgeber.html"
+  status = 301
+
+# Redirects: alte Website-Adressen (GEO-Audit)
+[[redirects]]
+  from = "/Ueber-uns.htm"
+  to = "/ueber-mich.html"
+  status = 301
+
+[[redirects]]
+  from = "/Kontakt.htm"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/Partner.htm"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/Leistungen.htm"
+  to = "/hausverkauf.html"
+  status = 301
+
+[[redirects]]
+  from = "/Referenzen.htm"
+  to = "/ueber-mich.html"
   status = 301

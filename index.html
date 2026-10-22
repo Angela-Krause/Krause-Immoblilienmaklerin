@@ -31,7 +31,8 @@
     }
   </script>
   <!-- End Google Tag Manager -->
-  <link rel="canonical" href="https://www.krauseimmo.com/">
+  <link rel="canonical" href="https://krauseimmo.com/">
+  <meta property="og:locale" content="de_DE">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#2A5F8D">
   <meta name="format-detection" content="telephone=no">
@@ -55,6 +56,58 @@
     body.no-scroll { position: fixed; width: 100%; overflow: hidden; }
   </style>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "RealEstateAgent",
+        "@id": "https://krauseimmo.com/#organization",
+        "name": "KRAUSE Immobilien UG (haftungsbeschränkt)",
+        "url": "https://krauseimmo.com",
+        "logo": "https://krauseimmo.com/img/logo.webp",
+        "image": "https://krauseimmo.com/img/angela-krause.webp",
+        "telephone": "+491608006113",
+        "email": "info@krauseimmo.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Peter-Graf-Str. 7",
+          "addressLocality": "Stegaurach",
+          "postalCode": "96135",
+          "addressRegion": "Bayern",
+          "addressCountry": "DE"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 49.8628,
+          "longitude": 10.8427
+        },
+        "areaServed": [
+          {"@type": "City", "name": "Bamberg"},
+          {"@type": "City", "name": "Forchheim"},
+          {"@type": "City", "name": "Herzogenaurach"},
+          {"@type": "AdministrativeArea", "name": "Erlangen-Höchstadt"}
+        ],
+        "founder": {"@id": "https://krauseimmo.com/#person"},
+        "sameAs": [
+          "https://www.google.com/maps/place/Krause+Immobilien",
+          "https://www.immowelt.de/profil/krause-immobilien"
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://krauseimmo.com/#person",
+        "name": "Angela Krause",
+        "jobTitle": "Immobilienmaklerin und DEKRA-zertifizierte Sachverständige",
+        "worksFor": {"@id": "https://krauseimmo.com/#organization"},
+        "sameAs": [
+          "https://gutachter-krause.de",
+          "https://immobilienbewertung-krause.de"
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="no-scroll">
 
@@ -158,6 +211,7 @@
           <span class="h1-line"><span class="h1-line-inner"><em>erfolgreich</em> verkaufen.</span></span>
         </h1>
         <p class="hero-cities">Bamberg · Forchheim · Herzogenaurach · Erlangen-Höchstadt</p>
+        <p class="hero-intro">Krause Immobilien verkauft und bewertet Häuser und Wohnungen in Bamberg, Forchheim, Herzogenaurach und Erlangen-Höchstadt – auch bei Erbschaft und Scheidung.</p>
         <div class="hero-buttons">
           <a href="#contact" class="btn btn-primary magnetic-btn">
             Jetzt Kontakt aufnehmen
@@ -180,22 +234,22 @@
     <div class="container">
       <div class="stats-grid">
         <div class="stat-item">
-          <div class="stat-number" data-target="25">0</div>
+          <div class="stat-number" data-target="25">25</div>
           <div class="stat-label">Jahre Erfahrung</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number" data-target="500" data-suffix="+">0</div>
+          <div class="stat-number" data-target="500" data-suffix="+">500+</div>
           <div class="stat-label">Bewertete Objekte</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number" data-target="4">0</div>
+          <div class="stat-number" data-target="4">4</div>
           <div class="stat-label">Regionen</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number" data-target="98" data-suffix="%">0</div>
+          <div class="stat-number" data-target="98" data-suffix="%">98%</div>
           <div class="stat-label">Kundenzufriedenheit</div>
         </div>
       </div>
@@ -610,6 +664,7 @@
           <a href="ueber-mich.html">Über mich</a>
           <a href="immobilien.html">Immobilien</a>
           <a href="ratgeber.html">Immobilien-Ratgeber</a>
+          <a href="faq.html">Häufige Fragen</a>
           <a href="#contact">Kontakt</a>
         </div>
         <div class="footer-col footer-col-contact">

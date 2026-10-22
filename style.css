@@ -4970,3 +4970,35 @@ h1 em, h2 em, h3 em, h4 em { font-style: normal; font-weight: inherit; color: va
   .hx .hero-buttons { flex-direction: column; }
   .hx .hero-buttons .btn { justify-content: center; }
 }
+
+/* ============================================
+   GEO – Hero Intro, FAQ Answers, Fact Block
+   ============================================ */
+.hero-intro {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin-top: 0.5rem;
+}
+
+.faq-q { font-weight: 600; margin-bottom: 0.25rem; }
+.faq-a { color: var(--text-secondary); line-height: 1.7; }
+
+.fact-block { padding: 4rem 0; }
+.fact-block h2 { margin-bottom: 2rem; }
+.fact-list { max-width: 640px; }
+.fact-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.fact-label { font-weight: 600; flex-shrink: 0; }
+.fact-value { text-align: right; color: var(--text-secondary); }
+
+@media (max-width: 600px) {
+  .fact-row { flex-direction: column; gap: 0.25rem; }
+  .fact-value { text-align: left; }
+}

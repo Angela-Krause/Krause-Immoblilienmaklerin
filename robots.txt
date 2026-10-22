@@ -1,9 +1,8 @@
 User-agent: *
 Allow: /
 
-Disallow: /impressum
 Disallow: /datenschutz
 Disallow: /agb
 Disallow: /widerrufen
 
-Sitemap: https://www.krauseimmo.com/sitemap.xml
+Sitemap: https://krauseimmo.com/sitemap.xml
