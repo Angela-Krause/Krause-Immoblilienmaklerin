@@ -4980,6 +4980,7 @@ h1 em, h2 em, h3 em, h4 em { font-style: normal; font-weight: inherit; color: va
   color: var(--text-secondary);
   max-width: 540px;
   margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .faq-q { font-weight: 600; margin-bottom: 0.25rem; }
