@@ -71,51 +71,91 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
   }
 
-  try {
-    {
-      // 1. Benachrichtigung an Angela
-      await brevoRequest(brevoKey, {
-        sender: { name: 'KRAUSE Immobilien Website', email: 'info@krauseimmo.com' },
-        to: [{ email: 'info@krauseimmo.com', name: 'Angela Krause' }, { email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
-        replyTo: { email: email, name: vorname + ' ' + nachname },
-        subject: 'Neue Bewertungsanfrage – ' + vorname + ' ' + nachname,
-        htmlContent:
-          '<h2>Neue Immobilienbewertung angefragt</h2>' +
-          '<table style="border-collapse:collapse;width:100%">' +
-          '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Name</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + vorname + ' ' + nachname + '</td></tr>' +
-          '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>E-Mail</strong></td><td style="padding:8px;border-bottom:1px solid #eee"><a href="mailto:' + email + '">' + email + '</a></td></tr>' +
-          (telefon ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Telefon</strong></td><td style="padding:8px;border-bottom:1px solid #eee"><a href="tel:' + telefon + '">' + telefon + '</a></td></tr>' : '') +
-          (immobilienart ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Immobilienart</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + immobilienart + '</td></tr>' : '') +
-          (adresse ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Adresse</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + adresse + '</td></tr>' : '') +
-          (nachricht ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Nachricht</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + nachricht + '</td></tr>' : '') +
-          '</table>' +
-          '<p style="margin-top:1.5rem;color:#666">Diese Nachricht wurde automatisch von krauseimmo.com gesendet.</p>'
-      });
+  const fullName = vorname + ' ' + nachname;
+  const formData = { vorname, nachname, email, telefon, immobilienart, adresse, nachricht, formular: 'verkauf-anfrage', zeit: new Date().toISOString() };
 
-      // 2. Bestätigung an Interessenten
-      await brevoRequest(brevoKey, {
-        sender: { name: 'KRAUSE Immobilien', email: 'info@krauseimmo.com' },
-        to: [{ email: email, name: vorname + ' ' + nachname }],
-        subject: 'Ihre Bewertungsanfrage – KRAUSE Immobilien',
-        htmlContent:
-          '<p>Sehr geehrte/r ' + vorname + ' ' + nachname + ',</p>' +
-          '<p>vielen Dank für Ihre Anfrage zur Immobilienbewertung. Wir haben Ihre Daten erhalten und melden uns innerhalb von 24 Stunden bei Ihnen.</p>' +
-          '<p>Bei dringenden Fragen erreichen Sie uns unter <a href="tel:01608006113">0160 / 800 6113</a> oder <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>.</p>' +
-          '<p>Mit freundlichen Grüßen<br>Angela Krause<br>KRAUSE Immobilien UG (haftungsbeschränkt)</p>'
-      });
+  try {
+    // 1. Benachrichtigung an Angela
+    const notifyResult = await brevoRequest(brevoKey, {
+      sender: { name: 'KRAUSE Immobilien Website', email: 'info@krauseimmo.com' },
+      to: [{ email: 'info@krauseimmo.com', name: 'Angela Krause' }, { email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
+      replyTo: { email: email, name: fullName },
+      subject: 'Neue Bewertungsanfrage – ' + fullName,
+      htmlContent:
+        '<h2>Neue Immobilienbewertung angefragt</h2>' +
+        '<table style="border-collapse:collapse;width:100%">' +
+        '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Name</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + fullName + '</td></tr>' +
+        '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>E-Mail</strong></td><td style="padding:8px;border-bottom:1px solid #eee"><a href="mailto:' + email + '">' + email + '</a></td></tr>' +
+        (telefon ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Telefon</strong></td><td style="padding:8px;border-bottom:1px solid #eee"><a href="tel:' + telefon + '">' + telefon + '</a></td></tr>' : '') +
+        (immobilienart ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Immobilienart</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + immobilienart + '</td></tr>' : '') +
+        (adresse ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Adresse</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + adresse + '</td></tr>' : '') +
+        (nachricht ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Nachricht</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + nachricht + '</td></tr>' : '') +
+        '</table>' +
+        '<p style="margin-top:1.5rem;color:#666">Diese Nachricht wurde automatisch von krauseimmo.com gesendet.</p>'
+    });
+
+    if (!notifyResult.messageId) {
+      console.error('[FORMULAR-FEHLER] Bewertungsanfrage – Brevo-Benachrichtigung fehlgeschlagen:', JSON.stringify({ brevoResponse: notifyResult, formData }));
+      try {
+        await brevoRequest(brevoKey, {
+          sender: { name: 'KRAUSE Website ALARM', email: 'info@krauseimmo.com' },
+          to: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
+          subject: '⚠️ FORMULARFEHLER – Bewertungsanfrage von ' + fullName,
+          htmlContent:
+            '<h2 style="color:red">Formular-Fehler: Bewertungsanfrage</h2>' +
+            '<p>Die Benachrichtigungs-Mail konnte nicht zugestellt werden. Bitte kontaktiere den Interessenten manuell:</p>' +
+            '<table style="border-collapse:collapse;width:100%">' +
+            '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Name</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + fullName + '</td></tr>' +
+            '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>E-Mail</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + email + '</td></tr>' +
+            (telefon ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Telefon</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + telefon + '</td></tr>' : '') +
+            (immobilienart ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Immobilienart</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + immobilienart + '</td></tr>' : '') +
+            (adresse ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Adresse</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + adresse + '</td></tr>' : '') +
+            '</table>' +
+            '<p style="color:#666">Brevo-Antwort: ' + JSON.stringify(notifyResult) + '</p>'
+        });
+      } catch (alertErr) {
+        console.error('[FORMULAR-FEHLER] Auch Alert-Mail fehlgeschlagen:', alertErr.message);
+      }
+      return { statusCode: 500, headers, body: JSON.stringify({ error: 'E-Mail konnte nicht gesendet werden.' }) };
     }
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({ success: true })
-    };
+    // 2. Bestätigung an Interessenten
+    const confirmResult = await brevoRequest(brevoKey, {
+      sender: { name: 'KRAUSE Immobilien', email: 'info@krauseimmo.com' },
+      to: [{ email: email, name: fullName }],
+      subject: 'Ihre Bewertungsanfrage – KRAUSE Immobilien',
+      htmlContent:
+        '<p>Sehr geehrte/r ' + fullName + ',</p>' +
+        '<p>vielen Dank für Ihre Anfrage zur Immobilienbewertung. Wir haben Ihre Daten erhalten und melden uns innerhalb von 24 Stunden bei Ihnen.</p>' +
+        '<p>Bei dringenden Fragen erreichen Sie uns unter <a href="tel:01608006113">0160 / 800 6113</a> oder <a href="mailto:info@krauseimmo.com">info@krauseimmo.com</a>.</p>' +
+        '<p>Mit freundlichen Grüßen<br>Angela Krause<br>KRAUSE Immobilien UG (haftungsbeschränkt)</p>'
+    });
+
+    if (!confirmResult.messageId) {
+      console.error('[FORMULAR-WARNUNG] Bestätigungsmail an Absender fehlgeschlagen:', JSON.stringify({ brevoResponse: confirmResult, email }));
+    }
+
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
 
   } catch (error) {
+    console.error('[FORMULAR-FEHLER] Bewertungsanfrage – Unerwarteter Fehler:', error.message, JSON.stringify(formData));
+    try {
+      await brevoRequest(brevoKey, {
+        sender: { name: 'KRAUSE Website ALARM', email: 'info@krauseimmo.com' },
+        to: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
+        subject: '⚠️ FORMULARFEHLER – Bewertungsanfrage von ' + (vorname || 'unbekannt'),
+        htmlContent:
+          '<h2 style="color:red">Formular-Fehler: Bewertungsanfrage</h2>' +
+          '<p>Fehler: ' + error.message + '</p>' +
+          '<p>Formulardaten:</p><pre>' + JSON.stringify(formData, null, 2) + '</pre>'
+      });
+    } catch (alertErr) {
+      console.error('[FORMULAR-FEHLER] Auch Alert-Mail fehlgeschlagen:', alertErr.message);
+    }
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.', details: error.message })
+      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.' })
     };
   }
 };

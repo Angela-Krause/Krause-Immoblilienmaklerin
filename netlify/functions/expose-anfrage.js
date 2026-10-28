@@ -100,30 +100,70 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
   }
 
+  const fullName = vorname + ' ' + nachname;
+  const formData = { vorname, nachname, email, telefon, nachricht, objnr, formular: 'expose-anfrage', zeit: new Date().toISOString() };
+  const brevoKey = process.env.BREVO_API_KEY;
+
+  function brevoRequestInline(brevoApiKey, mailBody) {
+    return new Promise((resolve, reject) => {
+      const data = JSON.stringify(mailBody);
+      const req = https.request({
+        hostname: 'api.brevo.com',
+        path: '/v3/smtp/email',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': brevoApiKey,
+          'Content-Length': Buffer.byteLength(data)
+        }
+      }, (res) => {
+        let body = '';
+        res.on('data', chunk => { body += chunk; });
+        res.on('end', () => {
+          try { resolve(JSON.parse(body)); }
+          catch (e) { resolve({ status: res.statusCode }); }
+        });
+      });
+      req.on('error', reject);
+      req.write(data);
+      req.end();
+    });
+  }
+
   try {
     // 1. Kontakt in onOffice anlegen
-    const contactResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:create', 'address', {
-      Vorname: vorname,
-      Name: nachname,
-      Email: email,
-      Telefon1: telefon || '',
-      Notiz: nachricht || '',
-      Art: 'Interessent'
-    });
-
-    const contactSuccess = contactResult?.response?.results?.[0]?.data?.records?.[0]?.id;
-    let mailResult = null;
+    let contactSuccess = null;
+    try {
+      const contactResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:create', 'address', {
+        Vorname: vorname,
+        Name: nachname,
+        Email: email,
+        Telefon1: telefon || '',
+        Notiz: nachricht || '',
+        Art: 'Interessent'
+      });
+      contactSuccess = contactResult?.response?.results?.[0]?.data?.records?.[0]?.id;
+      if (!contactSuccess) {
+        console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – onOffice Kontakt konnte nicht angelegt werden:', JSON.stringify(contactResult));
+      }
+    } catch (onOfficeErr) {
+      console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – onOffice API Fehler:', onOfficeErr.message);
+    }
 
     // 2. Immobilie suchen
     let estateId = null;
     if (objnr) {
-      const estateResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:read', 'estate', {
-        data: ['Id', 'objektnr_extern'],
-        listlimit: 100
-      });
-      const allEstates = estateResult?.response?.results?.[0]?.data?.records || [];
-      const match = allEstates.find(r => r.elements?.objektnr_extern === objnr);
-      estateId = match?.id;
+      try {
+        const estateResult = await apiRequest(token, secret, 'urn:onoffice-de-ns:smart:2.5:smartml:action:read', 'estate', {
+          data: ['Id', 'objektnr_extern'],
+          listlimit: 100
+        });
+        const allEstates = estateResult?.response?.results?.[0]?.data?.records || [];
+        const match = allEstates.find(r => r.elements?.objektnr_extern === objnr);
+        estateId = match?.id;
+      } catch (estateErr) {
+        console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – Immobiliensuche fehlgeschlagen:', estateErr.message);
+      }
     }
 
     // 3. Kontakt mit Immobilie verknüpfen
@@ -134,47 +174,27 @@ exports.handler = async (event) => {
           parentid: estateId,
           childid: contactSuccess
         });
-      } catch (relErr) {}
+      } catch (relErr) {
+        console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – Verknüpfung fehlgeschlagen:', relErr.message);
+      }
     }
 
     // 4. Bestätigungs-E-Mail per Brevo senden
-    const brevoKey = process.env.BREVO_API_KEY;
     if (brevoKey) {
-      try {
-        const mailBody = JSON.stringify({
-          sender: { name: 'KRAUSE Immobilien', email: 'info@krauseimmo.com' },
-          to: [{ email: email, name: vorname + ' ' + nachname }],
-          subject: 'Ihre Exposé-Anfrage – KRAUSE Immobilien',
-          htmlContent: '<p>Sehr geehrte/r ' + vorname + ' ' + nachname + ',</p>' +
-            '<p>vielen Dank für Ihr Interesse an unserem Objekt <strong>' + (objnr || '') + '</strong>.</p>' +
-            '<p>Ihre Anfrage ist bei uns eingegangen. Wir senden Ihnen das Exposé schnellstmöglich zu.</p>' +
-            '<p>Bei Fragen erreichen Sie uns unter 0160 / 800 6113 oder info@krauseimmo.com.</p>' +
-            '<p>Mit freundlichen Grüßen<br>Angela Krause<br>KRAUSE Immobilien UG (haftungsbeschränkt)</p>'
-        });
-        const brevoUrl = new URL('https://api.brevo.com/v3/smtp/email');
-        mailResult = await new Promise((resolve, reject) => {
-          const req = https.request({
-            hostname: brevoUrl.hostname,
-            path: brevoUrl.pathname,
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'api-key': brevoKey,
-              'Content-Length': Buffer.byteLength(mailBody)
-            }
-          }, (res) => {
-            let body = '';
-            res.on('data', chunk => { body += chunk; });
-            res.on('end', () => {
-              try { resolve(JSON.parse(body)); }
-              catch (e) { resolve({ status: res.statusCode, body }); }
-            });
-          });
-          req.on('error', reject);
-          req.write(mailBody);
-          req.end();
-        });
-      } catch (mailErr) { mailResult = { error: mailErr.message }; }
+      const confirmResult = await brevoRequestInline(brevoKey, {
+        sender: { name: 'KRAUSE Immobilien', email: 'info@krauseimmo.com' },
+        to: [{ email: email, name: fullName }],
+        subject: 'Ihre Exposé-Anfrage – KRAUSE Immobilien',
+        htmlContent: '<p>Sehr geehrte/r ' + fullName + ',</p>' +
+          '<p>vielen Dank für Ihr Interesse an unserem Objekt <strong>' + (objnr || '') + '</strong>.</p>' +
+          '<p>Ihre Anfrage ist bei uns eingegangen. Wir senden Ihnen das Exposé schnellstmöglich zu.</p>' +
+          '<p>Bei Fragen erreichen Sie uns unter 0160 / 800 6113 oder info@krauseimmo.com.</p>' +
+          '<p>Mit freundlichen Grüßen<br>Angela Krause<br>KRAUSE Immobilien UG (haftungsbeschränkt)</p>'
+      });
+
+      if (!confirmResult.messageId) {
+        console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – Bestätigungsmail fehlgeschlagen:', JSON.stringify(confirmResult));
+      }
 
       // 5. Anfrage-Mail mit OpenImmo XML an onOffice senden (triggert Portalfilter)
       if (objnr) {
@@ -205,37 +225,23 @@ exports.handler = async (event) => {
             '</openimmo_feedback>';
 
           const xmlBase64 = Buffer.from(xmlContent).toString('base64');
-          const portalMailBody = JSON.stringify({
+          const portalResult = await brevoRequestInline(brevoKey, {
             sender: { name: 'krauseimmo.com', email: 'info@krauseimmo.com' },
             to: [{ email: 'anfragen@immokrause.eu', name: 'Krause Immobilien' }],
             cc: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
-            replyTo: { email: email, name: vorname + ' ' + nachname },
+            replyTo: { email: email, name: fullName },
             subject: 'Objektanfrage ' + objnr + ' - krauseimmo.com',
             htmlContent: '<p>Objektanfrage über krauseimmo.com zu Objekt ' + objnr + '</p>' +
-              '<p>' + vorname + ' ' + nachname + ' (' + email + ')</p>',
+              '<p>' + fullName + ' (' + email + ')</p>',
             attachment: [{ content: xmlBase64, name: 'kontaktanfrage.xml' }]
           });
-          const brevoUrl2 = new URL('https://api.brevo.com/v3/smtp/email');
-          await new Promise((resolve, reject) => {
-            const req = https.request({
-              hostname: brevoUrl2.hostname,
-              path: brevoUrl2.pathname,
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'api-key': brevoKey,
-                'Content-Length': Buffer.byteLength(portalMailBody)
-              }
-            }, (res) => {
-              let b = '';
-              res.on('data', chunk => { b += chunk; });
-              res.on('end', () => resolve(b));
-            });
-            req.on('error', reject);
-            req.write(portalMailBody);
-            req.end();
-          });
-        } catch (e) {}
+
+          if (!portalResult.messageId) {
+            console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – Portal-Mail fehlgeschlagen:', JSON.stringify(portalResult));
+          }
+        } catch (portalErr) {
+          console.error('[FORMULAR-WARNUNG] Exposé-Anfrage – Portal-Mail Fehler:', portalErr.message);
+        }
       }
     }
 
@@ -249,10 +255,26 @@ exports.handler = async (event) => {
     };
 
   } catch (error) {
+    console.error('[FORMULAR-FEHLER] Exposé-Anfrage – Unerwarteter Fehler:', error.message, JSON.stringify(formData));
+    if (brevoKey) {
+      try {
+        await brevoRequestInline(brevoKey, {
+          sender: { name: 'KRAUSE Website ALARM', email: 'info@krauseimmo.com' },
+          to: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
+          subject: '⚠️ FORMULARFEHLER – Exposé-Anfrage von ' + (fullName || 'unbekannt'),
+          htmlContent:
+            '<h2 style="color:red">Formular-Fehler: Exposé-Anfrage</h2>' +
+            '<p>Fehler: ' + error.message + '</p>' +
+            '<p>Formulardaten:</p><pre>' + JSON.stringify(formData, null, 2) + '</pre>'
+        });
+      } catch (alertErr) {
+        console.error('[FORMULAR-FEHLER] Auch Alert-Mail fehlgeschlagen:', alertErr.message);
+      }
+    }
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.', details: error.message })
+      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.' })
     };
   }
 };

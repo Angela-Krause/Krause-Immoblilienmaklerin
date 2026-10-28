@@ -69,9 +69,11 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
   }
 
+  const formData = { name, phone, email, subject, message, formular: 'kontakt-anfrage', zeit: new Date().toISOString() };
+
   try {
     // 1. Benachrichtigung an Angela
-    await brevoRequest(brevoKey, {
+    const notifyResult = await brevoRequest(brevoKey, {
       sender: { name: 'KRAUSE Immobilien Website', email: 'info@krauseimmo.com' },
       to: [{ email: 'info@krauseimmo.com', name: 'Angela Krause' }, { email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
       replyTo: { email: email, name: name },
@@ -88,8 +90,34 @@ exports.handler = async (event) => {
         '<p style="margin-top:1.5rem;color:#666">Diese Nachricht wurde automatisch von krauseimmo.com gesendet.</p>'
     });
 
+    if (!notifyResult.messageId) {
+      console.error('[FORMULAR-FEHLER] Kontaktanfrage – Brevo-Benachrichtigung fehlgeschlagen:', JSON.stringify({ brevoResponse: notifyResult, formData }));
+      // Fehler-Alert an Marie
+      try {
+        await brevoRequest(brevoKey, {
+          sender: { name: 'KRAUSE Website ALARM', email: 'info@krauseimmo.com' },
+          to: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
+          subject: '⚠️ FORMULARFEHLER – Kontaktanfrage von ' + name,
+          htmlContent:
+            '<h2 style="color:red">Formular-Fehler: Kontaktanfrage</h2>' +
+            '<p>Die Benachrichtigungs-Mail konnte nicht zugestellt werden. Bitte kontaktiere den Interessenten manuell:</p>' +
+            '<table style="border-collapse:collapse;width:100%">' +
+            '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Name</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + name + '</td></tr>' +
+            '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>E-Mail</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + email + '</td></tr>' +
+            (phone ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Telefon</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + phone + '</td></tr>' : '') +
+            (subject ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Anliegen</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + subject + '</td></tr>' : '') +
+            (message ? '<tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Nachricht</strong></td><td style="padding:8px;border-bottom:1px solid #eee">' + message + '</td></tr>' : '') +
+            '</table>' +
+            '<p style="color:#666">Brevo-Antwort: ' + JSON.stringify(notifyResult) + '</p>'
+        });
+      } catch (alertErr) {
+        console.error('[FORMULAR-FEHLER] Auch Alert-Mail fehlgeschlagen:', alertErr.message);
+      }
+      return { statusCode: 500, headers, body: JSON.stringify({ error: 'E-Mail konnte nicht gesendet werden.' }) };
+    }
+
     // 2. Bestätigung an Absender
-    await brevoRequest(brevoKey, {
+    const confirmResult = await brevoRequest(brevoKey, {
       sender: { name: 'KRAUSE Immobilien', email: 'info@krauseimmo.com' },
       to: [{ email: email, name: name }],
       subject: 'Ihre Nachricht – KRAUSE Immobilien',
@@ -100,13 +128,32 @@ exports.handler = async (event) => {
         '<p>Mit freundlichen Grüßen<br>Angela Krause<br>KRAUSE Immobilien UG (haftungsbeschränkt)</p>'
     });
 
+    if (!confirmResult.messageId) {
+      console.error('[FORMULAR-WARNUNG] Bestätigungsmail an Absender fehlgeschlagen:', JSON.stringify({ brevoResponse: confirmResult, email }));
+    }
+
     return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
 
   } catch (error) {
+    console.error('[FORMULAR-FEHLER] Kontaktanfrage – Unerwarteter Fehler:', error.message, JSON.stringify(formData));
+    // Fehler-Alert an Marie
+    try {
+      await brevoRequest(brevoKey, {
+        sender: { name: 'KRAUSE Website ALARM', email: 'info@krauseimmo.com' },
+        to: [{ email: 'info@mb-topad.de', name: 'Marie Böttiger' }],
+        subject: '⚠️ FORMULARFEHLER – Kontaktanfrage von ' + (name || 'unbekannt'),
+        htmlContent:
+          '<h2 style="color:red">Formular-Fehler: Kontaktanfrage</h2>' +
+          '<p>Fehler: ' + error.message + '</p>' +
+          '<p>Formulardaten:</p><pre>' + JSON.stringify(formData, null, 2) + '</pre>'
+      });
+    } catch (alertErr) {
+      console.error('[FORMULAR-FEHLER] Auch Alert-Mail fehlgeschlagen:', alertErr.message);
+    }
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.', details: error.message })
+      body: JSON.stringify({ error: 'Anfrage konnte nicht verarbeitet werden.' })
     };
   }
 };
