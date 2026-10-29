@@ -1,5 +1,27 @@
 const https = require('https');
 
+function verifyRecaptcha(token, secret) {
+  if (!token || !secret) return Promise.resolve({ success: true, score: 1 });
+  const postData = 'secret=' + encodeURIComponent(secret) + '&response=' + encodeURIComponent(token);
+  return new Promise((resolve) => {
+    const req = https.request({
+      hostname: 'www.google.com',
+      path: '/recaptcha/api/siteverify',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(postData) }
+    }, (res) => {
+      let body = '';
+      res.on('data', chunk => { body += chunk; });
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); } catch (e) { resolve({ success: true, score: 1 }); }
+      });
+    });
+    req.on('error', () => resolve({ success: true, score: 1 }));
+    req.write(postData);
+    req.end();
+  });
+}
+
 function brevoRequest(brevoKey, mailBody) {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify(mailBody);
@@ -67,6 +89,16 @@ exports.handler = async (event) => {
 
   if (!name || !email) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
+  }
+
+  // reCAPTCHA v3 Prüfung
+  const recaptchaSecret = process.env.RECAPTCHA_SECRET;
+  if (body.recaptchaToken && recaptchaSecret) {
+    const captchaResult = await verifyRecaptcha(body.recaptchaToken, recaptchaSecret);
+    if (captchaResult.success && captchaResult.score < 0.5) {
+      console.error('[SPAM-BLOCK] Kontaktanfrage – reCAPTCHA Score zu niedrig:', captchaResult.score, JSON.stringify({ name, email }));
+      return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+    }
   }
 
   const formData = { name, phone, email, subject, message, formular: 'kontakt-anfrage', zeit: new Date().toISOString() };

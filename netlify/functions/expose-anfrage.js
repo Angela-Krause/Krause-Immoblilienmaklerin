@@ -3,6 +3,28 @@ const https = require('https');
 
 const API_URL = 'https://api.onoffice.de/api/stable/api.php';
 
+function verifyRecaptcha(token, secret) {
+  if (!token || !secret) return Promise.resolve({ success: true, score: 1 });
+  const postData = 'secret=' + encodeURIComponent(secret) + '&response=' + encodeURIComponent(token);
+  return new Promise((resolve) => {
+    const req = https.request({
+      hostname: 'www.google.com',
+      path: '/recaptcha/api/siteverify',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(postData) }
+    }, (res) => {
+      let body = '';
+      res.on('data', chunk => { body += chunk; });
+      res.on('end', () => {
+        try { resolve(JSON.parse(body)); } catch (e) { resolve({ success: true, score: 1 }); }
+      });
+    });
+    req.on('error', () => resolve({ success: true, score: 1 }));
+    req.write(postData);
+    req.end();
+  });
+}
+
 function createHmac(token, secret, timestamp, resourceType, actionId) {
   const fields = [timestamp, token, resourceType, actionId];
   const hmacData = fields.join('');
@@ -98,6 +120,16 @@ exports.handler = async (event) => {
 
   if (!vorname || !nachname || !email) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
+  }
+
+  // reCAPTCHA v3 Prüfung
+  const recaptchaSecret = process.env.RECAPTCHA_SECRET;
+  if (body.recaptchaToken && recaptchaSecret) {
+    const captchaResult = await verifyRecaptcha(body.recaptchaToken, recaptchaSecret);
+    if (captchaResult.success && captchaResult.score < 0.5) {
+      console.error('[SPAM-BLOCK] Exposé-Anfrage – reCAPTCHA Score zu niedrig:', captchaResult.score, JSON.stringify({ vorname, nachname, email }));
+      return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
+    }
   }
 
   const fullName = vorname + ' ' + nachname;

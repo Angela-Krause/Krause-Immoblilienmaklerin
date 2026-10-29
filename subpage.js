@@ -17,6 +17,25 @@ const FORM_ENDPOINTS = {
   suchprofilForm: '/.netlify/functions/kontakt-anfrage',
   rgModalForm: '/.netlify/functions/kontakt-anfrage'
 };
+
+const RECAPTCHA_SITE_KEY = '6LdZZVQrAAAAAITqz-sBUKCmDNLH2VNb9E0Ni_yV';
+(function loadRecaptcha() {
+  var s = document.createElement('script');
+  s.src = 'https://www.google.com/recaptcha/api.js?render=' + RECAPTCHA_SITE_KEY;
+  s.async = true;
+  document.head.appendChild(s);
+})();
+
+function getRecaptchaToken(action) {
+  if (typeof grecaptcha === 'undefined') return Promise.resolve('');
+  return new Promise(function(resolve) {
+    grecaptcha.ready(function() {
+      grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: action })
+        .then(resolve)
+        .catch(function() { resolve(''); });
+    });
+  });
+}
 const FORM_EMAIL = 'info@krauseimmo.com';
 
 function formLabelFor(form, el) {
@@ -125,10 +144,13 @@ function sendForm(form) {
   if (endpoint) {
     var fields = collectFormFields(form);
     var payload = buildPayload(form.id, fields);
-    return fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+    return getRecaptchaToken('submit_' + form.id).then(function(token) {
+      if (token) payload.recaptchaToken = token;
+      return fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
     }).then(function(res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return true;
