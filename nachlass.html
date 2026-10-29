@@ -34,7 +34,6 @@
   <link rel="canonical" href="https://krauseimmo.com/nachlass">
   <meta property="og:locale" content="de_DE">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="recaptcha-site-key" content="DEIN_SITE_KEY_HIER">
   <meta name="theme-color" content="#2A5F8D">
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -212,6 +211,7 @@
             </div>
           </div>
           <form class="contact-form reveal-right" id="contactForm" method="post" novalidate>
+            <input type="text" name="url2" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off">
             <div class="form-row">
               <div class="field"><label for="cfVorname">Vorname *</label><input type="text" id="cfVorname" name="vorname" placeholder="Max…" required></div>
               <div class="field"><label for="cfNachname">Nachname *</label><input type="text" id="cfNachname" name="nachname" placeholder="Mustermann…" required></div>
@@ -252,7 +252,7 @@
   <script src="vendor/gsap.min.js"></script>
   <script src="vendor/ScrollTrigger.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
-  <script src="subpage.js?v=20261022"></script>
+  <script src="subpage.js?v=20261029"></script>
   <!-- Banner Overlay -->
   <div id="cb-overlay"></div>
 

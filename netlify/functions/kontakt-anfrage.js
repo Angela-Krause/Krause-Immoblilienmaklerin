@@ -1,25 +1,48 @@
 const https = require('https');
 
-function verifyRecaptcha(token, secret) {
-  if (!token || !secret) return Promise.resolve({ success: true, score: 1 });
-  const postData = 'secret=' + encodeURIComponent(secret) + '&response=' + encodeURIComponent(token);
-  return new Promise((resolve) => {
-    const req = https.request({
-      hostname: 'www.google.com',
-      path: '/recaptcha/api/siteverify',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(postData) }
-    }, (res) => {
-      let body = '';
-      res.on('data', chunk => { body += chunk; });
-      res.on('end', () => {
-        try { resolve(JSON.parse(body)); } catch (e) { resolve({ success: true, score: 1 }); }
-      });
-    });
-    req.on('error', () => resolve({ success: true, score: 1 }));
-    req.write(postData);
-    req.end();
-  });
+// Rate-Limiting: max 3 Anfragen pro IP in 10 Minuten
+const ipLog = {};
+function isRateLimited(ip) {
+  const now = Date.now();
+  const window = 10 * 60 * 1000;
+  if (!ipLog[ip]) ipLog[ip] = [];
+  ipLog[ip] = ipLog[ip].filter(t => now - t < window);
+  if (ipLog[ip].length >= 3) return true;
+  ipLog[ip].push(now);
+  return false;
+}
+
+// Kauderwelsch-Erkennung: zu viele Konsonanten hintereinander = verdächtig
+function looksLikeGibberish(text) {
+  if (!text) return false;
+  const consonantRun = /[bcdfghjklmnpqrstvwxyz]{5,}/i;
+  return consonantRun.test(text);
+}
+
+// Spam-Keyword-Check
+function containsSpamPatterns(text) {
+  if (!text) return false;
+  const spamPatterns = /\b(crypto|bitcoin|viagra|casino|lottery|prize|winner|click here|buy now|free money|SEO service)\b/i;
+  return spamPatterns.test(text);
+}
+
+function spamCheck(fields, ip) {
+  // Honeypot: verstecktes Feld ausgefüllt
+  if (fields.website || fields.url2) return 'honeypot';
+  // Zeitstempel: unter 8 Sekunden = verdächtig
+  if (!fields.formzeit || (Date.now() - parseInt(fields.formzeit)) < 8000) return 'zu-schnell';
+  // Rate-Limiting
+  if (ip && isRateLimited(ip)) return 'rate-limit';
+  // Kauderwelsch im Namen
+  const nameToCheck = fields.name || ((fields.vorname || '') + ' ' + (fields.nachname || '')).trim();
+  if (looksLikeGibberish(nameToCheck)) return 'gibberish-name';
+  // Spam-Keywords in Nachricht oder Betreff
+  if (containsSpamPatterns(fields.message || fields.nachricht || '')) return 'spam-keywords';
+  if (containsSpamPatterns(fields.subject || '')) return 'spam-keywords';
+  // E-Mail mit vielen Punkten/Zahlen vor dem @ = oft Wegwerf-Adressen
+  const localPart = (fields.email || '').split('@')[0] || '';
+  if (/(\.\w){4,}/.test(localPart)) return 'suspicious-email';
+  return null;
 }
 
 function brevoRequest(brevoKey, mailBody) {
@@ -77,28 +100,15 @@ exports.handler = async (event) => {
 
   const { name, phone, email, subject, message, website, formzeit } = body;
 
-  // Honeypot
-  if (website) {
-    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-  }
-
-  // Zeitstempel-Check: unter 3 Sekunden = Bot
-  if (!formzeit || (Date.now() - parseInt(formzeit)) < 3000) {
-    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-  }
-
   if (!name || !email) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
   }
 
-  // reCAPTCHA v3 Prüfung
-  const recaptchaSecret = process.env.RECAPTCHA_SECRET;
-  if (body.recaptchaToken && recaptchaSecret) {
-    const captchaResult = await verifyRecaptcha(body.recaptchaToken, recaptchaSecret);
-    if (captchaResult.success && captchaResult.score < 0.5) {
-      console.error('[SPAM-BLOCK] Kontaktanfrage – reCAPTCHA Score zu niedrig:', captchaResult.score, JSON.stringify({ name, email }));
-      return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-    }
+  const clientIp = (event.headers['x-forwarded-for'] || event.headers['client-ip'] || '').split(',')[0].trim();
+  const spamReason = spamCheck({ name, email, message, subject, website, url2: body.url2, formzeit }, clientIp);
+  if (spamReason) {
+    console.error('[SPAM-BLOCK] Kontaktanfrage blockiert:', spamReason, JSON.stringify({ name, email, ip: clientIp }));
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
   }
 
   const formData = { name, phone, email, subject, message, formular: 'kontakt-anfrage', zeit: new Date().toISOString() };

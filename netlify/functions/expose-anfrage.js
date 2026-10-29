@@ -3,26 +3,37 @@ const https = require('https');
 
 const API_URL = 'https://api.onoffice.de/api/stable/api.php';
 
-function verifyRecaptcha(token, secret) {
-  if (!token || !secret) return Promise.resolve({ success: true, score: 1 });
-  const postData = 'secret=' + encodeURIComponent(secret) + '&response=' + encodeURIComponent(token);
-  return new Promise((resolve) => {
-    const req = https.request({
-      hostname: 'www.google.com',
-      path: '/recaptcha/api/siteverify',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(postData) }
-    }, (res) => {
-      let body = '';
-      res.on('data', chunk => { body += chunk; });
-      res.on('end', () => {
-        try { resolve(JSON.parse(body)); } catch (e) { resolve({ success: true, score: 1 }); }
-      });
-    });
-    req.on('error', () => resolve({ success: true, score: 1 }));
-    req.write(postData);
-    req.end();
-  });
+const ipLog = {};
+function isRateLimited(ip) {
+  const now = Date.now();
+  const window = 10 * 60 * 1000;
+  if (!ipLog[ip]) ipLog[ip] = [];
+  ipLog[ip] = ipLog[ip].filter(t => now - t < window);
+  if (ipLog[ip].length >= 3) return true;
+  ipLog[ip].push(now);
+  return false;
+}
+
+function looksLikeGibberish(text) {
+  if (!text) return false;
+  return /[bcdfghjklmnpqrstvwxyz]{5,}/i.test(text);
+}
+
+function containsSpamPatterns(text) {
+  if (!text) return false;
+  return /\b(crypto|bitcoin|viagra|casino|lottery|prize|winner|click here|buy now|free money|SEO service)\b/i.test(text);
+}
+
+function spamCheck(fields, ip) {
+  if (fields.website || fields.url2) return 'honeypot';
+  if (!fields.formzeit || (Date.now() - parseInt(fields.formzeit)) < 8000) return 'zu-schnell';
+  if (ip && isRateLimited(ip)) return 'rate-limit';
+  const nameToCheck = ((fields.vorname || '') + ' ' + (fields.nachname || '')).trim();
+  if (looksLikeGibberish(nameToCheck)) return 'gibberish-name';
+  if (containsSpamPatterns(fields.nachricht || '')) return 'spam-keywords';
+  const localPart = (fields.email || '').split('@')[0] || '';
+  if (/(\.\w){4,}/.test(localPart)) return 'suspicious-email';
+  return null;
 }
 
 function createHmac(token, secret, timestamp, resourceType, actionId) {
@@ -108,28 +119,15 @@ exports.handler = async (event) => {
 
   const { vorname, nachname, email, telefon, nachricht, objnr, website, formzeit } = body;
 
-  // Honeypot
-  if (website) {
-    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-  }
-
-  // Zeitstempel-Check: unter 3 Sekunden = Bot
-  if (!formzeit || (Date.now() - parseInt(formzeit)) < 3000) {
-    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-  }
-
   if (!vorname || !nachname || !email) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Name und E-Mail sind Pflichtfelder' }) };
   }
 
-  // reCAPTCHA v3 Prüfung
-  const recaptchaSecret = process.env.RECAPTCHA_SECRET;
-  if (body.recaptchaToken && recaptchaSecret) {
-    const captchaResult = await verifyRecaptcha(body.recaptchaToken, recaptchaSecret);
-    if (captchaResult.success && captchaResult.score < 0.5) {
-      console.error('[SPAM-BLOCK] Exposé-Anfrage – reCAPTCHA Score zu niedrig:', captchaResult.score, JSON.stringify({ vorname, nachname, email }));
-      return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
-    }
+  const clientIp = (event.headers['x-forwarded-for'] || event.headers['client-ip'] || '').split(',')[0].trim();
+  const spamReason = spamCheck({ vorname, nachname, email, nachricht, website, url2: body.url2, formzeit }, clientIp);
+  if (spamReason) {
+    console.error('[SPAM-BLOCK] Exposé-Anfrage blockiert:', spamReason, JSON.stringify({ vorname, nachname, email, ip: clientIp }));
+    return { statusCode: 200, headers, body: JSON.stringify({ success: true }) };
   }
 
   const fullName = vorname + ' ' + nachname;

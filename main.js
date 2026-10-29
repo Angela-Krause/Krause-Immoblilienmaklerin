@@ -37,25 +37,6 @@ const FORM_ENDPOINTS = {
   rgModalForm: '/.netlify/functions/kontakt-anfrage'
 };
 
-// Site Key wird aus dem Meta-Tag gelesen – setze <meta name="recaptcha-site-key" content="DEIN_KEY"> im HTML
-const RECAPTCHA_SITE_KEY = (document.querySelector('meta[name="recaptcha-site-key"]') || {}).content || '';
-if (RECAPTCHA_SITE_KEY) {
-  var _rcScript = document.createElement('script');
-  _rcScript.src = 'https://www.google.com/recaptcha/api.js?render=' + RECAPTCHA_SITE_KEY;
-  _rcScript.async = true;
-  document.head.appendChild(_rcScript);
-}
-
-function getRecaptchaToken(action) {
-  if (typeof grecaptcha === 'undefined') return Promise.resolve('');
-  return new Promise(function(resolve) {
-    grecaptcha.ready(function() {
-      grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: action })
-        .then(resolve)
-        .catch(function() { resolve(''); });
-    });
-  });
-}
 const FORM_EMAIL = 'info@krauseimmo.com';
 
 function formLabelFor(form, el) {
@@ -107,7 +88,7 @@ function formDataRows(form) {
 function collectFormFields(form) {
   var data = {};
   var fd = new FormData(form);
-  fd.forEach(function(val, key) { if (key !== 'dsgvo' && key !== 'website') data[key] = val; });
+  fd.forEach(function(val, key) { if (key !== 'dsgvo' && key !== 'website' && key !== 'url2') data[key] = val; });
   form.querySelectorAll('[data-value].selected').forEach(function(el) {
     var key = el.closest('[data-step="1"]') ? 'immobilienart' : el.closest('[data-step="4"]') ? 'zustand' : 'auswahl';
     data[key] = el.getAttribute('data-value');
@@ -164,13 +145,12 @@ function sendForm(form) {
   if (endpoint) {
     var fields = collectFormFields(form);
     var payload = buildPayload(form.id, fields);
-    return getRecaptchaToken('submit_' + form.id).then(function(token) {
-      if (token) payload.recaptchaToken = token;
-      return fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+    var hp2 = form.querySelector('[name="url2"]');
+    if (hp2 && hp2.value) payload.url2 = hp2.value;
+    return fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     }).then(function(res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return true;

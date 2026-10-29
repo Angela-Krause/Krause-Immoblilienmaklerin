@@ -34,7 +34,6 @@
   <link rel="canonical" href="https://krauseimmo.com/expose">
   <meta property="og:locale" content="de_DE">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="recaptcha-site-key" content="DEIN_SITE_KEY_HIER">
   <meta name="theme-color" content="#2A5F8D">
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -152,6 +151,7 @@
           </div>
           <div class="xp-form-col">
             <form class="contact-form xp-form" id="exposeForm" method="post" novalidate>
+            <input type="text" name="url2" style="position:absolute;left:-9999px;opacity:0" tabindex="-1" autocomplete="off">
               <div class="form-row">
                 <div class="field field-full"><label for="xfAnrede">Anrede *</label><select id="xfAnrede" name="anrede" required><option value="" disabled selected>Bitte wählen…</option><option value="Herr">Herr</option><option value="Frau">Frau</option></select></div>
               </div>
@@ -204,7 +204,7 @@
   <script src="vendor/gsap.min.js"></script>
   <script src="vendor/ScrollTrigger.min.js"></script>
   <script src="vendor/lenis.min.js"></script>
-  <script src="subpage.js?v=20261022"></script>
+  <script src="subpage.js?v=20261029"></script>
   <script>
   /* ── Exposé: Objektdaten live aus onOffice (Netlify Function get-properties) ── */
   (async function(){
