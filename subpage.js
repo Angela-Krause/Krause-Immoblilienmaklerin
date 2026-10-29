@@ -18,13 +18,14 @@ const FORM_ENDPOINTS = {
   rgModalForm: '/.netlify/functions/kontakt-anfrage'
 };
 
-const RECAPTCHA_SITE_KEY = '6LdZZVQrAAAAAITqz-sBUKCmDNLH2VNb9E0Ni_yV';
-(function loadRecaptcha() {
-  var s = document.createElement('script');
-  s.src = 'https://www.google.com/recaptcha/api.js?render=' + RECAPTCHA_SITE_KEY;
-  s.async = true;
-  document.head.appendChild(s);
-})();
+// Site Key wird aus dem Meta-Tag gelesen – setze <meta name="recaptcha-site-key" content="DEIN_KEY"> im HTML
+const RECAPTCHA_SITE_KEY = (document.querySelector('meta[name="recaptcha-site-key"]') || {}).content || '';
+if (RECAPTCHA_SITE_KEY) {
+  var _rcScript = document.createElement('script');
+  _rcScript.src = 'https://www.google.com/recaptcha/api.js?render=' + RECAPTCHA_SITE_KEY;
+  _rcScript.async = true;
+  document.head.appendChild(_rcScript);
+}
 
 function getRecaptchaToken(action) {
   if (typeof grecaptcha === 'undefined') return Promise.resolve('');
