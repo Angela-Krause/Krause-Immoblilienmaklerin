@@ -1,4 +1,5 @@
 const https = require('https');
+const { anfrageAnTabelle } = require('../lib/tabelle');
 
 const ipLog = {};
 function isRateLimited(ip) {
@@ -102,6 +103,9 @@ exports.handler = async (event) => {
 
   const fullName = vorname + ' ' + nachname;
   const formData = { vorname, nachname, email, telefon, immobilienart, adresse, nachricht, formular: 'verkauf-anfrage', zeit: new Date().toISOString() };
+
+  // Offline-Conversions: Anfrage in die Google-Tabelle (bricht den Versand nie ab)
+  await anfrageAnTabelle(body, { name: [vorname, nachname].filter(Boolean).join(' '), tel: telefon, email, nachricht: ['Bewertung', immobilienart, adresse, nachricht].filter(Boolean).join(' | ') });
 
   try {
     // 1. Benachrichtigung an Angela
