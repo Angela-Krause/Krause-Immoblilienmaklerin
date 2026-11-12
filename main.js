@@ -32,6 +32,15 @@ window.addEventListener('load', () => setTimeout(hidePreloader, 800));
    die weniger als 8 Sekunden danach kommen (Spam-Schutz gegen Bots) */
 const SEITE_GELADEN = Date.now();
 
+const FORM_NAMEN = {
+  contactForm: 'Kontakt',
+  valuationForm: 'Bewertung',
+  bewertungForm: 'Bewertung',
+  exposeForm: 'Exposé',
+  rgModalForm: 'Ratgeber',
+  suchprofilForm: 'Suchprofil'
+};
+
 const FORM_ENDPOINTS = {
   contactForm: '/.netlify/functions/kontakt-anfrage',
   valuationForm: '/.netlify/functions/verkauf-anfrage',
@@ -181,13 +190,22 @@ function sendForm(form) {
     var payload = buildPayload(form.id, fields);
     var hp2 = form.querySelector('[name="url2"]');
     if (hp2 && hp2.value) payload.url2 = hp2.value;
+    // Offline-Conversions: Anzeigen-Kennung, Seite und Einwilligung (Cookie-Banner) mitschicken
+    var ap = window.krauseAdParams || {};
+    ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_campaign', 'utm_term'].forEach(function(k) { if (ap[k]) payload[k] = ap[k]; });
+    payload.seite = window.location.pathname + ' · ' + (FORM_NAMEN[form.id] || form.id);
+    payload.ads_consent = !!(window.krauseMarketingConsent && window.krauseMarketingConsent());
     return fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     }).then(function(res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      return true;
+      // Erweiterte Conversions: nur mit Einwilligung, wartet höchstens 1,5 s
+      return new Promise(function(fertig) {
+        if (!window.krauseLeadEvent) return fertig(true);
+        window.krauseLeadEvent(payload.email, payload.telefon || payload.phone, function() { fertig(true); });
+      });
     }).catch(function() { return false; });
   }
   var rows = formDataRows(form);
