@@ -28,6 +28,10 @@ window.addEventListener('load', () => setTimeout(hidePreloader, 800));
    Endpunkte sind in FORM_ENDPOINTS pro Formular konfiguriert
    (POST, JSON mit benannten Feldern an Netlify Functions).
    ============================================ */
+/* Zeitpunkt, zu dem die Seite geladen wurde – der Server lehnt Anfragen ab,
+   die weniger als 8 Sekunden danach kommen (Spam-Schutz gegen Bots) */
+const SEITE_GELADEN = Date.now();
+
 const FORM_ENDPOINTS = {
   contactForm: '/.netlify/functions/kontakt-anfrage',
   valuationForm: '/.netlify/functions/verkauf-anfrage',
@@ -105,7 +109,7 @@ function buildPayload(formId, fields) {
       subject: fields.interesse || 'Kontaktanfrage',
       message: fields.nachricht || '',
       website: '',
-      formzeit: Date.now().toString()
+      formzeit: SEITE_GELADEN.toString()
     };
   }
   if (formId === 'valuationForm' || formId === 'bewertungForm') {
@@ -119,7 +123,7 @@ function buildPayload(formId, fields) {
       adresse: adresse || fields.adresse || '',
       nachricht: [fields.zustand, fields.notizen, fields.nachricht, fields.wohnflaeche ? 'Wohnfl.: ' + fields.wohnflaeche + ' m²' : '', fields.zimmer ? 'Zimmer: ' + fields.zimmer : '', fields.baujahr ? 'Baujahr: ' + fields.baujahr : '', fields.lage ? 'Lage: ' + fields.lage : ''].filter(Boolean).join(' | '),
       website: '',
-      formzeit: Date.now().toString()
+      formzeit: SEITE_GELADEN.toString()
     };
   }
   if (formId === 'exposeForm') {
@@ -132,11 +136,41 @@ function buildPayload(formId, fields) {
       nachricht: fields.nachricht || '',
       objnr: params.get('objnr') || fields.objnr || '',
       website: '',
-      formzeit: Date.now().toString()
+      formzeit: SEITE_GELADEN.toString()
+    };
+  }
+  if (formId === 'suchprofilForm' || formId === 'rgModalForm') {
+    var v = function(id) { var el = document.getElementById(id); return el ? String(el.value || '').trim() : ''; };
+    if (formId === 'rgModalForm') {
+      return {
+        name: 'Ratgeber-Anfrage',
+        phone: '',
+        email: v('rgEmail'),
+        subject: 'Ratgeber-Anfrage',
+        message: 'Ratgeber angefordert auf ' + window.location.pathname,
+        website: '',
+        formzeit: SEITE_GELADEN.toString()
+      };
+    }
+    var teile = [
+      ['Anrede', v('spAnrede')], ['Vermarktungsart', v('spVermarktung')], ['Objekt-Art', v('spObjektart')],
+      ['Stadt', v('spStadt')], ['Region', v('spRegion')],
+      ['Preis', [v('spPreisVon'), v('spPreisBis')].filter(Boolean).join(' – ')],
+      ['Zimmer', [v('spZimmerVon'), v('spZimmerBis')].filter(Boolean).join(' – ')],
+      ['Wünsche', v('spAnmerkungen')]
+    ].filter(function(t) { return t[1]; }).map(function(t) { return t[0] + ': ' + t[1]; });
+    return {
+      name: [v('spVorname'), v('spNachname')].filter(Boolean).join(' '),
+      phone: v('spTelefon'),
+      email: v('spEmail'),
+      subject: 'Suchprofil',
+      message: teile.join(' | '),
+      website: '',
+      formzeit: SEITE_GELADEN.toString()
     };
   }
   fields.website = '';
-  fields.formzeit = Date.now().toString();
+  fields.formzeit = SEITE_GELADEN.toString();
   return fields;
 }
 
