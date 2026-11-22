@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const https = require('https');
+const { anfrageAnTabelle } = require('../lib/tabelle');
 
 const API_URL = 'https://api.onoffice.de/api/stable/api.php';
 
@@ -132,6 +133,9 @@ exports.handler = async (event) => {
 
   const fullName = vorname + ' ' + nachname;
   const formData = { vorname, nachname, email, telefon, nachricht, objnr, formular: 'expose-anfrage', zeit: new Date().toISOString() };
+
+  // Offline-Conversions: Anfrage in die Google-Tabelle (bricht den Versand nie ab)
+  await anfrageAnTabelle(body, { name: [vorname, nachname].filter(Boolean).join(' '), tel: telefon, email, nachricht: ['Exposé', objnr ? 'Objekt ' + objnr : '', nachricht].filter(Boolean).join(' | ') });
   const brevoKey = process.env.BREVO_API_KEY;
 
   function brevoRequestInline(brevoApiKey, mailBody) {

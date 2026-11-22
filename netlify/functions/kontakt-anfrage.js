@@ -1,4 +1,5 @@
 const https = require('https');
+const { anfrageAnTabelle } = require('../lib/tabelle');
 
 // Rate-Limiting: max 3 Anfragen pro IP in 10 Minuten
 const ipLog = {};
@@ -112,6 +113,9 @@ exports.handler = async (event) => {
   }
 
   const formData = { name, phone, email, subject, message, formular: 'kontakt-anfrage', zeit: new Date().toISOString() };
+
+  // Offline-Conversions: Anfrage in die Google-Tabelle (bricht den Versand nie ab)
+  await anfrageAnTabelle(body, { name, tel: phone, email, nachricht: [subject, message].filter(Boolean).join(' – ') });
 
   try {
     // 1. Benachrichtigung an Angela
